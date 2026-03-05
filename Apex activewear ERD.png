@@ -1,4 +1,0 @@
-
-git rm "Apex activewear ERD.png" "Apex_activewear_ERD.png"
-git commit -m "Confirming deletion of ERD files"
-git push
