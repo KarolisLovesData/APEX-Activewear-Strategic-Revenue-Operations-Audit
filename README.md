@@ -5,13 +5,11 @@
 **APEX Activewear** has reached a pivotal operational crossroads. As a premier retailer specializing in **high-performance alpine outerwear, technical footwear, and adventure-ready gear**, we have successfully scaled to **$48.85M in lifetime revenue** between January 2023 and early 2026. With over **436K+** orders processed, we have proven our market fit across the United States, our core market, Mexico and Canda have establishing solid unit economics that include a **$148 AOV** and a **53.9% Gross Margin**.
 
 
-Despite these strong foundational metrics, our ability to continue scaling through volume alone has stalled. To identify the specific friction points hindering our next phase of expansion, a **diagnostic audit of the revenue engine** was conducted. This analysis moved beyond surface-level performance to reveal four structural risks that aggregate metrics were obscuring.
-
-<small>_[Access Executive Summary SQL Queries](Analytics_Engineering/Executive_Summary.sql)_</small>
+Despite these strong foundational metrics, our ability to continue scaling through volume alone has stalled. To identify the specific friction points hindering our next phase of expansion, a **diagnostic audit of the revenue engine** was conducted. This analysis moved beyond surface-level performance to reveal four structural risks that aggregate metrics were obscuring. <small>_[Access Executive Summary SQL Queries](Analytics_Engineering/Executive_Summary.sql)_</small>
 
 # Data Architecture & Scope 
 
-To perform this audit, a relational data model was built to connect the entire customer lifecycle—from the initial website visit to the final delivery and potential return. By linking marketing events, transactions, and logistics, I created a **"source of truth"** to identify specific friction points where revenue was leaking and margins were being eroded. (Note: the tables in the ERD are the **Staging Layer** (the stg_ nodes), see the **Directed Acyclic Graph (DAG)** and full **Medallion Transformation** flow in the Analytics Engineering section.)  
+To perform this audit, a relational data model was built to connect the entire customer lifecycle—from the initial website visit to the final delivery and potential return. By linking marketing events, transactions, and logistics, I created a **"source of truth"** to identify specific friction points where revenue was leaking and margins were being eroded. (Note: the tables in the ERD are the **Staging Layer** (the stg_ nodes), see the **Directed Acyclic Graph (DAG)** and full **Medallion Transformation** flow in MAKE THIS THE LINK STRAIGHT TO THE SECTIONthe Analytics Engineering section.)  
 
 APEX Activewear **Entity Relationship Diagram:**
 
@@ -38,6 +36,7 @@ APEX Activewear **Entity Relationship Diagram:**
 
 
 * **Critical Attribution Leakage:**  We are effectively "flying blind" on **68.3%** of our total revenue (Direct + Unattributed). The digital thread is severing mid-funnel, meaning we cannot track the ROI on **~$34.3M** of revenue, likely leading to massive inefficiencies in paid ad spend. 
+ <small>_[Access Critical Attribution SQL queries](Analytics_Engineering/Key_findings:_Critical_Attribution_Leakage.sql)_</small>
 
  
 
@@ -56,8 +55,7 @@ APEX Activewear **Entity Relationship Diagram:**
 
 
 * **Geographic Saturation & Systemic Risk:** Our revenue engine is heavily centralized, with the United States generating 76.3% ($37.25M) of total lifetime revenue. The decline in momentum to 9.8% indicates US market saturation. Furthermore, our retention liability scales proportionally across all borders. By utilizing **RFM (Recency, Frequency, Monetary) customer segmentation** to divide the user base into actionable cohorts based on purchasing behavior, we identified that over $33.3M in lifetime revenue is globally tied up in the "At Risk / Can't Lose" segment (US: $25.4M, MX: $4.4M, CA: $3.5M).  This proves our mid-term retention mechanics are failing consistently across all markets, making **a structural retention overhaul** a mandatory global fix, not just a localized tactic.
-
-  <small>_[Access Geographic Saturation SQL queries](Analytics_Engineering/Key_findings:_Geographic_Saturation.sql)_</small>
+<small>_[Access Geographic Saturation SQL queries](Analytics_Engineering/Key_findings:_Geographic_Saturation.sql)_</small>
 
 **The Strategic Pivot: From "Health Check" to "Root Cause":**
 
