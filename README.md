@@ -48,6 +48,7 @@ APEX Activewear **Entity Relationship Diagram:**
 
 * **Geographic Saturation & Systemic Risk:** Our revenue engine is heavily centralized, with the United States generating 76.3% ($37.25M) of total lifetime revenue. The decline in momentum to 9.8% indicates US market saturation. Furthermore, our retention liability scales proportionally across all borders. By utilizing **RFM (Recency, Frequency, Monetary) customer segmentation** to divide the user base into actionable cohorts based on purchasing behavior, we identified that over $33.3M in lifetime revenue is globally tied up in the "At Risk / Can't Lose" segment (US: $25.4M, MX: $4.4M, CA: $3.5M).  This proves our mid-term retention mechanics are failing consistently across all markets, making **a structural retention overhaul** a mandatory global fix, not just a localized tactic.
   
+<small>_[Access Geographic Saturation SQL queries](Analytics_Engineering/Key_findings:_Geographic_Saturation.sql)_</small>
 
 **The Strategic Pivot: From "Health Check" to "Root Cause":**
 
