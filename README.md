@@ -7,7 +7,7 @@
 
 Despite these strong foundational metrics, our ability to continue scaling through volume alone has stalled. To identify the specific friction points hindering our next phase of expansion, a **diagnostic audit of the revenue engine** was conducted. This analysis moved beyond surface-level performance to reveal four structural risks that aggregate metrics were obscuring.
 
-<small>_[Access Executive Summary SQL Queries](Analytics Engineering /Executive_Summary.sql)_</small>
+<small>_[Access Executive Summary SQL Queries](Analytics_Engineering/Executive_Summary.sql)_</small>
 
 # Data Architecture & Scope 
 
@@ -32,9 +32,7 @@ APEX Activewear **Entity Relationship Diagram:**
 
 <img src="./Visuals/growth_paradox.png" alt="growth paradox" width="800">
 
-<small>_[Access Growth Deceleration SQL queries](Analytics Engineering /Executive_Summary.sql)_</small>
-
-
+<small>_[Access Growth Deceleration SQL queries](Analytics_Engineering/Key_Findings:_Growth_Deceleration.sql)_</small>
 
 
 
