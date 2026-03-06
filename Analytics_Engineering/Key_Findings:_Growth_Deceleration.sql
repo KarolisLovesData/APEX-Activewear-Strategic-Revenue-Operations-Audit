@@ -10,7 +10,7 @@ WITH annual_counts AS (
     EXTRACT(QUARTER FROM created_at) AS quarter,
     COUNT(DISTINCT order_id) AS total_orders,
     
-    -- leveraging the centralized business logic from Staging table (no returns no cancellations in realized_revenue)
+    -- leveraging the centralized business logic from Staging table (no returns or cancellations in realized_revenue)
     ROUND(SUM(CASE WHEN is_realized_revenue THEN sale_price ELSE 0 END), 2) AS realized_revenue
 
   FROM 
