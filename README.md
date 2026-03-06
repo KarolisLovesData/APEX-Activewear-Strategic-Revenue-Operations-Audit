@@ -25,3 +25,8 @@ APEX Activewear **Entity Relationship Diagram:**
 * _stg_order_items_ (fact table): **544K+** order records processed across the US, Canada, and Mexico.
 * _stg_products_: performance and return-rate data for over **2000** unique SKUs.
 * _stg_distribution_centers_: integration with **11** distribution centers data to reconcile realized revenue against operational costs.
+
+# Key Findings: The "Profit Paradox 
+
+
+
