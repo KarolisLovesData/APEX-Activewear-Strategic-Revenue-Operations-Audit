@@ -15,7 +15,7 @@ To perform this audit, a relational data model was built to connect the entire c
 
 APEX Activewear **Entity Relationship Diagram:**
 
-<img src="./apex_activewear_erd.png" alt="Apex Activewear ERD" width="1000">
+<img src="./Visuals/apex_activewear_erd.png" alt="Apex Activewear ERD" width="1000">
 
 
 
