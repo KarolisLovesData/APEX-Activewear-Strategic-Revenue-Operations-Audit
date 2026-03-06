@@ -14,7 +14,7 @@ However, while our unit economics remain premium (**$148 AOV, 53.9% Gross Margin
 
 To perform this audit, I built a relational data model that connects the entire customer lifecycle—from the initial website visit to the final delivery and potential return. By linking marketing events, transactions, and logistics, I created a **"source of truth"** to identify specific friction points where revenue was leaking and margins were being eroded. (Note: the tables in the ERD are the **Staging Layer** (the stg_ nodes), see the **Directed Acyclic Graph (DAG)** and full **Medallion Transformation** flow in the Analytics Engineering section.)  
 
-<img src="./apex_activewear_erd.png" alt="Apex Activewear ERD" width="800">
+<img src="./apex_activewear_erd.png" alt="Apex Activewear ERD" width="700">
 
 
 
