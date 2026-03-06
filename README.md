@@ -29,10 +29,19 @@ APEX Activewear **Entity Relationship Diagram:**
 # Key Findings: The "Profit Paradox 
 
 * **Growth Deceleration:** We have moved past the hyper-growth phase. From a peak of **344%** growth in Q2 2023, momentum has steadily declined to single digits (**9.8%**) in Q4 2025. Future revenue gains must come from maximizing customer lifetime value rather than new order volume.
+<small>_[Access Growth Deceleration SQL queries](Analytics_Engineering/Key_Findings:_Growth_Deceleration.sql)_</small>
+
 
 <img src="./Visuals/APEX Growth.png" alt="growth paradox" width="800">
 
-<small>_[Access Growth Deceleration SQL queries](Analytics_Engineering/Key_Findings:_Growth_Deceleration.sql)_</small>
+
+
+
+* **Critical Attribution Leakage:**  We are effectively "flying blind" on **68.3%** of our total revenue (Direct + Unattributed). The digital thread is severing mid-funnel, meaning we cannot track the ROI on **~$34.3M** of revenue, likely leading to massive inefficiencies in paid ad spend. 
+
+ 
+
+<img src="./Visuals/Revenue_by_traffic_ source.png" alt="growth paradox" width="800">
 
 
 
@@ -47,8 +56,8 @@ APEX Activewear **Entity Relationship Diagram:**
 
 
 * **Geographic Saturation & Systemic Risk:** Our revenue engine is heavily centralized, with the United States generating 76.3% ($37.25M) of total lifetime revenue. The decline in momentum to 9.8% indicates US market saturation. Furthermore, our retention liability scales proportionally across all borders. By utilizing **RFM (Recency, Frequency, Monetary) customer segmentation** to divide the user base into actionable cohorts based on purchasing behavior, we identified that over $33.3M in lifetime revenue is globally tied up in the "At Risk / Can't Lose" segment (US: $25.4M, MX: $4.4M, CA: $3.5M).  This proves our mid-term retention mechanics are failing consistently across all markets, making **a structural retention overhaul** a mandatory global fix, not just a localized tactic.
-  
-<small>_[Access Geographic Saturation SQL queries](Analytics_Engineering/Key_findings:_Geographic_Saturation.sql)_</small>
+
+  <small>_[Access Geographic Saturation SQL queries](Analytics_Engineering/Key_findings:_Geographic_Saturation.sql)_</small>
 
 **The Strategic Pivot: From "Health Check" to "Root Cause":**
 
