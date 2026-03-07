@@ -43,7 +43,7 @@ APEX Activewear **Entity Relationship Diagram:**
 <img src="./Visuals/Revenue_by_traffic_source.png" alt="growth paradox" width="800">
 
 
-
+* **Category-Specific Profit Drag:** Men's Alpine Outerwear remains the top revenue driver (**$15.5M Gross**), but it is also the primary source of operational drag, incurring **$3.2M** in return losses alone. Across top categories, the "Total Loss Rate" (returns + cancellations) creates a stabilized drag of **~24%**. Effectively, one-quarter of the operational effort in these key segments generates zero realized revenue. 
 
 
 
