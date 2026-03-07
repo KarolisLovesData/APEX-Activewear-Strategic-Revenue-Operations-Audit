@@ -40,7 +40,7 @@ APEX Activewear **Entity Relationship Diagram:**
 
  
 
-<img src="./Visuals/Revenue_by_traffic_ source.png" alt="growth paradox" width="800">
+<img src="./Visuals/Revenue_by_traffic_source.png" alt="growth paradox" width="800">
 
 
 
