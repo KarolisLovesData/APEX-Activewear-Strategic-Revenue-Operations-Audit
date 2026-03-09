@@ -194,7 +194,37 @@ The "Champions" segment is highly lucrative (>$1,350 Avg LTV) but drastically un
 * **Execution:** Train Meta/Google algorithms with the expanded seed to adapt and A/B test proven US acquisition tactics in Mexico and Canada. This scales volume while dynamically adjusting CAC thresholds for cross-border shipping and customs duties.
 * **Why:** Loyal Customers ($890 avg LTV) closely mirror Champions ($1,402 avg LTV). Merging them unlocks the data volume required to train ad pixels, driving scalable international acquisition of high-value users who remain profitable even after local fulfillment costs.
 
+## Analytics Engineering & Data Quality
 
+### 🛠 Technical Implementation: Production-Grade Data Pipeline
+Architected a scalable Medallion data pipeline using **Google Cloud Dataform** and **BigQuery** to deliver reliable C-Suite metrics (LTV, Fulfillment Latency, RFM). Enforced a strict `stg_` ➔ `int_` ➔ `mart_` DAG progression, centralizing core business logic in the Silver layer to completely eliminate downstream metric drift. <img src="Visuals/APEX_Activewear Data_Lineage.png" alt="DAG" width="800"> 
+
+---
+
+### 🚀 Infrastructure & Cost Optimization
+While current transactional volumes reside in the 300+ MB range, the foundation was engineered with "Day 1 Scalability" to support Petabyte-scale expansion and enterprise-level governance without structural redesign.
+
+* **Partitioning & Clustering:** Reduced query scan costs by ~90% by pivoting from hourly to daily partitioning utilizing `TIMESTAMP_TRUNC`. This architectural shift successfully bypassed BigQuery's strict 4,000-partition-per-table limit, ensuring long-term pipeline stability. Additionally, tables were clustered by low-cardinality IDs, explicitly avoiding timestamp clustering to prevent block fragmentation.
+* **Dimension Strategy:** Configured low-cardinality reference tables (`stg_distribution_centers` and `stg_products`) as unpartitioned views, avoiding metadata overhead and small-file fragmentation.
+* **Event-Driven Ingestion (Bronze):** Deployed GCS-triggered Cloud Functions for high-volume landing files. Managed source declarations via centralized Dataform JS configs (`bronze_sources.js`) to insulate the pipeline from upstream schema breaks.
+
+---
+
+### 🛡️ Defensive Data Modelling & Guardrails
+Deployed a suite of automated **Dataform Assertions** and **Defensive SQL logic** to prevent silent data regressions and ensure 100% schema integrity before data reaches the Gold (Mart) layer:
+
+* **P1 Anomaly & Integrity Alerting:** Built a "Dark Traffic" circuit breaker that halts downstream updates if `traffic_source = 'Direct'` exceeds 20% of revenue. Integrated Strict Null Checks on high-cardinality keys (`user_id`, `product_id`) to ensure no "Ghost Revenue" enters the pipeline.
+* **Temporal Causality & Logic Locks:** Enforced chronological integrity across fulfillment (e.g., `created_at` ➔ `shipped_at` ➔ `delivered_at`). Utilized `COALESCE` and `GREATEST` functions in the Staging layer to handle null timestamps and prevent negative financial values from sabotaging averages.
+* **Financial Consistency & Value Guardrails:** Locked `is_realized_revenue` to evaluate to `TRUE` only for valid business statuses. Implemented Defensive Casting (e.g., `returned_at` to `TIMESTAMP`) to ensure downstream joins are bulletproof against data type mismatches.
+* **Attribution QA & Mapping Integrity:** Monitored the 5-minute session-stitching window, utilizing Safe Joins to flag purchase events that failed to map to a valid traffic source, preventing attribution "leakage."
+
+---
+
+### 🔍 Engineering Decisions: Handling the "In-Transit Return"
+
+* **The Edge Case:** During testing, the Logistical Timeline assertion flagged 509 order items (out of ~545,000) where the `returned_at` timestamp preceded the `delivered_at` timestamp (likely due to carrier "Return to Sender" events or in-transit cancellations).
+* **The Solution (Flagging vs. Filtering):** Rather than silently filtering these records in Staging—which causes source-to-warehouse record count mismatches—I implemented a defensive `has_timeline_anomaly` boolean flag in the Silver layer.
+* **The Impact:** This preserved the raw data for logistics investigations while allowing the Gold layer LTV models to cleanly bypass the anomalies using a simple `WHERE has_timeline_anomaly = FALSE` filter.
 
 
 
