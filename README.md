@@ -138,6 +138,59 @@ Our strategy rests on three **imperatives**: executing the **'Sleeping Giant' Pr
 
 <img src="Visuals/APEX_RFM.png" alt="Impossible funnel" width="800">
 
+### A. The "Sleeping Giant" Protocol (Retention)
+
+**Priority:** 🔴 CRITICAL (Immediate Revenue Risk)
+
+The "At Risk / Can't Lose" segment represents the business's most critical vulnerability. **$33.3M** (68.1% of historical revenue) is locked in a group that currently contributes $0. The goal is to prevent permanent churn of our most valuable asset.
+
+**Key Metrics:**
+* **Dormant Revenue:** $33.3M (US $25.4M | MX $4.4M | CA $3.5M)
+* **Impacted Volume:** 53,205 Users globally (US: 40,465 | MX: 7,444 | CA: 5,296)
+* **Revenue Opportunity:** ~$3.33M (Based on conservative 10% win-back target)
+
+**Re-engagement Strategy: SMS-First & Expiring Credit**
+* **Primary Channel:** Prioritize SMS outreach to capitalize on the channel's ~98% open rate
+* **Core Tactic:** Drive conversions using loss aversion. Instead of standard percentage discounts, frame the offer as a "Pending Credit" (e.g., *"You have a $50 store credit expiring soon"*).
+* **Localization:** Dynamically translate the SMS content (e.g., French for certain Canadian segments, Spanish for US/Mexican segments) based on the language preferences captured during the customer's initial checkout.
+* **Tiered Execution:**
+  * **Tier A (Lifetime Value > $600):** Invest in direct SMS outreach featuring the premium $50 credit offer.
+  * **Tier B (Lifetime Value $150 - $600):** Protect profit margins by offering a lower $20 credit via SMS, or by shifting this segment to an email-only sequence.
+
+
+### B. The "Tipping Point" (Upsell)
+
+**Priority:** 🟠 HIGH (Easiest LTV Lift)
+**Target Segment:** Potential Loyalists
+
+We have a "Missing Middle" opportunity. These users are active and valuable (**$380 AVG LTV**) but have not yet reached the "Loyal" tier (**$890 AVG LTV**). They do not need reactivation; they need acceleration.
+
+**Key Metrics:**
+* **Volume:** 10,996 Users
+* **Current Revenue:** $4.2M
+* **Goal:** Migrating 20% to "Loyal" tier generates **~$1.1M incremental revenue.**
+
+**Strategy:**
+* **Tactic:** Bundle & Volume Upsells.
+* **Execution:** "Buy 2, Get 1" or "Complete the Set" offers.
+* **Why:** Drives AOV (Average Order Value) to push them across the monetary threshold into the Loyal segment.
+
+
+### C. Cloning the Champions (Acquisition)
+
+**Priority:** 🟡 MEDIUM (Scalability Fix)
+**Target Segment:** Champions + Loyal Customers
+
+The "Champions" segment is highly lucrative (>$1,350 Avg LTV) but drastically undersized for algorithmic marketing. This is especially true in our international expansion zones, with only 122 Champions in Mexico and 122 in Canada. To solve this volume cap and scale outside the saturated US market, we must expand the seed audience.
+
+**Key Metrics:**
+* **Original Seed:** 122 Users per international market (Champions only) — Too volatile for algorithmic learning.
+* **New Seed (Global):** 6,663 Users (Champions + Loyal Customers) — Statistically stable.
+
+**Strategy:**
+* **Execution:** Train Meta/Google algorithms with the expanded seed to adapt and A/B test proven US acquisition tactics in Mexico and Canada. This scales volume while dynamically adjusting CAC thresholds for cross-border shipping and customs duties.
+* **Why:** Loyal Customers ($890 avg LTV) closely mirror Champions ($1,402 avg LTV). Merging them unlocks the data volume required to train ad pixels, driving scalable international acquisition of high-value users who remain profitable even after local fulfillment costs.
+
 
 
 
