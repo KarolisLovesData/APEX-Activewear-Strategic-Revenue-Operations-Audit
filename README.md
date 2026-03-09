@@ -127,7 +127,7 @@ Moreover, **High-Value** ($516 LTV) and **Low-Value** ($330 LTV) customers share
 
 * **Recommended action** is to shift acquisition incentives from **Generic Conversion** to **Threshold Engineering**. Replace flat discounts with **Tiered Thresholds** (e.g., "Save $20 on Orders >$100") to force users to self-select into the High-Value tier on Day 1 as profit is determined solely by the **First Order Value**.
 
-* **Impact:** Unlocks **$185 incremental LTV** per user immediately. Nudging just 1,000 users across this line generates **$185,000 in risk-free revenue** without acquiring a single extra customer. <small>_[Access RFM Segmentation SQL queries](Analytics_Engineering/Dormant_Opportunities (Value_Unlocks)_The _First_Order_Multiplier.sql)_</small>
+* **Impact:** Unlocks **$185 incremental LTV** per user immediately. Nudging just 1,000 users across this line generates **$185,000 in risk-free revenue** without acquiring a single extra customer. <small>_[Access LTV Segmentation SQL queries](Analytics_Engineering/The_First_Order_Multiplier.sql)_</small>
 
 
   
