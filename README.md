@@ -102,8 +102,8 @@ Our supply chain is fighting a civil war. Decomposing the delivery timeline reve
 
 <img src="Visuals/APEX_fulfillment.png" alt="Impossible funnel" width="800">
 
-We can recover this speed entirely in-house without costly carrier upgrades. I recommend implementing a **'Clean Flow' SOP**: a strict prioritization protocol that mandates all outbound orders clear in **<24 hours** before labor shifts to returns. This decoupling will compress total cycle time from **5.1 to 4.1 Days** (a 21% speed gain).  
-Launch a **4-week pilot** in **Reno, NV** to stress-test the SOP against representative volume/return mixes before scaling to the 'Big Three' hubs (Chicago, Memphis, Mobile
+**Recommended Action:** to recover this speed entirely in-house without costly carrier upgrades, implement a **'Clean Flow' SOP**: a strict prioritization protocol that mandates all outbound orders clear in **<24 hours** before labor shifts to returns. This decoupling will compress total cycle time from **5.1 to 4.1 Days** (a 21% speed gain).  
+Launch a **4-week pilot** in **Reno, NV** to stress-test the SOP against representative volume/return mixes before scaling to the 'Big Three' hubs (Chicago, Memphis, Mobile).
 
 ## II. Dormant Opportunities (Value Unlocks)
 
@@ -133,3 +133,11 @@ Moreover, **High-Value** ($516 LTV) and **Low-Value** ($330 LTV) customers share
 **Scope of Insight:** 3 Key Segments | ~$39M Revenue Impact | ~71k Users **Stakeholder:** Head of Growth & Retention
 
 Our strategy rests on three **imperatives**: executing the **'Sleeping Giant' Protocol** to reclaim dormant revenue, leveraging the **'Tipping Point'** to expand mid-tier LTV, and **Cloning the Champions** to refine high-value acquisition
+
+<img src="Visuals/APEX_RFM.png" alt="Impossible funnel" width="800">
+
+
+
+
+
+
