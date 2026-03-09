@@ -124,10 +124,12 @@ Moreover, **High-Value** ($516 LTV) and **Low-Value** ($330 LTV) customers share
 
 <img src="Visuals/LTVs.png" alt="Impossible funnel" width="800">
 
- 
+* **Recommended action** is to shift acquisition incentives from **Generic Conversion** to **Threshold Engineering**. Replace flat discounts with **Tiered Thresholds** (e.g., "Save $20 on Orders >$100") to force users to self-select into the High-Value tier on Day 1 as profit is determined solely by the **First Order Value**.
 
+* **Impact:** Unlocks **$185 incremental LTV** per user immediately. Nudging just 1,000 users across this line generates **$185,000 in risk-free revenue** without acquiring a single extra customer.
 
+### 2. RFM Strategic Insight: The "Sleeping Giant" & Beyond
 
+**Scope of Insight:** 3 Key Segments | ~$39M Revenue Impact | ~71k Users **Stakeholder:** Head of Growth & Retention
 
-
-
+Our strategy rests on three **imperatives**: executing the **'Sleeping Giant' Protocol** to reclaim dormant revenue, leveraging the **'Tipping Point'** to expand mid-tier LTV, and **Cloning the Champions** to refine high-value acquisition
