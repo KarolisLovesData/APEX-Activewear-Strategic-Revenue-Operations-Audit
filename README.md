@@ -100,6 +100,7 @@ To prove this wasn't just loyal customers typing the URL, I analyzed the funnel 
 
 Our supply chain is fighting a civil war. Decomposing the delivery timeline reveals that inbound returns are actively cannibalizing outbound sales capacity. With a **21.6% Return Rate**, our distribution centers have morphed into 'Churn Factories,' where returns processing consumes **~22% of total labor**. This resource drain is the structural cause of our uniform **2.1-day fulfillment lag**—we are prioritizing inventory restocking over revenue capture. <small>_[Access Fulfillment Optimization SQL queries](Analytics_Engineering/I.Structural_Fracture_2.Network_Wide_Fulfillment_Optimization.sql)_</small>
 
+<img src="Visuals/APEX_fulfillment.png" alt="Impossible funnel" width="800">
 
 
 
