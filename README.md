@@ -32,7 +32,7 @@ Despite these strong foundational metrics, our ability to continue scaling throu
 
 # Data Architecture & Scope 
 
-To perform this audit [(carried out utilizing this tech stack)](#core-technology-stack), a relational data model was built to connect the entire customer lifecycle..., a relational data model was built to connect the entire customer lifecycle..., a relational data model was built to connect the entire customer lifecycle—from the initial website visit to the final delivery and potential return. By linking marketing events, transactions, and logistics, I created a **"source of truth"** to identify specific friction points where revenue was leaking and margins were being eroded. (Note: the tables in the ERD are the **Staging Layer** (the stg_ nodes), see the **Directed Acyclic Graph (DAG)** and full **Medallion Transformation** flow in [Analytics Engineering part](#analytics-engineering--data-quality).)  
+To perform this audit, a relational data model was built to connect the entire customer lifecycle..., a relational data model was built to connect the entire customer lifecycle..., a relational data model was built to connect the entire customer lifecycle—from the initial website visit to the final delivery and potential return. By linking marketing events, transactions, and logistics, I created a **"source of truth"** to identify specific friction points where revenue was leaking and margins were being eroded. (Note: the tables in the ERD are the **Staging Layer** (the stg_ nodes), see the **Directed Acyclic Graph (DAG)** and full **Medallion Transformation** flow in [Analytics Engineering part](#analytics-engineering--data-quality).)  
 
 
 APEX Activewear **Entity Relationship Diagram:**
