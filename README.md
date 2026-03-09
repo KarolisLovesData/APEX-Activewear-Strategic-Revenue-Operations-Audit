@@ -60,7 +60,7 @@ The data confirms that APEX is not a volume-driven business, but a value-driven 
 * **Structural Fractures:** Identifying silent operational errors—specifically in marketing attribution and inbound operational drag—that are actively obscuring ROI and leaking revenue. 
 * **Dormant Opportunities:** Building on our RFM analysis to strategically target the "Sleeping Giant" and "Missing Middle" segments. By proving first-order behavior as a universal LTV predictor, we leverage a 2.3x LTV multiplier from our cross-border RFM data to A/B test adapted US retention tactics in Mexico and Canada, dynamically adjusting for regional shipping and customs to scale profitably.
 
-## I. Structural Fractures (Revenue Leakage)
+# I. Structural Fractures (Revenue Leakage)
 
 ### 1. Critical Attribution Leakage (The "Dark Traffic" Crisis)
 
@@ -106,7 +106,7 @@ Our supply chain is fighting a civil war. Decomposing the delivery timeline reve
 **Recommended Action:** to recover this speed entirely in-house without costly carrier upgrades, implement a **'Clean Flow' SOP**: a strict prioritization protocol that mandates all outbound orders clear in **<24 hours** before labor shifts to returns. This decoupling will compress total cycle time from **5.1 to 4.1 Days** (a 21% speed gain).  
 Launch a **4-week pilot** in **Reno, NV** to stress-test the SOP against representative volume/return mixes before scaling to the 'Big Three' hubs (Chicago, Memphis, Mobile).
 
-## II. Dormant Opportunities (Value Unlocks)
+# II. Dormant Opportunities (Value Unlocks)
 
 ### 1. The "First Order" Multiplier (LTV Optimization)
 * **Stakeholder**: Head of Growth &nbsp;&nbsp;&nbsp;&nbsp; **Primary Goal**: Engineer Higher Lifetime Value (LTV) at Point of Sale
@@ -194,7 +194,7 @@ The "Champions" segment is highly lucrative (>$1,350 Avg LTV) but drastically un
 * **Execution:** Train Meta/Google algorithms with the expanded seed to adapt and A/B test proven US acquisition tactics in Mexico and Canada. This scales volume while dynamically adjusting CAC thresholds for cross-border shipping and customs duties.
 * **Why:** Loyal Customers ($890 avg LTV) closely mirror Champions ($1,402 avg LTV). Merging them unlocks the data volume required to train ad pixels, driving scalable international acquisition of high-value users who remain profitable even after local fulfillment costs.
 
-## Analytics Engineering & Data Quality
+# Analytics Engineering & Data Quality
 
 ### 🛠 Technical Implementation: Production-Grade Data Pipeline
 Architected a scalable Medallion data pipeline using **Google Cloud Dataform** and **BigQuery** to deliver reliable C-Suite metrics (LTV, Fulfillment Latency, RFM). Enforced a strict `stg_` ➔ `int_` ➔ `mart_` DAG progression, centralizing core business logic in the Silver layer to completely eliminate downstream metric drift. <img src="Visuals/APEX_Activewear Data_Lineage.png" alt="DAG" width="800"> 
