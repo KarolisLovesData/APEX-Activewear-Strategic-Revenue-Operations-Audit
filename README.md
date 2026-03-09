@@ -102,7 +102,19 @@ Our supply chain is fighting a civil war. Decomposing the delivery timeline reve
 
 <img src="Visuals/APEX_fulfillment.png" alt="Impossible funnel" width="800">
 
+We can recover this speed entirely in-house without costly carrier upgrades. I recommend implementing a **'Clean Flow' SOP**: a strict prioritization protocol that mandates all outbound orders clear in **<24 hours** before labor shifts to returns. This decoupling will compress total cycle time from **5.1 to 4.1 Days** (a 21% speed gain).  
+Launch a **4-week pilot** in **Reno, NV** to stress-test the SOP against representative volume/return mixes before scaling to the 'Big Three' hubs (Chicago, Memphis, Mobile
 
+## II. Dormant Opportunities (Value Unlocks)
+
+### 1. The "First Order" Multiplier (LTV Optimization)
+* **Stakeholder**: Head of Growth &nbsp;&nbsp;&nbsp;&nbsp; **Primary Goal**: Engineer Higher Lifetime Value (LTV) at Point of Sale
+* **Key Metrics**:
+    High-Value LTV: **$516** (Cohort: Initial Order >$90)  
+    Retention Rate (Month 4): **4.29%** (Stable Decay)  
+    Value Multiplier: **+56%** LTV lift from higher initial spend.
+
+Our customer retention degrades structurally. Data from the Class of 2024 reveals a steep drop from **50% in Month 1** to just **4.29% in Month 4**, essentially flatlining by **Month 6 (0.53%)**. The "leaky bucket" is a structural reality of our current model.
 
 
 
