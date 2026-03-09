@@ -36,7 +36,7 @@ APEX Activewear **Entity Relationship Diagram:**
 
 
 * **Critical Attribution Leakage:**  We are effectively "flying blind" on **68.3%** of our total revenue (Direct + Unattributed). The digital thread is severing mid-funnel, meaning we cannot track the ROI on **~$34.3M** of revenue, likely leading to massive inefficiencies in paid ad spend. 
- <small>_[Access Critical Attribution SQL queries](Analytics_Engineering/Key_findings:_Critical_Attribution_Leakage.sql)_</small>
+ <small>_[Access Critical Attribution SQL queries](Analytics_Engineering/I._Structural_Fractures_(Revenue_Leakage) .sql)_</small>
 
  
 
