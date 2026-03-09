@@ -27,7 +27,7 @@ APEX Activewear **Entity Relationship Diagram:**
 # Key Findings: The "Profit Paradox 
 
 * **Growth Deceleration:** We have moved past the hyper-growth phase. From a peak of **344%** growth in Q2 2023, momentum has steadily declined to single digits (**9.8%**) in Q4 2025. Future revenue gains must come from maximizing customer lifetime value rather than new order volume.
-<small>_[Access Growth Deceleration SQL queries](Analytics_Engineering/Key_Findings:_Growth_Deceleration.sql)_</small>
+<small>_[Access Growth Deceleration SQL queries](Analytics_Engineering/Key_Findings__Growth_Deceleration.sql)_</small>
 
 
 <img src="./Visuals/APEX Growth.png" alt="growth paradox" width="800">
