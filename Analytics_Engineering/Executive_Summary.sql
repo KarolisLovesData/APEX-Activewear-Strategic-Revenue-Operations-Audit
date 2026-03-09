@@ -1,5 +1,5 @@
 -- KPI Scorecard: High-Level Business Health Check
--- Objective: Extracts core financial metrics (Revenue, Margin, AOV, Returns) in a single pass.
+-- Objective: Extracts core financial metrics (Revenue, Margin, AOV, Returns) 
 -- Dependency: Relies on pre-calculated boolean flags from the silver staging layer.
 
 SELECT
