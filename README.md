@@ -118,6 +118,12 @@ Our customer retention degrades structurally. Data from the Class of 2024 reveal
 
 <img src="Visuals/APEX_cohorts.png" alt="Impossible funnel" width="800">
 
+Since we cannot rely on long-term loyalty to drive profit, we must capture value **upfront**. Analysis proves that **First Order Value** is the single strongest predictor of future customer worth. Customers who start with a basket **>$90** generate **56% lift in Lifetime Value** ($515) than those who start smaller ($330). 
+
+Moreover, **High-Value** ($516 LTV) and **Low-Value** ($330 LTV) customers share **identical retention curves** making customer loyalty **static**.
+
+
+
  
 
 
