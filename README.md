@@ -132,9 +132,22 @@ Moreover, **High-Value** ($516 LTV) and **Low-Value** ($330 LTV) customers share
 
 **Scope of Insight:** 3 Key Segments | ~$39M Revenue Impact | ~71k Users **Stakeholder:** Head of Growth & Retention
 
-Our strategy rests on three **imperatives**: executing the **'Sleeping Giant' Protocol** to reclaim dormant revenue, leveraging the **'Tipping Point'** to expand mid-tier LTV, and **Cloning the Champions** to refine high-value acquisition
+Our strategy rests on three **imperatives**: executing the **'Sleeping Giant' Protocol** to reclaim dormant revenue, leveraging the **'Tipping Point'** to expand mid-tier LTV, and **Cloning the Champions** to refine high-value acquisition. <small>_[Access RFM Segmentation SQL queries](Analytics_Engineering/II._Dormant_Opportunities_(Value_Unlocks)_2_RFM_Strategic_Insights.sql)_</small>
+
 
 <img src="Visuals/APEX_RFM.png" alt="Impossible funnel" width="800">
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
