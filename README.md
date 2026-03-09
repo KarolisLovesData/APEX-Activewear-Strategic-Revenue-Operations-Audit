@@ -32,7 +32,8 @@ Despite these strong foundational metrics, our ability to continue scaling throu
 
 # Data Architecture & Scope 
 
-To perform this audit, a relational data model was built to connect the entire customer lifecycle—from the initial website visit to the final delivery and potential return. By linking marketing events, transactions, and logistics, I created a **"source of truth"** to identify specific friction points where revenue was leaking and margins were being eroded. (Note: the tables in the ERD are the **Staging Layer** (the stg_ nodes), see the **Directed Acyclic Graph (DAG)** and full **Medallion Transformation** flow in [Analytics Engineering part](#analytics-engineering--data-quality).)  
+To perform this audit [(carried out utilizing this tech stack)](#core-technology-stack), a relational data model was built to connect the entire customer lifecycle..., a relational data model was built to connect the entire customer lifecycle..., a relational data model was built to connect the entire customer lifecycle—from the initial website visit to the final delivery and potential return. By linking marketing events, transactions, and logistics, I created a **"source of truth"** to identify specific friction points where revenue was leaking and margins were being eroded. (Note: the tables in the ERD are the **Staging Layer** (the stg_ nodes), see the **Directed Acyclic Graph (DAG)** and full **Medallion Transformation** flow in [Analytics Engineering part](#analytics-engineering--data-quality).)  
+
 
 APEX Activewear **Entity Relationship Diagram:**
 
@@ -222,6 +223,15 @@ The "Champions" segment is highly lucrative (>$1,350 Avg LTV) but drastically un
 ### 🛠 Technical Implementation: Production-Grade Data Pipeline
 Architected a scalable Medallion data pipeline using **Google Cloud Dataform** and **BigQuery** to deliver reliable C-Suite metrics (LTV, Fulfillment Latency, RFM). Enforced a strict `stg_` ➔ `int_` ➔ `mart_` DAG progression, centralizing core business logic in the Silver layer to completely eliminate downstream metric drift. <img src="Visuals/APEX_Activewear Data_Lineage.png" alt="DAG" width="800"> 
 
+## 🛠️ Core Technology Stack
+
+* **Core Language:** Advanced SQL
+* **Cloud Infrastructure:** Google Cloud Platform (GCP)
+* **Data Warehouse:** Google BigQuery
+* **Transformation & Orchestration:** Google Cloud Dataform (SQLX, Medallion Architecture)
+* **Data Visualization & EDA:** Google Colab (Python)
+* **Stakeholder Delivery:** Google Sheets
+* **AI-Assisted Engineering:** Gemini 3.1
 ---
 
 ### 🚀 Infrastructure & Cost Optimization
