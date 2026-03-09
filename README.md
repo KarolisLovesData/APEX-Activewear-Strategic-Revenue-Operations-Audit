@@ -122,7 +122,7 @@ Since we cannot rely on long-term loyalty to drive profit, we must capture value
 
 Moreover, **High-Value** ($516 LTV) and **Low-Value** ($330 LTV) customers share **identical retention curves** making customer loyalty **static**.
 
-
+<img src="Visuals/LTVs.png" alt="Impossible funnel" width="800">
 
  
 
