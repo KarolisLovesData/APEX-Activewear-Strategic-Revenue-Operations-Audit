@@ -77,7 +77,7 @@ The data confirms that APEX is not a volume-driven business, but a value-driven 
 
 A massive structural fracture was detected in our attribution data. While "Direct" traffic typically accounts for 20-30% of revenue in this industry, a **critical mass** of our revenue is currently untraceable.
 
-To prove this wasn't just loyal customers typing the URL, I analyzed the funnel depth. The results were conclusive: **225,774 orders** (176k Direct + 49k Unattributed) were placed without a single product view. <small>_[Access Revenue Leakage SQL queries](Analytics_Engineering/I._Structural_Fractures_(Revenue_Leakage) .sql)_</small>
+To prove this wasn't just loyal customers typing the URL, I analyzed the funnel depth. The results were conclusive: **225,774 orders** (176k Direct + 49k Unattributed) were placed without a single product view. <small>_[Access Revenue Leakage SQL queries](Analytics_Engineering/I._Structural_Fractures_(Revenue_Leakage).sql)_</small>
 
 
   <img src="Visuals/Impossible_funnel.png" alt="Impossible funnel" width="800">
