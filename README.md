@@ -80,9 +80,7 @@ A massive structural fracture was detected in our attribution data. While "Direc
 To prove this wasn't just loyal customers typing the URL, I analyzed the funnel depth. The results were conclusive: **225,774 orders** (176k Direct + 49k Unattributed) were placed without a single product view. <small>_[Access Revenue Leakage SQL queries](Analytics_Engineering/I._Structural_Fractures_(Revenue_Leakage).sql)_</small>
 
 
-  <img src="./Impossible_funnel.png" alt="Impossible funnel" width="800">
-
-
+  <img src="Visuals/Impossible_funnel.png" alt="Impossible funnel" width="800">
 
 
 
