@@ -1,3 +1,25 @@
+## Table of Contents
+
+* [Executive Summary](#executive-summary)
+* [Data Architecture & Scope](#data-architecture--scope)
+* [Key Findings: The "Profit Paradox"](#key-findings-the-profit-paradox)
+* [I. Structural Fractures (Revenue Leakage)](#i-structural-fractures-revenue-leakage)
+  * [1. Critical Attribution Leakage (The "Dark Traffic" Crisis)](#1-critical-attribution-leakage-the-dark-traffic-crisis)
+  * [2. Network-Wide Fulfillment Optimization](#2-network-wide-fulfillment-optimization)
+* [II. Dormant Opportunities (Value Unlocks)](#ii-dormant-opportunities-value-unlocks)
+  * [1. The "First Order" Multiplier (LTV Optimization)](#1-the-first-order-multiplier-ltv-optimization)
+  * [2. RFM Strategic Insight: The "Sleeping Giant" & Beyond](#2-rfm-strategic-insight-the-sleeping-giant--beyond)
+    * [A. The "Sleeping Giant" Protocol (Retention)](#a-the-sleeping-giant-protocol-retention)
+    * [B. The "Tipping Point" (Upsell)](#b-the-tipping-point-upsell)
+    * [C. Cloning the Champions (Acquisition)](#c-cloning-the-champions-acquisition)
+* [Analytics Engineering & Data Quality](#analytics-engineering--data-quality)
+  * [🛠 Technical Implementation: Production-Grade Data Pipeline](#technical-implementation-production-grade-data-pipeline)
+  * [🚀 Infrastructure & Cost Optimization](#infrastructure--cost-optimization)
+  * [🛡️ Defensive Data Modelling & Guardrails](#defensive-data-modelling--guardrails)
+  * [🔍 Engineering Decisions: Handling the "In-Transit Return"](#engineering-decisions-handling-the-in-transit-return)
+
+
+
 # APEX-Activewear-Strategic-Revenue-Operations-Audit
 
 # Executive Summary
