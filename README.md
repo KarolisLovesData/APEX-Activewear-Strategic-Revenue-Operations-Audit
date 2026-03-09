@@ -60,7 +60,24 @@ The data confirms that APEX is not a volume-driven business, but a value-driven 
 * **Structural Fractures:** Identifying silent operational errors—specifically in marketing attribution and inbound operational drag—that are actively obscuring ROI and leaking revenue. 
 * **Dormant Opportunities:** Building on our RFM analysis to strategically target the "Sleeping Giant" and "Missing Middle" segments. By proving first-order behavior as a universal LTV predictor, we leverage a 2.3x LTV multiplier from our cross-border RFM data to A/B test adapted US retention tactics in Mexico and Canada, dynamically adjusting for regional shipping and customs to scale profitably.
 
+## I. Structural Fractures (Revenue Leakage)
 
+### 1. Critical Attribution Leakage (The "Dark Traffic" Crisis)
+
+* **Stakeholder:** CMO (Strategy) & Data Engineering Lead (Execution) **Primary Goal:** Eliminate Blind Ad Spend
+* **Key Metrics :**
+
+    **Total "Blind" Revenue:** 68.4% (Target: <20%)
+    
+    * *Direct Traffic:* **53.5%** ($26.8M)
+    * *Unattributed:* **14.9%** ($7.5M)
+
+    **Impacted Volume:** ~$34.3M in Revenue
+    **Signal Loss:** 100% of "Direct" buyers had 0 Product Views
+
+A massive structural fracture was detected in our attribution data. While "Direct" traffic typically accounts for 20-30% of revenue in this industry, a **critical mass** of our revenue is currently untraceable.
+
+To prove this wasn't just loyal customers typing the URL, I analyzed the funnel depth. The results were conclusive: **225,774 orders** (176k Direct + 49k Unattributed) were placed without a single product view.
 
 
 
