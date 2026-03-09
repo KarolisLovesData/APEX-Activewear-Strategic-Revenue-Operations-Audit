@@ -82,6 +82,24 @@ To prove this wasn't just loyal customers typing the URL, I analyzed the funnel 
 
   <img src="Visuals/Impossible_funnel.png" alt="Impossible funnel" width="800">
 
+  Genuine users do not just "teleport" to check out, they browse. This complete absence of history proves the digital thread is being severed, stripping attribution from the channels that actually generated the sale.
+    **Recommended Action:** Immediate **Tech Audit** to repair cross-domain session stitching focusing on the "Session-Break Triad":
+        **Referral Exclusions:** Whitelist payment gateways (e.g., PayPal, Stripe) to prevent them from overwriting the original traffic source.
+        **Cross-Domain Tracking:** Verify that cookies persist accurately between the main shop and the checkout subdomain.
+        **Redirect Protocols:** Ensure 301 redirects are not stripping UTM parameters before the analytics tag fires.
+
+**Impact:** Correcting this would reattribute **~$34.3M** (implied revenue opportunity) to its true source, allowing marketing to optimize their budget based on **True ROAS** rather than flying blind.
+
+### 2. Network-Wide Fulfillment Optimization
+* **Stakeholder**: COO (Operations)
+* **Primary Goal**: Unblock Supply Chain Velocity
+* **Key Metrics**:
+    Avg Shipping Time: **2.1 Days** (Target: <1 Day)
+    Return Rate: **21.62%** (High Operational Drag)
+    Effective Capacity Loss: **~22%** of Warehouse Labor
+
+Our supply chain is fighting a civil war. Decomposing the delivery timeline reveals that inbound returns are actively cannibalizing outbound sales capacity. With a **21.6% Return Rate**, our distribution centers have morphed into 'Churn Factories,' where returns processing consumes **~22% of total labor**. This resource drain is the structural cause of our uniform **2.1-day fulfillment lag**—we are prioritizing inventory restocking over revenue capture.
+
 
 
 
