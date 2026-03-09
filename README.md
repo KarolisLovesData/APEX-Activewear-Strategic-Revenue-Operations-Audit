@@ -114,7 +114,13 @@ Launch a **4-week pilot** in **Reno, NV** to stress-test the SOP against represe
     Retention Rate (Month 4): **4.29%** (Stable Decay)  
     Value Multiplier: **+56%** LTV lift from higher initial spend.
 
-Our customer retention degrades structurally. Data from the Class of 2024 reveals a steep drop from **50% in Month 1** to just **4.29% in Month 4**, essentially flatlining by **Month 6 (0.53%)**. The "leaky bucket" is a structural reality of our current model.
+Our customer retention degrades structurally. Data from the Class of 2024 reveals a steep drop from **50% in Month 1** to just **4.29% in Month 4**, essentially flatlining by **Month 6 (0.53%)**. The "leaky bucket" is a structural reality of our current model. <small>_[Access Cohort Heatmap SQL queries](Analytics_Engineering/APEX_Cohort_Results.sql)_</small>
+
+<img src="Visuals/APEX_cohorts.png" alt="Impossible funnel" width="800">
+
+ 
+
+
 
 
 
