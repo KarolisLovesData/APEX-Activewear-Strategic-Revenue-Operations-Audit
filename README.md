@@ -213,7 +213,7 @@ While current transactional volumes reside in the 300+ MB range, the foundation 
 ### 🛡️ Defensive Data Modelling & Guardrails
 Deployed a suite of automated **Dataform Assertions** and **Defensive SQL logic** to prevent silent data regressions and ensure 100% schema integrity before data reaches the Gold (Mart) layer:
 
-* **P1 Anomaly & Integrity Alerting:** Built a "Dark Traffic" circuit breaker that halts downstream updates if `traffic_source = 'Direct'` exceeds 20% of revenue. Integrated Strict Null Checks on high-cardinality keys (`user_id`, `product_id`) to ensure no "Ghost Revenue" enters the pipeline.
+* **Critical Anomaly & Integrity Alerting:** Built a "Dark Traffic" circuit breaker that halts downstream updates if `traffic_source = 'Direct'` exceeds 20% of revenue. Integrated Strict Null Checks on high-cardinality keys (`user_id`, `product_id`) to ensure no "Ghost Revenue" enters the pipeline.
 * **Temporal Causality & Logic Locks:** Enforced chronological integrity across fulfillment (e.g., `created_at` ➔ `shipped_at` ➔ `delivered_at`). Utilized `COALESCE` and `GREATEST` functions in the Staging layer to handle null timestamps and prevent negative financial values from sabotaging averages.
 * **Financial Consistency & Value Guardrails:** Locked `is_realized_revenue` to evaluate to `TRUE` only for valid business statuses. Implemented Defensive Casting (e.g., `returned_at` to `TIMESTAMP`) to ensure downstream joins are bulletproof against data type mismatches.
 * **Attribution QA & Mapping Integrity:** Monitored the 5-minute session-stitching window, utilizing Safe Joins to flag purchase events that failed to map to a valid traffic source, preventing attribution "leakage."
