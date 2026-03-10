@@ -221,7 +221,9 @@ The "Champions" segment is highly lucrative (>$1,350 Avg LTV) but drastically un
 # Analytics Engineering & Data Quality
 
 ### 🛠 Technical Implementation: Production-Grade Data Pipeline
-Architected a scalable Medallion data pipeline using **Google Cloud Dataform** and **BigQuery** to deliver reliable C-Suite metrics (LTV, Fulfillment Latency, RFM). Enforced a strict `stg_` ➔ `int_` ➔ `mart_` DAG progression, centralizing core business logic in the Silver layer to completely eliminate downstream metric drift. <img src="Visuals/APEX_Activewear Data_Lineage.png" alt="DAG" width="800"> 
+Architected a scalable Medallion data pipeline using **Google Cloud Dataform** and **BigQuery** to deliver reliable C-Suite metrics (LTV, Fulfillment Latency, RFM). Enforced a strict `stg_` ➔ `int_` ➔ `mart_` DAG progression, centralizing core business logic in the Silver layer to completely eliminate downstream metric drift. 
+
+<img src="Visuals/APEX_Activewear Data_Lineage.png" alt="DAG" width="800"> 
 
 ## 🛠️ Core Technology Stack
 
