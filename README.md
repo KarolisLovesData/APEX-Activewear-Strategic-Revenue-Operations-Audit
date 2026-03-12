@@ -238,7 +238,7 @@ Architected a scalable Medallion pipeline (**Google Cloud Dataform, BigQuery**) 
 
 ### <a id="infrastructure"></a>🚀 Infrastructure & Cost Optimization
 Engineered for "Day 1 Scalability" to support petabyte-scale expansion from a 300MB baseline without structural redesign.
-* **Partitioning & Clustering:** Partitioned tables by time columns to optimize query scans, applied `TIMESTAMP_TRUNC` to manage high-cardinality data and avoid 4,000-partition limit. Clustered on low-cardinality IDs to prevent block fragmentation.
+* **Partitioning & Clustering:** Partitioned tables by time columns to optimize query scans, applied `TIMESTAMP_TRUNC` to manage high-cardinality data and avoid the 4,000-partition limit. Clustered on low-cardinality IDs to prevent block fragmentation.
 
 * **Dimension Strategy:** Configured low-cardinality reference tables (`stg_distribution_centers`, `stg_products`) as unpartitioned views to eliminate metadata overhead and small-file fragmentation.
 * **Event-Driven Ingestion (Bronze):** Deployed GCS-triggered Cloud Functions for landing files. Centralized source declarations via Dataform JS configs (`bronze_sources.js`) to insulate against upstream schema breaks.
