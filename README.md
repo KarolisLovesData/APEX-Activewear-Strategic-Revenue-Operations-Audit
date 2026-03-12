@@ -15,12 +15,11 @@
     * [B. The "Tipping Point" (Upsell)](#b-the-tipping-point-upsell)
     * [C. Cloning the Champions (Acquisition)](#c-cloning-the-champions-acquisition)
 * [Analytics Engineering & Data Quality](#analytics-engineering--data-quality)
-  * [🛠 Technical Implementation: Production-Grade Data Pipeline](#technical-implementation-production-grade-data-pipeline)
-  * [🛠️ Core Technology Stack](#core-technology-stack)
-  * [🚀 Infrastructure & Cost Optimization](#infrastructure--cost-optimization)
-  * [🛡️ Defensive Data Modelling & Guardrails](#defensive-data-modelling--guardrails)
-  * [🔍 Engineering Decision: Handling the "In-Transit Return"](#engineering-decision-handling-the-in-transit-return)
-
+  * [🛠 Technical Implementation: Production-Grade Data Pipeline](#🛠-technical-implementation-production-grade-data-pipeline)
+  * [🛠️ Core Technology Stack](#🛠️-core-technology-stack)
+  * [🚀 Infrastructure & Cost Optimization](#🚀-infrastructure--cost-optimization)
+  * [🛡️ Defensive Data Modelling & Guardrails](#🛡️-defensive-data-modelling--guardrails)
+  * [🔍 Engineering Decision: Handling the "In-Transit Return"](#🔍-engineering-decision-handling-the-in-transit-return)
 # Executive Summary
 
 **APEX Activewear** has reached a pivotal operational crossroads. As a premier retailer specializing in **high-performance alpine outerwear, technical footwear, and adventure-ready gear**, we have successfully scaled to **$48.85M in lifetime revenue** between January 2023 and early 2026. With over **436K+** orders processed, we have proven our market fit across the United States, our core market, Mexico and Canda have establishing solid unit economics that include a **$148 AOV** and a **53.9% Gross Margin**.
