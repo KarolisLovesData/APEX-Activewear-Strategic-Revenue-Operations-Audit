@@ -3,8 +3,6 @@
 -- Dependency: Relies on pre-calculated boolean flags from the silver staging layer.
 
 
-
-
 SELECT
   -- 1. Realized Revenue: Total sales volume minus returns and cancellations
   ROUND(SUM(CASE WHEN is_realized_revenue THEN sale_price ELSE 0 END), 2) AS realized_revenue,
