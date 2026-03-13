@@ -1,6 +1,6 @@
 /* This query was originally developed in SQLX within Google Cloud Dataform 
    and has been translated to standard BigQuery SQL.
-   Standard Monthly Cohort Retention (Month 0-12) to track customer lifecycle and drop-off (2 year window: 2023-01-09 to 205-01-09
+   Standard Monthly Cohort Retention (Month 0-12) to track customer lifecycle and drop-off.
 */
 
 WITH user_cohorts AS (
@@ -12,7 +12,9 @@ WITH user_cohorts AS (
     `apex-activewear.silver_layer.stg_orders`
   WHERE
     status IN ('Complete', 'Shipped')
-    -- Snapshot of 2 years to establish baseline cohort behavior.
+    -- ACQUISITION WINDOW: I cut off new cohort creation at 2025-01-09. 
+    -- This ensures that even the very last cohort has a full 12-month "runway" 
+    -- to mature before the dataset ends in early 2026.
     AND created_at BETWEEN '2023-01-09' AND '2025-01-09'
   GROUP BY
     1
@@ -42,8 +44,10 @@ retention_data AS (
     ON o.user_id = uc.user_id
   WHERE
     o.status IN ('Complete', 'Shipped')
-    -- Cap the activity window up to a specific date for consistent reporting.
-    AND o.created_at <= '2026-01-19 23:59:59'
+    -- OBSERVATION WINDOW: I extended tracking out to 2026-01-19.
+    -- This gives the final Jan 2025 cohort exactly 12 months of observable history,
+    -- preventing artificial drop-offs in the final months of the report.
+    AND o.created_at <= '2026-01-19 23:59:59'       
   GROUP BY
     1,
     2
