@@ -28,7 +28,7 @@
 Despite these strong foundational metrics, our ability to continue scaling through volume alone has stalled. To identify the specific friction points hindering our next phase of expansion, a **diagnostic audit of the revenue engine** was conducted. This analysis moved beyond surface-level performance to reveal four structural risks that aggregate metrics were obscuring. <small>_[Access Executive Summary SQL Queries](Strategic_Insights/Executive_Summary.sql)_</small>
 # Data Architecture & Scope 
 
-To perform this audit, a relational data model was built to connect the entire customer lifecycle-from the initial website visit to the final delivery and potential return. By linking marketing events, transactions, and logistics, I created a **"source of truth"** to identify specific friction points where revenue was leaking and margins were being eroded. (Note: the tables in the ERD are the **Staging Layer** (the stg_ nodes), see the **Directed Acyclic Graph (DAG)** and full **Medallion Transformation** flow in [Analytics Engineering part](#analytics-engineering--data-quality).) 
+To perform this audit, a relational data model was built to connect the entire customer lifecycle—from the initial website visit to the final delivery and potential return. By linking marketing events, transactions, and logistics, I created a **"source of truth"** to identify specific friction points where revenue was leaking and margins were being eroded. (Note: the tables in the ERD are the **Staging Layer** (the stg_ nodes), see the **Directed Acyclic Graph (DAG)** and full **Medallion Transformation** flow in the [Analytics Engineering section](#analytics-engineering--data-quality).) 
 
 
 APEX Activewear **Entity Relationship Diagram:**
@@ -39,10 +39,10 @@ APEX Activewear **Entity Relationship Diagram:**
 
 **Audit Scale & Data Volume:**
 * _stg_online_events_ (fact table): **1.33M** online events and user touchpoints captured.
-* _stg_orders_: **436K+** orders analysed split across unique **122k+** users in _stg_users_ table
+* _stg_orders_: **436K+** orders analyzed split across **122K+** unique users in the _stg_users_ table.
 * _stg_order_items_ (fact table): **544K+** order records processed across the US, Canada, and Mexico.
 * _stg_products_: performance and return-rate data for over **2000** unique SKUs.
-* _stg_distribution_centers_: integration with **11** distribution centers data to reconcile realized revenue against operational costs.
+* _stg_distribution_centers_: integration with data from **11** distribution centers to reconcile realized revenue against operational costs.
 
 # Key Findings: The "Profit Paradox"
 
@@ -123,7 +123,7 @@ Our supply chain is fighting a civil war. Decomposing the delivery timeline reve
 
 <img src="Visuals/APEX_fulfillment.png" alt="Impossible funnel" width="800">
 
-**Recommended Action:** to recover this speed entirely in-house without costly carrier upgrades, implement a **'Clean Flow' SOP**: a strict prioritization protocol that mandates all outbound orders clear in **<24 hours** before labor shifts to returns. This decoupling will compress total cycle time from **5.1 to 4.1 Days** (a 21% speed gain).  
+**Recommended Action:** To recover this speed entirely in-house without costly carrier upgrades, implement a **'Clean Flow' SOP**: a strict prioritization protocol that mandates all outbound orders clear in **<24 hours** before labor shifts to returns. This decoupling will compress total cycle time from **5.1 to 4.1 Days** (a 21% speed gain).  
 Launch a **4-week pilot** in **Reno, NV** to stress-test the SOP against representative volume/return mixes before scaling to the 'Big Three' hubs (Chicago, Memphis, Mobile).
 
 # II. Dormant Opportunities (Value Unlocks)
@@ -145,7 +145,7 @@ Moreover, **High-Value** ($516 LTV) and **Low-Value** ($330 LTV) customers share
 
 <img src="Visuals/LTVs.png" alt="Impossible funnel" width="800">
 
-* **Recommended action** is to shift acquisition incentives from **Generic Conversion** to **Threshold Engineering**. Replace flat discounts with **Tiered Thresholds** (e.g., "Save $20 on Orders >$100") to force users to self-select into the High-Value tier on Day 1 as profit is determined solely by the **First Order Value**.
+* **Recommended Action:** Shift acquisition incentives from **Generic Conversion** to **Threshold Engineering**. Replace flat discounts with **Tiered Thresholds** (e.g., "Save $20 on Orders >$100") to force users to self-select into the High-Value tier on Day 1 as profit is determined solely by the **First Order Value**.
 
 * **Impact:** Unlocks **$185 incremental LTV** per user immediately. Nudging just 1,000 users across this line generates **$185,000 in risk-free revenue** without acquiring a single extra customer. <small>_[Access LTV Segmentation SQL queries](Strategic_Insights/The_First_Order_Multiplier.sql)_</small>
 
@@ -236,7 +236,7 @@ Engineered for "Day 1 Scalability" to support petabyte-scale expansion from a 30
 * **Dimension Strategy:** Configured low-cardinality reference tables (`stg_distribution_centers`, `stg_products`) as unpartitioned views to eliminate metadata overhead and small-file fragmentation.
 * **Event-Driven Ingestion (Bronze):** Deployed GCS-triggered Cloud Functions for landing files. Centralized source declarations via Dataform JS configs (`bronze_sources.js`) to insulate against upstream schema breaks.
 
-### <a id="guardrails"></a>🛡️ Defensive Data Modelling & Guardrails
+### <a id="guardrails"></a>🛡️ Defensive Data Modeling & Guardrails
 Deployed automated **Dataform Assertions** and defensive SQL to guarantee 100% schema integrity before data reaches the Gold (Mart) layer:
 * **Circuit Breakers & Integrity:** Built a "Dark Traffic" alert that halts updates if `traffic_source = 'Direct'` exceeds 20% of revenue. Enforced strict null checks on primary keys to prevent "Ghost Revenue."
 * **Temporal Logic Locks:** Validated chronological integrity (`created_at` ➔ `shipped_at` ➔ `delivered_at`). Applied `COALESCE` and `GREATEST` to handle null timestamps and protect financial averages.
