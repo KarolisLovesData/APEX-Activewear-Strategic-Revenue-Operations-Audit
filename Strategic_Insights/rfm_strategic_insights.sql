@@ -44,7 +44,7 @@ WITH
   SELECT
     user_id,
     -- Calculate Recency: Days since last order from a static anchor date.
-    -- NOTE: In production, consider replacing DATE('2026-01-19') with CURRENT_DATE() 
+    -- NOTE: In production, I would replace DATE('2026-01-19')[end of data] with CURRENT_DATE() 
     -- so segments update dynamically as time passes rather than slowly decaying.
     DATE_DIFF(DATE('2026-01-19'), DATE(last_order_at), DAY) AS recency_days, 
     lifetime_orders AS frequency,
@@ -93,7 +93,7 @@ WITH
       WHEN r_score >= 3 AND f_score >= 4 AND m_score >= 4 THEN 'Loyal Customers'
       WHEN r_score >= 4 AND f_score >= 2 AND m_score >= 2 THEN 'Potential Loyalists'
       WHEN r_score = 5 AND f_score = 1 THEN 'New Customers'
-      WHEN r_score <= 2 AND (f_score >= 3 OR m_score >= 3) THEN 'At Risk / Can\'t Lose'
+      WHEN r_score <= 2 AND (f_score >= 3 OR m_score >= 3) THEN 'At Risk / Can't Lose'
       WHEN r_score <= 2 AND f_score <= 2 THEN 'Hibernating / Lost'
       ELSE 'Needs Attention'
     END AS rfm_segment
