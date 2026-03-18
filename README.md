@@ -226,7 +226,7 @@ Architected a scalable Medallion pipeline (**Google Cloud Dataform, BigQuery**) 
 
 * **Cloud & DW:** Google Cloud Platform (GCP), Google BigQuery
 * **Orchestration:** Google Cloud Dataform (SQLX, Medallion Architecture)
-* **Languages & EDA:** * **Advanced SQL:** Core expertise in data modeling and complex query logic.
+* **Languages & EDA:**  **Advanced SQL:** Core expertise in data modeling and complex query logic.
     * **Python (Google Colab):** Basic proficiency, leveraged via **Gemini 3.1** for rapid code generation and automation.
 * **Delivery & AI:** Google Sheets, Gemini 3.1
 
