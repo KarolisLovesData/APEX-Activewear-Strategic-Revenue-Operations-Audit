@@ -223,9 +223,11 @@ Architected a scalable Medallion pipeline (**Google Cloud Dataform, BigQuery**) 
 <img src="Visuals/APEX_Activewear Data_Lineage.png" alt="DAG" width="800"> 
 
 ## <a id="core-stack"></a> Core Technology Stack
+
 * **Cloud & DW:** Google Cloud Platform (GCP), Google BigQuery
 * **Orchestration:** Google Cloud Dataform (SQLX, Medallion Architecture)
-* **Languages & EDA:** Advanced SQL, Python (Google Colab)
+* **Languages & EDA:** * **Advanced SQL:** Core expertise in data modeling and complex query logic.
+    * **Python (Google Colab):** Basic proficiency, leveraged via **Gemini 3.1** for rapid code generation and automation.
 * **Delivery & AI:** Google Sheets, Gemini 3.1
 
 ### <a id="infrastructure"></a> Infrastructure & Cost Optimization
