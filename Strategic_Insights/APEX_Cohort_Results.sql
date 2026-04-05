@@ -12,9 +12,9 @@ WITH user_cohorts AS (
     `apex-activewear.silver_layer.stg_orders`
   WHERE
     status IN ('Complete', 'Shipped')
-    -- ACQUISITION WINDOW: I cut off new cohort creation at 2025-01-09. 
-    -- This ensures that even the very last cohort has a full 12-month "runway" 
-    -- to mature before the dataset ends in early 2026.
+    /*ACQUISITION WINDOW: I cut off new cohort creation at 2025-01-09. 
+      This ensures that even the very last cohort has a full 12-month "runway" 
+      to mature before the dataset ends in early 2026 */
     AND created_at BETWEEN '2023-01-09' AND '2025-01-09'
   GROUP BY
     1
@@ -44,9 +44,9 @@ retention_data AS (
     ON o.user_id = uc.user_id
   WHERE
     o.status IN ('Complete', 'Shipped')
-    -- OBSERVATION WINDOW: I extended tracking out to 2026-01-19.
-    -- This gives the final Jan 2025 cohort exactly 12 months of observable history,
-    -- preventing artificial drop-offs in the final months of the report.
+     /*OBSERVATION WINDOW: I extended tracking out to 2026-01-19.
+       This gives the final Jan 2025 cohort exactly 12 months of observable history,
+       preventing artificial drop-offs in the final months of the report.*/
     AND o.created_at <= '2026-01-19 23:59:59'       
   GROUP BY
     1,
