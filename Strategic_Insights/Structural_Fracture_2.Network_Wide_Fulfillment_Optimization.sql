@@ -68,6 +68,6 @@ FROM
   `apex-activewear.silver_layer.stg_orders`
 WHERE
   status = 'Complete'
-  -- Exclude active orders to ensure averages are based on completed delivery cycles.
+  -- Excluded active orders to ensure averages are based on completed delivery cycles.
   AND shipped_at IS NOT NULL
   AND delivered_at IS NOT NULL;
