@@ -13,7 +13,7 @@
     * [A. The "Sleeping Giant" Protocol (Retention)](#a-the-sleeping-giant-protocol-retention)
     * [B. The "Tipping Point" (Upsell)](#b-the-tipping-point-upsell)
     * [C. Cloning the Champions (Acquisition)](#c-cloning-the-champions-acquisition)
-* [🛠️Analytics Engineering & Data Quality](#analytics-engineering)
+* [🛠️Analytics Engineering & Data Quality](#analytics-engineering-data-quality)
   * [Technical Implementation: Production-Grade Data Pipeline](#tech-implementation)
   * [Core Technology Stack](#core-stack)
   * [Infrastructure & Cost Optimization](#infrastructure)
