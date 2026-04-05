@@ -215,7 +215,7 @@ The "Champions" segment is highly lucrative (>$1,350 Avg LTV) but drastically un
 * **Why:** Loyal Customers ($890 avg LTV) closely mirror Champions ($1,402 avg LTV). Merging them unlocks the data volume required to train ad pixels, driving scalable international acquisition of high-value users who remain profitable even after local fulfillment costs.
 
 
-# <a id="analytics-engineering"></a>🛠️ Analytics Engineering & Data Quality
+# <a id="analytics-engineering-data-quality"></a>🛠️ Analytics Engineering & Data Quality
 
 ### <a id="tech-implementation"></a> Technical Implementation: Production-Grade Data Pipeline
 Architected a scalable Medallion pipeline (**Google Cloud Dataform, BigQuery**) delivering reliable C-Suite metrics (LTV, Fulfillment Latency, RFM). Enforced a strict `stg_` ➔ `int_` ➔ `mart_` DAG progression, centralizing business logic in the Silver layer to eliminate downstream metric drift. 
