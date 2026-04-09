@@ -245,6 +245,6 @@ Deployed automated **Dataform Assertions** and defensive SQL to guarantee 100% s
 * **Financial Guardrails:** Locked `is_realized_revenue` to valid business statuses and implemented defensive casting (`returned_at` to `TIMESTAMP`) for bulletproof downstream joins.
 * **Attribution QA:** Monitored the 5-minute session-stitching window using safe joins to flag unmapped purchase events and prevent attribution leakage.
 
-### <a id="edge-case"></a> Engineering Decision: Handling the "In-Transit Return"
+### <a id="edge-case"></a> Challenges and Roadblocks
 * **The Edge Case:** Logistical assertions flagged 509 order items (out of ~545k) where `returned_at` preceded `delivered_at` (e.g., carrier "Return to Sender" events).
 * **The Solution & Impact:** Instead of silently filtering anomalies in Staging—which skews source-to-warehouse record counts—I engineered a `has_timeline_anomaly` boolean flag in the Silver layer. This preserved raw data for logistics QA while allowing Gold layer LTV models to cleanly bypass bad records via `WHERE has_timeline_anomaly = FALSE`.
