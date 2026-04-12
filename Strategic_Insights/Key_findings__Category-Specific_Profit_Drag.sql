@@ -5,10 +5,8 @@ The following SQL (used SQLX in Dataform)  logic builds the golden layer mart.
 */
 SELECT
   p.category,
-
-  --1. GROSS REVENUE Total demand generated, regardless of whether the order was fulfilled.
-  
-  ROUND(SUM(oi.sale_price), 2) AS gross_revenue,
+ --1. GROSS REVENUE Total demand generated, regardless of whether the order was fulfilled.
+   ROUND(SUM(oi.sale_price), 2) AS gross_revenue,
 
   /* 2. REALIZED REVENUE
      Revenue from orders safely banked or actively in progress.
