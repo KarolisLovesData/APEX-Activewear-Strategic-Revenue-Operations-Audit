@@ -1,6 +1,7 @@
 --Objective: Track company growth momentum across realized revenue and order volume.
 --Quarter-over-Quarter (QoQ) Growth Analysis (Q1 2023 - Q4 2025)
---Filters: Excludes in-progress 2026 data to prevent skewed drop-offs.
+--Filters: Excludes in-progress 2026 data to prevent sudden drops in order and revenue
+
 WITH
   quarterly_metrics AS (
     SELECT
