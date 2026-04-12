@@ -1,8 +1,3 @@
-Retrieves the finalized leakage metrics from the golden layer 
-SELECT * FROM `apex-activewear.gold_layer.mart_product_leakage` 
-ORDER BY gross_revenue DESC;
-
-
 
 /* Product Category Leakage Analysis: Revenue vs. Returns and Cancellations
    Granularity: One row per Product Category Dataform Logic (gold_layer.mart_product_leakage)
