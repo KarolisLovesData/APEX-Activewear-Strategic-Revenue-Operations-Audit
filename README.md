@@ -18,7 +18,7 @@
   * [Core Technology Stack](#core-stack)
   * [Infrastructure & Cost Optimization](#infrastructure)
   * [Defensive Data Modelling & Guardrails](#guardrails)
-  * [Engineering Decision: Handling the "In-Transit Return"](#edge-case)
+  * [Challenges and Roadblocks](#edge-case)
 
 
 # Executive Summary
