@@ -50,16 +50,19 @@ APEX Activewear **Entity Relationship Diagram:**
 * **Growth Deceleration:** Momentum dropped from a peak of **344%** (Q2 2023) to just **9.8%** (Q4 2025). Future revenue gains must now come from maximizing customer Lifetime Value (LTV) rather than relying on new order volume.
   🔗 **[View SQL Queries](Strategic_Insights/Key_Findings__Growth_Deceleration.sql)**
   <br>
+
   <img src="./Visuals/APEX Growth.png" alt="APEX Growth" width="600">
 
 * **Critical Attribution Leakage:** We are "flying blind" on **68.3%** of total revenue. Mid-funnel tracking breaks mean we cannot trace the ROI on **~$34.3M** of revenue, leading to massive inefficiencies in paid ad spend. 
   🔗 **[View SQL Queries](Strategic_Insights/Key_findings__Critical_Attribution_Leakage.sql)**
   <br>
+
   <img src="./Visuals/Revenue_by_traffic_source.png" alt="Revenue by traffic source" width="600">
 
 * **Category-Specific Profit Drag:** Men's Alpine Outerwear is our top revenue driver, but incurs **$3.2M** in return losses. Across top categories, a **~24% total loss rate** (returns + cancellations) means one-quarter of operational effort generates zero realized revenue.
   🔗 **[View SQL Queries](Strategic_Insights/Key_findings__Category-Specific_Profit_Drag.sql)**
   <br>
+
   <img src="./Visuals/APEX_product_leakage.png" alt="Product leakage" width="600">
 
 * **Systemic Retention Risk:** The US market is saturated (76.3% of revenue). Furthermore, our RFM segmentation reveals **$33.3M** in lifetime revenue is trapped globally in the dormant "At Risk / Can't Lose" segment, proving retention mechanics are failing across all borders.
