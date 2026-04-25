@@ -25,7 +25,7 @@
 
 **APEX Activewear** has reached a pivotal operational crossroads. As a premier retailer specializing in **high-performance alpine outerwear, technical footwear, and adventure-ready gear**, we have successfully scaled to **$48.85M in realized lifetime revenue** (net of returns and cancellations) between January 2023 and early 2026. With over **436K+** orders processed, we have proven our market fit across the United States, Mexico, and Canada, establishing solid unit economics that include a **$148 AOV** and a **53.9% Gross Margin** on retained sales.
 
-**Business Problem**: Despite these strong foundational metrics, our ability to continue scaling through volume alone has stalled. To identify the specific friction points hindering our next phase of expansion, a **diagnostic audit of the revenue engine** was conducted. This analysis moved beyond surface-level performance to reveal four structural risks that aggregate metrics were obscuring. <small>_[Access SQL Queries](Strategic_Insights/Executive_Summary.sql)_</small>
+**Business Problem**: Despite these strong foundational metrics, our ability to continue scaling through volume alone has stalled. To identify the specific friction points hindering our next phase of expansion, a **diagnostic audit of the revenue engine** was conducted. This analysis moved beyond surface-level performance to reveal four structural risks that aggregate metrics were obscuring. **[Access SQL Queries](Strategic_Insights/Executive_Summary.sql)**
 
 # Data Architecture & Scope 
 
