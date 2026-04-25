@@ -83,9 +83,11 @@ APEX Activewear **Entity Relationship Diagram:**
 * **Traffic Split:** 53.5% "Direct" | 14.9% "Unattributed"
 * **Signal Loss:** 100% of "Direct" buyers showed 0 Product Views prior to checkout.
 
-**The Insight:** Genuine users do not "teleport" to checkout; they browse. The complete absence of funnel history for 225k+ orders proves the digital thread is severing mid-session. This is not just a reporting issue; it means we are starving our paid ad algorithms (Meta/Google) of conversion data, artificially inflating our Customer Acquisition Cost (CAC).
-<br>**[Access Revenue Leakage SQL Queries](Strategic_Insights/Structural_Fractures_(Revenue_Leakage).sql)**
-<br><img src="Visuals/Impossible_funnel.png" alt="Impossible funnel" width="600">
+**The Insight:** **Genuine users do not "teleport" to checkout**; they browse. The complete absence of funnel history for 225k+ orders proves the **digital thread is severing mid-session**. This is not just a reporting issue; it means we are **starving our paid ad algorithms** (Meta/Google) of conversion data, **artificially inflating our Customer Acquisition Cost (CAC)**.
+🔗 **[Access Revenue Leakage SQL Queries](Strategic_Insights/Structural_Fractures_(Revenue_Leakage).sql)**
+<br>
+
+<img src="Visuals/Impossible_funnel.png" alt="Impossible funnel" width="600">
 
 **Strategic Action:** Execute an immediate Tech Audit on the "Session-Break Triad":
 1. Whitelist payment gateways (PayPal, Stripe) to prevent referral overwriting.
@@ -102,9 +104,11 @@ APEX Activewear **Entity Relationship Diagram:**
 * **Return Rate:** 21.62% 
 * **Effective Capacity Loss:** ~22% of warehouse labor is tied up in reverse logistics.
 
-**The Insight:** Our supply chain is fighting a civil war. Decomposing the delivery timeline reveals that inbound returns are actively cannibalizing outbound sales capacity. Our distribution centers are prioritizing inventory restocking over revenue capture, creating a universal 2.1-day fulfillment lag.
-<br>**[Access Fulfillment Optimization SQL Queries](Strategic_Insights/Structural_Fracture_2.Network_Wide_Fulfillment_Optimization.sql)**
-<br><img src="Visuals/APEX_fulfillment.png" alt="Fulfillment delays" width="600">
+**The Insight:** Our supply chain is fighting a civil war. Decomposing the delivery timeline reveals that **inbound returns are actively cannibalizing outbound sales capacity**. Our distribution centers are **prioritizing inventory restocking over revenue capture**, creating a **universal 2.1-day fulfillment lag**.
+🔗 **[Access Fulfillment Optimization SQL Queries](Strategic_Insights/Structural_Fracture_2.Network_Wide_Fulfillment_Optimization.sql)**
+<br>
+
+<img src="Visuals/APEX_fulfillment.png" alt="Fulfillment delays" width="600">
 
 **Strategic Action:** Implement a **'Clean Flow' SOP**: a strict operational decoupling that mandates all outbound orders clear in <24 hours before labor shifts to returns processing. Launch a 4-week pilot in Reno, NV to stress-test this protocol.
 
@@ -120,9 +124,11 @@ APEX Activewear **Entity Relationship Diagram:**
 * **Low-Value LTV:** $330 (Triggered when Initial Order <$90)
 * **Retention Reality:** Drops to 4.29% by Month 4 across *all* segments.
 
-**The Insight:** Customer retention degrades structurally regardless of how much they spend; the "leaky bucket" is a reality of our model. However, First Order Value is a massive predictor of lifetime worth. Customers starting with a basket >$90 generate a **56% lift in LTV**, yet share the exact same churn curve as low-value buyers. Loyalty is static, but entry point is dynamic.
-<br>**[Access LTV Segmentation SQL Queries](Strategic_Insights/The_First_Order_Multiplier.sql)**
-<br><img src="Visuals/LTVs.png" alt="LTV curves" width="600">
+**The Insight:** Customer retention degrades structurally regardless of how much they spend; the **"leaky bucket" is a reality of our model**. However, **First Order Value is a massive predictor of lifetime worth**. Customers starting with a basket >$90 generate a **56% lift in LTV**, yet share the exact same churn curve as low-value buyers. **Loyalty is static, but entry point is dynamic.**
+🔗 **[Access LTV Segmentation SQL Queries](Strategic_Insights/The_First_Order_Multiplier.sql)**
+<br>
+
+<img src="Visuals/LTVs.png" alt="LTV curves" width="600">
 
 **Strategic Action:** Transition from Generic Conversion to **Threshold Engineering**. Replace flat acquisition discounts with Tiered Thresholds (e.g., "Save $20 on Orders >$100") to force users to self-select into the High-Value tier on Day 1.
 
@@ -131,25 +137,26 @@ APEX Activewear **Entity Relationship Diagram:**
 ### 2. RFM Strategic Insight: Reclaiming & Scaling
 **Stakeholder:** Head of Retention &nbsp;|&nbsp; **Global Revenue Impact:** ~$39M
 
-By dividing our 122k+ user base into actionable RFM (Recency, Frequency, Monetary) cohorts, we isolated three segments requiring distinct, data-driven interventions. 
-<br>**[Access RFM Segmentation SQL Queries](Strategic_Insights/rfm_strategic_insights.sql)**
-<br><img src="Visuals/APEX_RFM.png" alt="RFM Segments" width="600">
+By dividing our 122k+ user base into **actionable RFM (Recency, Frequency, Monetary) cohorts**, we isolated **three segments requiring distinct, data-driven interventions**. 
+🔗 **[Access RFM Segmentation SQL Queries](Strategic_Insights/rfm_strategic_insights.sql)**
+<br>
+
+<img src="Visuals/APEX_RFM.png" alt="RFM Segments" width="600">
 
 **A. The "Sleeping Giant" (Reactivation)** | **Priority:** 🔴 CRITICAL
-* **The Problem:** $33.3M in dormant revenue is tied to 53k users in the "At Risk / Can't Lose" segment.
-* **The Action:** Deploy an SMS-first "Pending Credit" sequence utilizing loss aversion (e.g., *"Your $50 store credit expires tomorrow"*). Dynamically localize language for MX and CA segments.
-* **The Impact:** Even a conservative 10% win-back rate reclaims ~$3.33M in lost revenue.
+* **The Problem:** **$33.3M in dormant revenue** is tied to 53k users in the "At Risk / Can't Lose" segment.
+* **The Action:** Deploy an **SMS-first "Pending Credit" sequence** utilizing loss aversion (e.g., *"Your $50 store credit expires tomorrow"*). Dynamically localize language for MX and CA segments.
+* **The Impact:** Even a conservative 10% win-back rate **reclaims ~$3.33M in lost revenue**.
 
 **B. The "Tipping Point" (Upsell)** | **Priority:** 🟠 HIGH
-* **The Problem:** A "Missing Middle" of 10,996 active users ($380 Avg LTV) who haven't reached the "Loyal" tier ($890 Avg LTV). 
-* **The Action:** Deploy highly targeted "Complete the Set" or bundle offers to artificially inflate AOV and push them across the monetary loyalty threshold.
-* **The Impact:** Migrating just 20% of this group to the Loyal tier generates ~$1.1M in incremental LTV.
+* **The Problem:** A **"Missing Middle" of 10,996 active users** ($380 Avg LTV) who haven't reached the "Loyal" tier ($890 Avg LTV). 
+* **The Action:** Deploy highly targeted "Complete the Set" or bundle offers to **artificially inflate AOV** and push them across the monetary loyalty threshold.
+* **The Impact:** Migrating just 20% of this group to the Loyal tier **generates ~$1.1M in incremental LTV**.
 
 **C. Cloning the Champions (Acquisition)** | **Priority:** 🟡 MEDIUM
-* **The Problem:** We only have 122 "Champion" users in Canada and Mexico—far too few to achieve statistical significance for ad pixel training. 
-* **The Action:** Merge "Champions" ($1,402 LTV) with "Loyal Customers" ($890 LTV) to build a statistically stable global seed audience of 6,663 users. 
-* **The Impact:** Provides ad algorithms with the critical mass of data needed to reliably clone high-value users in international markets, dynamically adjusting for cross-border shipping costs.
-
+* **The Problem:** We **only have 122 "Champion" users** in Canada and Mexico—far too few to achieve statistical significance for ad pixel training. 
+* **The Action:** **Merge "Champions" ($1,402 LTV) with "Loyal Customers" ($890 LTV)** to build a statistically stable global seed audience of 6,663 users. 
+* **The Impact:** Provides ad algorithms with the critical mass of data needed to **reliably clone high-value users** in international markets, dynamically adjusting for cross-border shipping costs.
 
 # <a id="analytics-engineering-data-quality"></a>🛠️ Analytics Engineering & Data Quality
 
