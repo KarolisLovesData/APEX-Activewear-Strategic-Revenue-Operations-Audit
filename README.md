@@ -90,7 +90,7 @@ APEX Activewear **Entity Relationship Diagram:**
 2. Verify cross-domain cookie persistence between the main shop and checkout subdomain.
 3. Ensure 301 redirects are not stripping UTM parameters.
 
-**Business Impact:** Re-attributing ~$34.3M to its true source, allowing marketing to scale budgets based on True ROAS rather than blended averages.
+**Business Impact:** Re-attributing ~$34.3M to its true source, allowing marketing to scale budgets based on **True ROAS** rather than blended averages.
 
 ### 2. Network-Wide Fulfillment Optimization
 **Stakeholder:** COO & Supply Chain Lead &nbsp;|&nbsp; **Priority:** 🟠 HIGH
@@ -108,7 +108,7 @@ APEX Activewear **Entity Relationship Diagram:**
 
 **Strategic Action:** Implement a **'Clean Flow' SOP**: a strict operational decoupling that mandates all outbound orders clear in <24 hours before labor shifts to returns processing. Launch a 4-week pilot in Reno, NV to stress-test this protocol.
 
-**Business Impact:** Compresses total fulfillment cycle time from 5.1 to 4.1 days (a 21% speed gain) without requiring costly carrier shipping upgrades.
+**Business Impact:** Compresses total fulfillment cycle time from 5.1 to 4.1 days (a **21%** speed gain) without requiring costly carrier shipping upgrades.
 
 # II. Dormant Opportunities (Value Unlocks)
 
