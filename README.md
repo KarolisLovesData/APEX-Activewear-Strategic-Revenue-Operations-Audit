@@ -34,7 +34,7 @@ To perform this audit, a relational data model was built to connect the entire c
 
 APEX Activewear **Entity Relationship Diagram:**
 
-<img src="./Visuals/apex_activewear_erd.png" alt="Apex Activewear ERD" width="1000">
+<img src="./Visuals/apex_activewear_erd.png" alt="Apex Activewear ERD" width="800">
 
 
 
@@ -51,7 +51,7 @@ APEX Activewear **Entity Relationship Diagram:**
 <small>_[Access Growth Deceleration SQL queries](Strategic_Insights/Key_Findings__Growth_Deceleration.sql)_</small>
 
 
-<img src="./Visuals/APEX Growth.png" alt="growth paradox" width="800">
+<img src="./Visuals/APEX Growth.png" alt="growth paradox" width="600">
 
 
 
@@ -61,13 +61,13 @@ APEX Activewear **Entity Relationship Diagram:**
 
  
 
-<img src="./Visuals/Revenue_by_traffic_source.png" alt="growth paradox" width="800">
+<img src="./Visuals/Revenue_by_traffic_source.png" alt="growth paradox" width="600">
 
 
 * **Category-Specific Profit Drag:** Men's Alpine Outerwear remains the top revenue driver (**$15.5M Gross**), but it is also the primary source of operational drag, incurring **$3.2M** in return losses alone. Across top categories, the "Total Loss Rate" (returns + cancellations) creates a stabilized drag of **~24%**. Effectively, one-quarter of the operational effort in these key segments generates zero realized revenue. 
 <small>_[Access Category Specific SQL queries](Strategic_Insights/Key_findings__Category-Specific_Profit_Drag.sql)_</small>
 
-     <img src="./Visuals/APEX_product_leakage.png" alt="growth paradox" width="800">
+     <img src="./Visuals/APEX_product_leakage.png" alt="growth paradox" width="600">
 
 
 
@@ -102,7 +102,7 @@ To prove this wasn't just loyal customers typing the URL, I analyzed the funnel 
 <small>_[Access Revenue Leakage SQL queries](Strategic_Insights/Structural_Fractures_(Revenue_Leakage).sql)_</small>
 
 
-  <img src="Visuals/Impossible_funnel.png" alt="Impossible funnel" width="800">
+  <img src="Visuals/Impossible_funnel.png" alt="Impossible funnel" width="600">
 
   Genuine users do not just "teleport" to check out, they browse. This complete absence of history proves the digital thread is being severed, stripping attribution from the channels that actually generated the sale.
     **Recommended Action:** Immediate **Tech Audit** to repair cross-domain session stitching focusing on the "Session-Break Triad":
@@ -122,7 +122,7 @@ To prove this wasn't just loyal customers typing the URL, I analyzed the funnel 
 
 Our supply chain is fighting a civil war. Decomposing the delivery timeline reveals that inbound returns are actively cannibalizing outbound sales capacity. With a **21.6% Return Rate**, our distribution centers have morphed into 'Churn Factories,' where returns processing consumes **~22% of total labor**. This resource drain is the structural cause of our uniform **2.1-day fulfillment lag**—we are prioritizing inventory restocking over revenue capture. <small>_[Access Fulfillment Optimization SQL queries](Strategic_Insights/Structural_Fracture_2.Network_Wide_Fulfillment_Optimization.sql)_</small>
 
-<img src="Visuals/APEX_fulfillment.png" alt="Impossible funnel" width="800">
+<img src="Visuals/APEX_fulfillment.png" alt="Impossible funnel" width="600">
 
 **Recommended Action:** To recover this speed entirely in-house without costly carrier upgrades, implement a **'Clean Flow' SOP**: a strict prioritization protocol that mandates all outbound orders clear in **<24 hours** before labor shifts to returns. This decoupling will compress total cycle time from **5.1 to 4.1 Days** (a 21% speed gain).  
 Launch a **4-week pilot** in **Reno, NV** to stress-test the SOP against representative volume/return mixes before scaling to the 'Big Three' hubs (Chicago, Memphis, Mobile).
@@ -138,13 +138,13 @@ Launch a **4-week pilot** in **Reno, NV** to stress-test the SOP against represe
 
 Our customer retention degrades structurally. Data from the Class of 2024 reveals a steep drop from **50% in Month 1** to just **4.29% in Month 4**, essentially flatlining by **Month 6 (0.53%)**. The "leaky bucket" is a structural reality of our current model. <small>_[Access Cohort Heatmap SQL queries](Strategic_Insights/APEX_Cohort_Results.sql)_</small>
 
-<img src="Visuals/APEX_cohorts.png" alt="Impossible funnel" width="800">
+<img src="Visuals/APEX_cohorts.png" alt="Impossible funnel" width="600">
 
 Since we cannot rely on long-term loyalty to drive profit, we must capture value **upfront**. Analysis proves that **First Order Value** is the single strongest predictor of future customer worth. Customers who start with a basket **>$90** generate **56% lift in Lifetime Value** ($515) than those who start smaller ($330). 
 
 Moreover, **High-Value** ($516 LTV) and **Low-Value** ($330 LTV) customers share **identical retention curves** making customer loyalty **static**.
 
-<img src="Visuals/LTVs.png" alt="Impossible funnel" width="800">
+<img src="Visuals/LTVs.png" alt="Impossible funnel" width="600">
 
 * **Recommended Action:** Shift acquisition incentives from **Generic Conversion** to **Threshold Engineering**. Replace flat discounts with **Tiered Thresholds** (e.g., "Save $20 on Orders >$100") to force users to self-select into the High-Value tier on Day 1 as profit is determined solely by the **First Order Value**.
 
@@ -160,7 +160,7 @@ Moreover, **High-Value** ($516 LTV) and **Low-Value** ($330 LTV) customers share
 Our strategy rests on three **imperatives**: executing the **'Sleeping Giant' Protocol** to reclaim dormant revenue, leveraging the **'Tipping Point'** to expand mid-tier LTV, and **Cloning the Champions** to refine high-value acquisition. <small>_[Access RFM Segmentation SQL queries](Strategic_Insights/rfm_strategic_insights.sql)_</small>
 
 
-<img src="Visuals/APEX_RFM.png" alt="Impossible funnel" width="800">
+<img src="Visuals/APEX_RFM.png" alt="Impossible funnel" width="600">
 
 ### A. The "Sleeping Giant" Protocol (Retention)
 
@@ -221,7 +221,7 @@ The "Champions" segment is highly lucrative (>$1,350 Avg LTV) but drastically un
 ### <a id="tech-implementation"></a> Technical Implementation: Production-Grade Data Pipeline
 Architected a scalable Medallion pipeline (**Google Cloud Dataform, BigQuery**) delivering reliable C-Suite metrics (LTV, Fulfillment Latency, RFM). Enforced a strict `stg_` ➔ `int_` ➔ `mart_` DAG progression, centralizing business logic in the Silver layer to eliminate downstream metric drift. 
 
-<img src="Visuals/APEX_Activewear Data_Lineage.png" alt="DAG" width="800"> 
+<img src="Visuals/APEX_Activewear Data_Lineage.png" alt="DAG" width="600"> 
 
 ## <a id="core-stack"></a> Core Technology Stack
 
