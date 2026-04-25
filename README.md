@@ -21,22 +21,19 @@
   * [Defensive Data Modelling & Guardrails](#guardrails)
   * [Challenges and Roadblocks](#edge-case)
 
-
 # Executive Summary
 
 **APEX Activewear** has reached a pivotal operational crossroads. As a premier retailer specializing in **high-performance alpine outerwear, technical footwear, and adventure-ready gear**, we have successfully scaled to **$48.85M in realized lifetime revenue** (net of returns and cancellations) between January 2023 and early 2026. With over **436K+** orders processed, we have proven our market fit across the United States, Mexico, and Canada, establishing solid unit economics that include a **$148 AOV** and a **53.9% Gross Margin** on retained sales.
 
-**Business Problem**: Despite these strong foundational metrics, our ability to continue scaling through volume alone has stalled. To identify the specific friction points hindering our next phase of expansion, a **diagnostic audit of the revenue engine** was conducted. This analysis moved beyond surface-level performance to reveal four structural risks that aggregate metrics were obscuring. <small>_[Access Executive Summary SQL Queries](Strategic_Insights/Executive_Summary.sql)_</small>
+**Business Problem**: Despite these strong foundational metrics, our ability to continue scaling through volume alone has stalled. To identify the specific friction points hindering our next phase of expansion, a **diagnostic audit of the revenue engine** was conducted. This analysis moved beyond surface-level performance to reveal four structural risks that aggregate metrics were obscuring. <small>_[Access SQL Queries](Strategic_Insights/Executive_Summary.sql)_</small>
+
 # Data Architecture & Scope 
 
 To perform this audit, a relational data model was built to connect the entire customer lifecycle—from the initial website visit to the final delivery and potential return. By linking marketing events, transactions, and logistics, I created a **"source of truth"** to identify specific friction points where revenue was leaking and margins were being eroded. (Note: the tables in the ERD are the **Staging Layer** (the stg_ nodes), see the **Directed Acyclic Graph (DAG)** and full **Medallion Transformation** flow in the [Analytics Engineering section](#analytics-engineering-data-quality).) 
 
-
 APEX Activewear **Entity Relationship Diagram:**
 
 <img src="./Visuals/apex_activewear_erd.png" alt="Apex Activewear ERD" width="800">
-
-
 
 **Audit Scale & Data Volume:**
 * _stg_online_events_ (fact table): **1.33M** online events and user touchpoints captured.
@@ -48,26 +45,25 @@ APEX Activewear **Entity Relationship Diagram:**
 # Key Findings: The "Profit Paradox"
 
 * **Growth Deceleration:** Momentum dropped from a peak of **344%** (Q2 2023) to just **9.8%** (Q4 2025). Future revenue gains must now come from maximizing customer Lifetime Value (LTV) rather than relying on new order volume.
-  🔗 **[View SQL Queries](Strategic_Insights/Key_Findings__Growth_Deceleration.sql)**
+  🔗 **[Access SQL Queries](Strategic_Insights/Key_Findings__Growth_Deceleration.sql)**
   <br>
 
   <img src="./Visuals/APEX Growth.png" alt="APEX Growth" width="600">
 
 * **Critical Attribution Leakage:** We are "flying blind" on **68.3%** of total revenue. Mid-funnel tracking breaks mean we cannot trace the ROI on **~$34.3M** of revenue, leading to massive inefficiencies in paid ad spend. 
-  🔗 **[View SQL Queries](Strategic_Insights/Key_findings__Critical_Attribution_Leakage.sql)**
+  🔗 **[Access SQL Queries](Strategic_Insights/Key_findings__Critical_Attribution_Leakage.sql)**
   <br>
 
   <img src="./Visuals/Revenue_by_traffic_source.png" alt="Revenue by traffic source" width="600">
 
 * **Category-Specific Profit Drag:** Men's Alpine Outerwear is our top revenue driver, but incurs **$3.2M** in return losses. Across top categories, a **~24% total loss rate** (returns + cancellations) means one-quarter of operational effort generates zero realized revenue.
-  🔗 **[View SQL Queries](Strategic_Insights/Key_findings__Category-Specific_Profit_Drag.sql)**
+  🔗 **[Access SQL Queries](Strategic_Insights/Key_findings__Category-Specific_Profit_Drag.sql)**
   <br>
 
   <img src="./Visuals/APEX_product_leakage.png" alt="Product leakage" width="600">
 
 * **Systemic Retention Risk:** The US market is saturated (76.3% of revenue). Furthermore, our RFM segmentation reveals **$33.3M** in lifetime revenue is trapped globally in the dormant "At Risk / Can't Lose" segment, proving retention mechanics are failing across all borders.
-  🔗 **[View SQL Queries](Strategic_Insights/Key_findings__Geographic_Saturation.sql)**
-
+  🔗 **[Access SQL Queries](Strategic_Insights/Key_findings__Geographic_Saturation.sql)**
 
 **The Strategic Pivot:** The data confirms APEX must transition to a value-driven model. The rest of this audit targets two specific areas to execute this pivot:
 1. **Structural Fractures:** Identifying silent operational errors (Attribution & Logistics) leaking revenue.
@@ -84,7 +80,7 @@ APEX Activewear **Entity Relationship Diagram:**
 * **Signal Loss:** 100% of "Direct" buyers showed 0 Product Views prior to checkout.
 
 **The Insight:** **Genuine users do not "teleport" to checkout**; they browse. The complete absence of funnel history for 225k+ orders proves the **digital thread is severing mid-session**. This is not just a reporting issue; it means we are **starving our paid ad algorithms** (Meta/Google) of conversion data, **artificially inflating our Customer Acquisition Cost (CAC)**.
-🔗 **[Access Revenue Leakage SQL Queries](Strategic_Insights/Structural_Fractures_(Revenue_Leakage).sql)**
+🔗 **[Access SQL Queries](Strategic_Insights/Structural_Fractures_(Revenue_Leakage).sql)**
 <br>
 
 <img src="Visuals/Impossible_funnel.png" alt="Impossible funnel" width="600">
@@ -105,7 +101,7 @@ APEX Activewear **Entity Relationship Diagram:**
 * **Effective Capacity Loss:** ~22% of warehouse labor is tied up in reverse logistics.
 
 **The Insight:** Our supply chain is fighting a civil war. Decomposing the delivery timeline reveals that **inbound returns are actively cannibalizing outbound sales capacity**. Our distribution centers are **prioritizing inventory restocking over revenue capture**, creating a **universal 2.1-day fulfillment lag**.
-🔗 **[Access Fulfillment Optimization SQL Queries](Strategic_Insights/Structural_Fracture_2.Network_Wide_Fulfillment_Optimization.sql)**
+🔗 **[Access SQL Queries](Strategic_Insights/Structural_Fracture_2.Network_Wide_Fulfillment_Optimization.sql)**
 <br>
 
 <img src="Visuals/APEX_fulfillment.png" alt="Fulfillment delays" width="600">
@@ -125,7 +121,7 @@ APEX Activewear **Entity Relationship Diagram:**
 * **Retention Reality:** Drops to 4.29% by Month 4 across *all* segments.
 
 **The Insight:** Customer retention degrades structurally regardless of how much they spend; the **"leaky bucket" is a reality of our model**. However, **First Order Value is a massive predictor of lifetime worth**. Customers starting with a basket >$90 generate a **56% lift in LTV**, yet share the exact same churn curve as low-value buyers. **Loyalty is static, but entry point is dynamic.**
-🔗 **[Access LTV Segmentation SQL Queries](Strategic_Insights/The_First_Order_Multiplier.sql)**
+🔗 **[Access SQL Queries](Strategic_Insights/The_First_Order_Multiplier.sql)**
 <br>
 
 <img src="Visuals/LTVs.png" alt="LTV curves" width="600">
@@ -138,7 +134,7 @@ APEX Activewear **Entity Relationship Diagram:**
 **Stakeholder:** Head of Retention &nbsp;|&nbsp; **Global Revenue Impact:** ~$39M
 
 By dividing our 122k+ user base into **actionable RFM (Recency, Frequency, Monetary) cohorts**, we isolated **three segments requiring distinct, data-driven interventions**. 
-🔗 **[Access RFM Segmentation SQL Queries](Strategic_Insights/rfm_strategic_insights.sql)**
+🔗 **[Access SQL Queries](Strategic_Insights/rfm_strategic_insights.sql)**
 <br>
 
 <img src="Visuals/APEX_RFM.png" alt="RFM Segments" width="600">
