@@ -47,39 +47,28 @@ APEX Activewear **Entity Relationship Diagram:**
 
 # Key Findings: The "Profit Paradox"
 
-* **Growth Deceleration:** We have moved past the hyper-growth phase. From a peak of **344%** growth in Q2 2023, momentum has steadily declined to single digits (**9.8%**) in Q4 2025. Future revenue gains must come from maximizing customer lifetime value rather than new order volume.
-<small>_[Access Growth Deceleration SQL queries](Strategic_Insights/Key_Findings__Growth_Deceleration.sql)_</small>
+* **Growth Deceleration:** Momentum dropped from a peak of **344%** (Q2 2023) to just **9.8%** (Q4 2025). Future revenue gains must now come from maximizing customer Lifetime Value (LTV) rather than relying on new order volume.
+  🔗 **[View SQL Queries](Strategic_Insights/Key_Findings__Growth_Deceleration.sql)**
+  <br>
+  <img src="./Visuals/APEX Growth.png" alt="APEX Growth" width="600">
+
+* **Critical Attribution Leakage:** We are "flying blind" on **68.3%** of total revenue. Mid-funnel tracking breaks mean we cannot trace the ROI on **~$34.3M** of revenue, leading to massive inefficiencies in paid ad spend. 
+  🔗 **[View SQL Queries](Strategic_Insights/Key_findings__Critical_Attribution_Leakage.sql)**
+  <br>
+  <img src="./Visuals/Revenue_by_traffic_source.png" alt="Revenue by traffic source" width="600">
+
+* **Category-Specific Profit Drag:** Men's Alpine Outerwear is our top revenue driver, but incurs **$3.2M** in return losses. Across top categories, a **~24% total loss rate** (returns + cancellations) means one-quarter of operational effort generates zero realized revenue.
+  🔗 **[View SQL Queries](Strategic_Insights/Key_findings__Category-Specific_Profit_Drag.sql)**
+  <br>
+  <img src="./Visuals/APEX_product_leakage.png" alt="Product leakage" width="600">
+
+* **Systemic Retention Risk:** The US market is saturated (76.3% of revenue). Furthermore, our RFM segmentation reveals **$33.3M** in lifetime revenue is trapped globally in the dormant "At Risk / Can't Lose" segment, proving retention mechanics are failing across all borders.
+  🔗 **[View SQL Queries](Strategic_Insights/Key_findings__Geographic_Saturation.sql)**
 
 
-<img src="./Visuals/APEX Growth.png" alt="growth paradox" width="600">
-
-
-
-
-* **Critical Attribution Leakage:** We are effectively "flying blind" on **68.3%** of our total revenue (Direct + Unattributed). The digital thread is severing mid-funnel, meaning we cannot track the ROI on **~$34.3M** of revenue, likely leading to massive inefficiencies in paid ad spend. 
- <small>_[Access Critical Attribution SQL queries](Strategic_Insights/Key_findings__Critical_Attribution_Leakage.sql)_</small>
-
- 
-
-<img src="./Visuals/Revenue_by_traffic_source.png" alt="growth paradox" width="600">
-
-
-* **Category-Specific Profit Drag:** Men's Alpine Outerwear remains the top revenue driver (**$15.5M Gross**), but it is also the primary source of operational drag, incurring **$3.2M** in return losses alone. Across top categories, the "Total Loss Rate" (returns + cancellations) creates a stabilized drag of **~24%**. Effectively, one-quarter of the operational effort in these key segments generates zero realized revenue. 
-<small>_[Access Category Specific SQL queries](Strategic_Insights/Key_findings__Category-Specific_Profit_Drag.sql)_</small>
-
-     <img src="./Visuals/APEX_product_leakage.png" alt="growth paradox" width="600">
-
-
-
-* **Geographic Saturation & Systemic Risk:** Our revenue engine is heavily centralized, with the United States generating 76.3% ($37.25M) of total lifetime revenue. The decline in momentum to 9.8% indicates US market saturation. Furthermore, our retention liability scales proportionally across all borders. By utilizing **RFM (Recency, Frequency, Monetary) customer segmentation** to divide the user base into actionable cohorts based on purchasing behavior, we identified that over $33.3M in lifetime revenue is globally tied up in the "At Risk / Can't Lose" segment (US: $25.4M, MX: $4.4M, CA: $3.5M). This proves our mid-term retention mechanics are failing consistently across all markets, making **a structural retention overhaul** a mandatory global fix, not just a localized tactic.
-<small>_[Access Geographic Saturation SQL queries](Strategic_Insights/Key_findings__Geographic_Saturation.sql)_</small>
-
-**The Strategic Pivot: From "Health Check" to "Root Cause":**
-
-The data confirms that APEX is not a volume-driven business, but a value-driven one. Future growth requires a pivot to **"Threshold Engineering"**—shifting focus from broad acquisition to incentivizing high-quality customer entry points. This analysis targets two specific areas: 
-
-* **Structural Fractures:** Identifying silent operational errors—specifically in marketing attribution and inbound operational drag—that are actively obscuring ROI and leaking revenue. 
-* **Dormant Opportunities:** Building on our RFM analysis to strategically target the "Sleeping Giant" and "Missing Middle" segments. By proving first-order behavior as a universal LTV predictor, we leverage a 2.3x LTV multiplier from our cross-border RFM data to A/B test adapted US retention tactics in Mexico and Canada, dynamically adjusting for regional shipping and customs to scale profitably.
+**The Strategic Pivot:** The data confirms APEX must transition to a value-driven model. The rest of this audit targets two specific areas to execute this pivot:
+1. **Structural Fractures:** Identifying silent operational errors (Attribution & Logistics) leaking revenue.
+2. **Dormant Opportunities:** Exploiting RFM segments to reclaim LTV and scale profitably.
 
 # I. Structural Fractures (Revenue Leakage)
 
