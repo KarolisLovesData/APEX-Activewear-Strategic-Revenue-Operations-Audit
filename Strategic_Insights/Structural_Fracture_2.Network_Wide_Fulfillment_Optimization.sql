@@ -1,73 +1,61 @@
-/* These queries were originally developed in SQLX within Google Cloud Dataform 
-  and has been translated to standard BigQuery SQL.
-  This query tracks volume share and latency SLAs per distribution center.
-*/
+/**
+ * WAREHOUSE SLA & CAPACITY UTILIZATION
+ * PURPOSE: Evaluates distribution center efficiency by mapping network load 
+ * against internal processing speed and end-to-end delivery latency.
+ * 
+ * PORTFOLIO NOTE: Originally developed in SQLX (Google Cloud Dataform).
+ */
 
 SELECT
   dc.name AS distribution_center,
 
-  -- 1. Volume Share: Calculates the percentage of total completed orders handled by each specific DC.
-  ROUND(
-    COUNT(o.order_id) / SUM(COUNT(o.order_id)) OVER () * 100, 1
-  ) AS volume_share_pct,
+  -- Network Load: Percentage of total company volume handled by this facility
+  ROUND(COUNT(o.order_id) / SUM(COUNT(o.order_id)) OVER () * 100, 1) AS volume_share_pct,
 
-  -- 2. Avg Fulfillment Latency: Measures the time spent inside the warehouse (creation to shipment).
-  ROUND(
-    AVG(TIMESTAMP_DIFF(o.shipped_at, o.created_at, SECOND) / (24 * 60 * 60)), 2
-  ) AS avg_fulfillment_latency_days,
+  -- Internal Friction: Average days spent processing inside the four walls of the warehouse
+  ROUND(AVG(TIMESTAMP_DIFF(o.shipped_at, o.created_at, SECOND) / (24 * 60 * 60)), 2) AS avg_fulfillment_latency_days,
 
-  -- 3. Avg Total Delivery Time (OFCT): Measures the end-to-end customer experience (creation to final delivery).
-  ROUND(
-    AVG(TIMESTAMP_DIFF(o.delivered_at, o.created_at, SECOND) / (24 * 60 * 60)), 2
-  ) AS avg_ofct_days
+  -- Customer Experience: End-to-end cycle time (Order-to-Door)
+  ROUND(AVG(TIMESTAMP_DIFF(o.delivered_at, o.created_at, SECOND) / (24 * 60 * 60)), 2) AS avg_ofct_days
 
-FROM
-  `apex-activewear.silver_layer.stg_orders` AS o
-JOIN
-  `apex-activewear.silver_layer.stg_distribution_centers` AS dc
+FROM `apex-activewear.silver_layer.stg_orders` AS o
+JOIN `apex-activewear.silver_layer.stg_distribution_centers` AS dc
   ON o.distribution_center_id = dc.id
-WHERE
-  o.status = 'Complete'
-  -- Filter to ensure we only include fully processed orders for accurate performance metrics.
+WHERE o.status = 'Complete'
+  -- Restrict scope to finalized cycles to ensure accurate SLA measurement
   AND o.shipped_at IS NOT NULL
   AND o.delivered_at IS NOT NULL
-GROUP BY
-  1
-ORDER BY
-  volume_share_pct DESC;
+GROUP BY 1
+ORDER BY volume_share_pct DESC;
 
 
-/* 
-  This query Highlights global warehouse "drag" and projected delivery time improvements.
-*/
+/**
+ * GLOBAL LOGISTICS BOTTLENECK ANALYSIS
+ * PURPOSE: Quantifies system-wide warehouse friction and models the 
+ * projected improvement to customer delivery times if strict processing SLAs are enforced.
+ */
 
 SELECT
-  -- 1. Fulfillment Latency (The Bottleneck): Global average days from order creation to shipment.
-  ROUND(
-    AVG(TIMESTAMP_DIFF(shipped_at, created_at, SECOND) / (24 * 60 * 60)), 2
-  ) AS avg_fulfillment_latency_days,
+  -- Processing Latency: The current operational baseline
+  ROUND(AVG(TIMESTAMP_DIFF(shipped_at, created_at, SECOND) / (24 * 60 * 60)), 2) AS avg_fulfillment_latency_days,
 
-  -- 2. Average OFCT (Order Fulfillment Cycle Time): Global average days from creation to final delivery.
-  ROUND(
-    AVG(TIMESTAMP_DIFF(delivered_at, created_at, SECOND) / (24 * 60 * 60)), 2
-  ) AS avg_ofct_days,
+  -- Total Delivery Cycle: The current baseline customer experience
+  ROUND(AVG(TIMESTAMP_DIFF(delivered_at, created_at, SECOND) / (24 * 60 * 60)), 2) AS avg_ofct_days,
 
-  -- 3. The "Drag": The percentage of total delivery time that the package spends sitting in the warehouse.
+  -- Warehouse Drag: Percentage of the total delivery timeline wasted sitting on warehouse shelves
   ROUND(
     AVG(TIMESTAMP_DIFF(shipped_at, created_at, SECOND)) / 
     AVG(TIMESTAMP_DIFF(delivered_at, created_at, SECOND)) * 100, 1
   ) AS warehouse_share_of_total_time_pct,
 
-  -- 4. The "Opportunity": Projected total delivery time (OFCT) if we optimized fulfillment latency down to exactly 1 day.
+  -- Target State ROI: Modeled customer delivery time if warehouse processing is optimized to exactly 24 hours
   ROUND(
     (AVG(TIMESTAMP_DIFF(delivered_at, created_at, SECOND) / (24 * 60 * 60))) - 
     (AVG(TIMESTAMP_DIFF(shipped_at, created_at, SECOND) / (24 * 60 * 60)) - 1.0), 2
   ) AS projected_ofct_after_fix
 
-FROM
-  `apex-activewear.silver_layer.stg_orders`
-WHERE
-  status = 'Complete'
-  -- Excluded active orders to ensure averages are based on completed delivery cycles.
+FROM `apex-activewear.silver_layer.stg_orders`
+WHERE status = 'Complete'
+  -- Exclude inflight orders to prevent partial data from skewing the baseline averages
   AND shipped_at IS NOT NULL
   AND delivered_at IS NOT NULL;
