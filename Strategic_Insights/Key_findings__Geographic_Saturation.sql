@@ -1,4 +1,5 @@
 /* This query calculates the geographical distribution of realized revenue and order volume by country. */
+
 SELECT
   u.country,
   COUNT(DISTINCT oi.order_id) AS total_orders,
