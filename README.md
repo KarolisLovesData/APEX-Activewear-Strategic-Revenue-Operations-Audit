@@ -163,12 +163,8 @@ Architected a scalable Medallion pipeline (**Google Cloud Dataform, BigQuery**) 
 
 ## <a id="core-stack"></a> Core Technology Stack
 
-* **Cloud & DW:** Google Cloud Platform (GCP), Google BigQuery
-* **Orchestration:** Google Cloud Dataform (SQLX, Medallion Architecture)
-* **Languages & EDA:**
-    * **Advanced SQL:** Core expertise in data modeling and complex query logic.
-    * **Python (Google Colab):** Basic proficiency, leveraged via **Gemini 3.1** for rapid code generation and automation.
-* **Delivery & AI:** Google Sheets, Gemini 3.1
+* **Core Technologies Used:** Core Technology Stack: Google Cloud Platform (GCP), BigQuery ML, Cloud Dataform (SQLX/Medallion), Advanced SQL, Python, Gemini 3.1
+
 
 ### <a id="infrastructure"></a> Infrastructure & Cost Optimization
 Engineered for "Day 1 Scalability" to support petabyte-scale expansion from a 300MB baseline without structural redesign.
