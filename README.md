@@ -157,7 +157,8 @@ By dividing our 122k+ user base into **actionable RFM (Recency, Frequency, Monet
 ### <a id="predictive-ai"></a>3. Predictive AI: The "Sleeping Giant" Intercept
 **Stakeholder:** Head of Retention | **Technology:** BigQuery ML (XGBoost)
 
-**The Insight:** RFM segmentation is **inherently reactive**—by the time a user is labeled a "Sleeping Giant," they have already been dormant for 6 months. To pivot to **preemptive intervention**, I engineered an in-warehouse classifier to identify high-risk users *before* they churn.
+**The Insight:** RFM segmentation is **inherently reactive**—by the time a user is labeled a "Sleeping Giant," they have already been dormant for 6 months. To pivot to **preemptive intervention**, I engineered an in-warehouse classifier to identify high-risk users *before* they churn. **[Access SQL Queries](Strategic_Insights/BigQuery_ML_(XGBoost).sql)**
+
 
 **Strategic Action & Technical Implementation:**
 * **Point-in-Time Feature Engineering:** Constructed a **30-day SQL snapshot window** to prevent data leakage. This forced the AI to learn from historical signals (**Frequency, Return Rates, Delivery Latency**) exactly as they appeared prior to the churn event.
