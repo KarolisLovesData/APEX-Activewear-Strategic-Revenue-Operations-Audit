@@ -1,4 +1,3 @@
-
 # APEX-Activewear-Strategic-Revenue-Operations-Audit
 
 **NOTE:** This is a comprehensive portfolio project utilizing a simulated enterprise dataset. The metrics, company names, and financial figures were constructed to demonstrate production-grade Analytics Engineering, Medallion Architecture, and business-focused data modeling.
@@ -42,6 +41,7 @@
 To perform this audit, a relational data model was built to connect the entire customer lifecycle—from the initial website visit to the final delivery and potential return. By linking marketing events, transactions, and logistics, I created a **"source of truth"** to identify specific friction points where revenue was leaking and margins were being eroded. (Note: the tables in the ERD are the **Staging Layer** (the stg_ nodes), see the **Directed Acyclic Graph (DAG)** and full **Medallion Transformation** flow in the [Analytics Engineering section](#analytics-engineering).) 
 
 **APEX Activewear Entity Relationship Diagram:**
+
 <img src="./Visuals/apex_activewear_erd.png" alt="Apex Activewear ERD" width="800">
 
 **Audit Scale & Data Volume:**
@@ -56,13 +56,16 @@ To perform this audit, a relational data model was built to connect the entire c
 # <a id="key-findings"></a>Key Findings: The "Profit Paradox"
 
 * **Growth Deceleration:** Momentum dropped from a peak of **344%** (Q2 2023) to just **9.8%** (Q4 2025). Future revenue gains must now come from maximizing customer Lifetime Value (LTV) rather than relying on new order volume. 🔗 **[Access SQL Queries](Strategic_Insights/Key_Findings__Growth_Deceleration.sql)**
-  <br><img src="./Visuals/APEX Growth.png" alt="APEX Growth" width="600">
+  
+  <img src="./Visuals/APEX Growth.png" alt="APEX Growth" width="600">
 
 * **Critical Attribution Leakage:** We are "flying blind" on **68.3%** of total revenue. Mid-funnel tracking breaks mean we cannot trace the ROI on **~$34.3M** of revenue, leading to massive inefficiencies in paid ad spend. 🔗 **[Access SQL Queries](Strategic_Insights/Key_findings__Critical_Attribution_Leakage.sql)**
-  <br><img src="./Visuals/Revenue_by_traffic_source.png" alt="Revenue by traffic source" width="600">
+  
+  <img src="./Visuals/Revenue_by_traffic_source.png" alt="Revenue by traffic source" width="600">
 
 * **Category-Specific Profit Drag:** Men's Alpine Outerwear is our top revenue driver, but incurs **$3.2M** in return losses. Across top categories, a **~24% total loss rate** (returns + cancellations) means one-quarter of operational effort generates zero realized revenue. 🔗 **[Access SQL Queries](Strategic_Insights/Key_findings__Category-Specific_Profit_Drag.sql)**
-  <br><img src="./Visuals/APEX_product_leakage.png" alt="Product leakage" width="600">
+  
+  <img src="./Visuals/APEX_product_leakage.png" alt="Product leakage" width="600">
 
 * **Systemic Retention Risk:** The US market is saturated (76.3% of revenue). Furthermore, our RFM segmentation reveals **$33.3M** in lifetime revenue is trapped globally in the dormant "At Risk / Can't Lose" segment, proving retention mechanics are failing across all borders. 🔗 **[Access SQL Queries](Strategic_Insights/Key_findings__Geographic_Saturation.sql)**
 
@@ -83,7 +86,8 @@ To perform this audit, a relational data model was built to connect the entire c
 * **Signal Loss:** 100% of "Direct" buyers showed 0 Product Views prior to checkout.
 
 **The Insight:** **Genuine users do not "teleport" to checkout**; they browse. The complete absence of funnel history for 225k+ orders proves the **digital thread is severing mid-session**. This is not just a reporting issue; it means we are **starving our paid ad algorithms** (Meta/Google) of conversion data, **artificially inflating our Customer Acquisition Cost (CAC)**. 🔗 **[Access SQL Queries](Strategic_Insights/Structural_Fractures_(Revenue_Leakage).sql)**
-<br><img src="Visuals/Impossible_funnel.png" alt="Impossible funnel" width="600">
+
+<img src="Visuals/Impossible_funnel.png" alt="Impossible funnel" width="600">
 
 **Strategic Action:** Execute an immediate Tech Audit on the "Session-Break Triad":
 1. Whitelist payment gateways (PayPal, Stripe) to prevent referral overwriting.
@@ -101,7 +105,8 @@ To perform this audit, a relational data model was built to connect the entire c
 * **Effective Capacity Loss:** ~22% of warehouse labor is tied up in reverse logistics.
 
 **The Insight:** Our supply chain is fighting a civil war. Decomposing the delivery timeline reveals that **inbound returns are actively cannibalizing outbound sales capacity**. Our distribution centers are **prioritizing inventory restocking over revenue capture**, creating a **universal 2.1-day fulfillment lag**. 🔗 **[Access SQL Queries](Strategic_Insights/Structural_Fracture_2.Network_Wide_Fulfillment_Optimization.sql)**
-<br><img src="Visuals/APEX_fulfillment.png" alt="Fulfillment delays" width="600">
+
+<img src="Visuals/APEX_fulfillment.png" alt="Fulfillment delays" width="600">
 
 **Strategic Action:** Implement a **'Clean Flow' SOP**: a strict operational decoupling that mandates all outbound orders clear in <24 hours before labor shifts to returns processing. Launch a 4-week pilot in Reno, NV to stress-test this protocol.
 
@@ -120,7 +125,8 @@ To perform this audit, a relational data model was built to connect the entire c
 * **Retention Reality:** Drops to 4.29% by Month 4 across *all* segments.
 
 **The Insight:** Customer retention degrades structurally regardless of how much they spend; the **"leaky bucket" is a reality of our model**. However, **First Order Value is a massive predictor of lifetime worth**. Customers starting with a basket >$90 generate a **56% lift in LTV**, yet share the exact same churn curve as low-value buyers. **Loyalty is static, but entry point is dynamic.** 🔗 **[Access SQL Queries](Strategic_Insights/The_First_Order_Multiplier.sql)**
-<br><img src="Visuals/LTVs.png" alt="LTV curves" width="600">
+
+<img src="Visuals/LTVs.png" alt="LTV curves" width="600">
 
 **Strategic Action:** Transition from Generic Conversion to **Threshold Engineering**. Replace flat acquisition discounts with Tiered Thresholds (e.g., "Save $20 on Orders >$100") to force users to self-select into the High-Value tier on Day 1.
 
@@ -130,7 +136,8 @@ To perform this audit, a relational data model was built to connect the entire c
 **Stakeholder:** Head of Retention | **Global Revenue Impact:** ~$39M
 
 By dividing our 122k+ user base into **actionable RFM (Recency, Frequency, Monetary) cohorts**, we isolated **three segments requiring distinct, data-driven interventions**. 🔗 **[Access SQL Queries](Strategic_Insights/rfm_strategic_insights.sql)**
-<br><img src="Visuals/APEX_RFM.png" alt="RFM Segments" width="600">
+
+<img src="Visuals/APEX_RFM.png" alt="RFM Segments" width="600">
 
 **A. The "Sleeping Giant" (Reactivation)** | **Priority:** 🔴 CRITICAL
 * **The Problem:** **$33.3M in dormant revenue** is tied to 53k users in the "At Risk / Can't Lose" segment.
@@ -187,4 +194,3 @@ Deployed automated **Dataform Assertions** and defensive SQL to guarantee 100% s
 ### <a id="edge-case"></a>Challenges and Roadblocks
 * **The Edge Case:** Logistical assertions flagged 509 order items (out of ~545k) where `returned_at` preceded `delivered_at` (e.g., carrier "Return to Sender" events).
 * **The Solution & Impact:** Instead of silently filtering anomalies in Staging—which skews source-to-warehouse record counts—I engineered a `has_timeline_anomaly` boolean flag in the Silver layer. This preserved raw data for logistics QA while allowing Gold layer LTV models to cleanly bypass bad records via `WHERE has_timeline_anomaly = FALSE`.
-
