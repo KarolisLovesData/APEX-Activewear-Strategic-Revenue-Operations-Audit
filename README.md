@@ -157,14 +157,14 @@ By dividing our 122k+ user base into **actionable RFM (Recency, Frequency, Monet
 ### <a id="predictive-ai"></a>3. Predictive AI: The "Sleeping Giant" Intercept
 **Stakeholder:** Head of Retention | **Technology:** BigQuery ML (XGBoost)
 
-**The Insight:** Relying solely on RFM segmentation is inherently reactive; by the time a user is classified as a "Sleeping Giant," they have already been dormant for 6 months. To shift from reactive win-backs to preemptive intervention, I engineered an in-warehouse predictive classifier to identify users *before* they churn.
+**The Insight:** RFM segmentation is **inherently reactive**—by the time a user is labeled a "Sleeping Giant," they have already been dormant for 6 months. To pivot to **preemptive intervention**, I engineered an in-warehouse classifier to identify high-risk users *before* they churn.
 
 **Strategic Action & Technical Implementation:**
-* **Point-in-Time Feature Engineering:** Constructed a 30-day snapshotting window in SQL to prevent data leakage, forcing the AI to learn from historical features (Frequency, Return Rates, Delivery Latency) exactly as they appeared prior to the churn event.
-* **In-Warehouse ML:** Leveraged BigQuery ML to train an XGBoost classifier (`BOOSTED_TREE_CLASSIFIER`) directly on the Silver layer, eliminating the need for brittle external Python data pipelines. 
-* **Model Evaluation & Data Limitations:** The end-to-end predictive pipeline is fully operational. However, because the underlying dataset was synthetically generated with random distributions, the model achieved a baseline ROC AUC of 0.51. This served as a perfect real-world demonstration of a core data science principle: advanced algorithms cannot manufacture signal from random noise. 
+* **Point-in-Time Feature Engineering:** Constructed a **30-day SQL snapshot window** to prevent data leakage. This forced the AI to learn from historical signals (**Frequency, Return Rates, Delivery Latency**) exactly as they appeared prior to the churn event.
+* **In-Warehouse ML:** Leveraged **BigQuery ML** to train an **XGBoost classifier** (`BOOSTED_TREE_CLASSIFIER`) directly on the Silver layer, eliminating brittle external Python data pipelines. 
+* **Model Evaluation & Reality Check:** The pipeline is fully operational. Because the dataset was synthetically generated with random distributions, the baseline **ROC AUC scored 0.51**—proving a core data science principle: **advanced algorithms cannot manufacture signal from random noise**. 
 
-**Business Impact:** The pipeline is now perfectly staged to ingest real production data. Utilizing automated hyperparameter tuning, it generates a daily "Live Risk List," allowing marketing to trigger the $50 SMS credit preemptively during the critical 30-day window before dormancy.
+**Business Impact:** The pipeline is production-ready. Utilizing **automated hyperparameter tuning**, it dynamically generates a **"Live Risk List,"** empowering marketing to trigger $50 SMS win-back credits during the critical **30-day pre-churn window**.
 
 ***
 
