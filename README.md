@@ -31,7 +31,7 @@
 **Key Deliverables & Identified ROI:**
 * **$34.3M Attribution Recovery:** Diagnosed mid-funnel session breaks causing 68% of revenue to be misattributed to "Direct" traffic.
 * **$33.3M Retention Target:** Deployed RFM segmentation to isolate dormant "Sleeping Giant" users globally.
-* **Predictive Churn Automation:** Engineered an in-warehouse XGBoost machine learning model to intercept churning users *before* they go dormant.
+* **Predictive Churn Automation:** Built an early-warning model that identifies users 30 days before they go dormant and churn, enabling marketing to directly intercept and protect at-risk revenue.
 * **21% Fulfillment Speed Gain:** Proposed a 'Clean Flow' protocol to cut delivery lag from 5.1 to 4.1 days.
 
 ***
@@ -154,7 +154,7 @@ By dividing our 122k+ user base into **actionable RFM (Recency, Frequency, Monet
 * **The Action:** **Merge "Champions" ($1,402 LTV) with "Loyal Customers" ($890 LTV)** to build a statistically stable global seed audience of 6,663 users. 
 * **The Impact:** Provides ad algorithms with the critical mass of data needed to **reliably clone high-value users** in international markets.
 
-### <a id="predictive-ai"></a>3. Predictive AI: The "Sleeping Giant" Intercept
+### <a id="predictive-ai"></a> 🧠 3. Predictive AI: The "Sleeping Giant" Intercept
 **Stakeholder:** Head of Retention | **Technology:** BigQuery ML (XGBoost)
 
 **The Insight:** RFM segmentation is **inherently reactive**—by the time a user is labeled a "Sleeping Giant," they have already been dormant for 6 months. To pivot to **preemptive intervention**, I engineered an in-warehouse classifier to identify high-risk users *before* they churn. **[Access SQL Queries](Strategic_Insights/BigQuery_ML_(XGBoost).sql)**
