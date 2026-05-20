@@ -112,8 +112,6 @@ user_lifecycle_stats AS (
     SUM(CASE WHEN oh.order_created_at <= snapshot_date THEN oh.order_returns END) AS total_returns,
     SUM(CASE WHEN oh.order_created_at <= snapshot_date THEN oh.cancelled_orders END) AS total_cancelled,
     ROUND(AVG(CASE WHEN oh.order_created_at <= snapshot_date THEN oh.delivery_hours END), 2) AS avg_delivery_hours,
-    
-    -- Target Metric works perfectly now because the timestamps align
     MAX(CASE WHEN oh.order_created_at = u.first_order_timestamp_marker THEN oh.order_total ELSE 0 END) AS first_order_value
 
   FROM user_base_profiles u
