@@ -1,8 +1,47 @@
+
+-- Predictive Churn Modeling: Model Training & Hyperparameter Tuning
+-- Trains an XGBoost classifier in BigQuery ML to predict user churn.
+-- Utilizes automated tuning to optimize for ROC AUC, balances class weights, 
+-- and enables global explanations for feature importance.
+
+CREATE OR REPLACE MODEL `apex-activewear.silver_layer.xgboost_churn_model`
+OPTIONS(
+  model_type='BOOSTED_TREE_CLASSIFIER',
+  input_label_cols=['has_churned'],
+  auto_class_weights=TRUE,
+  
+  -- Hyperparameter Tuning Configuration
+  num_trials=20,           -- Total number of combinations to evaluate
+  max_parallel_trials=2,   -- Number of concurrent training trials (speeds up training execution)
+  hparam_tuning_objectives=['roc_auc'], 
+  
+  -- Model Interpretability
+  enable_global_explain=TRUE
+) AS
+SELECT
+  -- Behavioral and Operational Features
+  days_to_value,
+  total_order_count,
+  bought_high_risk_gear,
+  first_order_value,
+  avg_delivery_hours,
+  total_returns,
+  total_cancelled,
+  
+  -- Target Label (BigQuery uses the underlying clustering grid to process this stream efficiently)
+  has_churned
+FROM `apex-activewear.silver_layer.user_churn_data`; -- Replace with _v3 if you chose the blue-green deployment name
+
+
+
+
+
+
+
 -- Predictive Churn Modeling: Feature Engineering & Label Generation
 -- Constructs the training dataset using a 30-day snapshot to prevent data leakage.
 -- Features are aggregated prior to the snapshot; the label evaluates if the user 
 -- crossed the 180-day dormancy threshold during the subsequent 30-day window.
-
 
 DECLARE snapshot_date TIMESTAMP DEFAULT TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 30 DAY);
 
