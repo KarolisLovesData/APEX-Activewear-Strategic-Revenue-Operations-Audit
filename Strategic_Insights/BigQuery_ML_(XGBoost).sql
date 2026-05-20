@@ -42,21 +42,19 @@ FROM `apex-activewear.silver_layer.user_churn_data`; -- Replace with _v3 if you 
 -- Constructs the training dataset using a 30-day snapshot to prevent data leakage.
 -- Features are aggregated prior to the snapshot; the label evaluates if the user 
 -- crossed the 180-day dormancy threshold during the subsequent 30-day window.
-
 DECLARE snapshot_date TIMESTAMP DEFAULT TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 30 DAY);
-
 
 CREATE OR REPLACE TABLE `apex-activewear.silver_layer.user_churn_data`
 CLUSTER BY has_churned, total_order_count AS
 
--- CTE 1: Isolate high-risk product keys
+-- CTE 1: Safe wildcard keyword match for high-risk products (handles apostrophes and casing)
 WITH high_risk_products AS (
   SELECT product_id 
   FROM `apex-activewear.silver_layer.stg_products` 
-  WHERE category = 'Mens Alpine Outerwear'
+  WHERE LOWER(category) LIKE '%men%s%alpine%outerwear%'
 ),
 
--- CTE 2: Pre-aggregate item-level rows to the order level (Stops Fan-Out)
+-- CTE 2: Compress item-level table to order summaries (Stops Fan-Out early)
 aggregated_order_items AS (
   SELECT 
     oi.order_id,
@@ -69,7 +67,7 @@ aggregated_order_items AS (
   GROUP BY 1
 ),
 
--- CTE 3: Map clean order records to user keys
+-- CTE 3: Map clean order blocks directly to unique user profiles
 user_order_history AS (
   SELECT 
     o.user_id,
@@ -83,43 +81,44 @@ user_order_history AS (
   JOIN aggregated_order_items ai ON o.order_id = ai.order_id
 ),
 
--- CTE 4:Pull first order timestamp directly from stg_orders using a window function
-user_base_profiles AS (
+-- CTE 4: Isolate the true first transaction date anchor per user
+user_first_orders AS (
   SELECT 
-    u.user_id, 
-    u.created_at AS account_created_at, 
-    -- Looks at the orders history to find the true first transaction date per user
-    MIN(o.created_at) OVER(PARTITION BY u.user_id) AS first_order_timestamp_marker 
-  FROM `apex-activewear.silver_layer.stg_users` u
-  LEFT JOIN `apex-activewear.silver_layer.stg_orders` o ON u.user_id = o.user_id
+    user_id,
+    MIN(order_created_at) AS first_order_timestamp_marker
+  FROM user_order_history
+  GROUP BY 1
 ),
 
--- CTE 5: Consolidate features and targets using profile base
+-- CTE 5: Execute conditional feature aggregation over a single data stream read
 user_lifecycle_stats AS (
   SELECT
     u.user_id,
-    u.account_created_at,
-    u.first_order_timestamp_marker,
+    u.created_at AS account_created_at,
+    fo.first_order_timestamp_marker,
     
-    -- Boundary Markers
+    -- Absolute State Operational Anchors
     MAX(oh.order_created_at) AS absolute_last_order,
     MIN(oh.order_created_at) AS first_order_date,
 
-    -- Conditional Features (Historical Snapshot)
+    -- Windowed Training Features (Strictly bound to historical snapshot)
     MAX(CASE WHEN oh.order_created_at <= snapshot_date THEN oh.order_created_at END) AS last_order_before_snapshot,
     COUNT(DISTINCT CASE WHEN oh.order_created_at <= snapshot_date THEN oh.order_created_at END) AS total_order_count,
-    MAX(CASE WHEN oh.order_created_at <= snapshot_date THEN oh.is_high_risk_category END) AS bought_high_risk_gear,
-    SUM(CASE WHEN oh.order_created_at <= snapshot_date THEN oh.order_returns END) AS total_returns,
-    SUM(CASE WHEN oh.order_created_at <= snapshot_date THEN oh.cancelled_orders END) AS total_cancelled,
+    MAX(CASE WHEN oh.order_created_at <= snapshot_date THEN oh.is_high_risk_category ELSE 0 END) AS bought_high_risk_gear,
+    SUM(CASE WHEN oh.order_created_at <= snapshot_date THEN oh.order_returns ELSE 0 END) AS total_returns,
+    SUM(CASE WHEN oh.order_created_at <= snapshot_date THEN oh.cancelled_orders ELSE 0 END) AS total_cancelled,
     ROUND(AVG(CASE WHEN oh.order_created_at <= snapshot_date THEN oh.delivery_hours END), 2) AS avg_delivery_hours,
-    MAX(CASE WHEN oh.order_created_at = u.first_order_timestamp_marker THEN oh.order_total ELSE 0 END) AS first_order_value
+    
+    -- Target Metric extracts dollar total matching the aligned marker pool
+    MAX(CASE WHEN oh.order_created_at = fo.first_order_timestamp_marker THEN oh.order_total ELSE 0 END) AS first_order_value
 
-  FROM user_base_profiles u
+  FROM `apex-activewear.silver_layer.stg_users` u
+  LEFT JOIN user_first_orders fo ON u.user_id = fo.user_id
   LEFT JOIN user_order_history oh ON u.user_id = oh.user_id
-  GROUP BY u.user_id, u.account_created_at, u.first_order_timestamp_marker
+  GROUP BY u.user_id, u.created_at, fo.first_order_timestamp_marker
 )
 
--- Final Assembly Layer
+-- Final Selection, Label Computations, and Data Pruning Filters
 SELECT
   user_id,
   ROUND(DATE_DIFF(first_order_date, account_created_at, HOUR)/24, 2) AS days_to_value,
@@ -130,6 +129,7 @@ SELECT
   COALESCE(total_returns, 0) AS total_returns,
   COALESCE(total_cancelled, 0) AS total_cancelled,
   
+  -- Target Churn Label Output
   CASE 
     WHEN DATE_DIFF(snapshot_date, last_order_before_snapshot, DAY) < 180 
     AND DATE_DIFF(CURRENT_TIMESTAMP(), absolute_last_order, DAY) >= 180 
@@ -137,4 +137,5 @@ SELECT
     ELSE FALSE 
   END AS has_churned
 FROM user_lifecycle_stats
+-- Restrict rows to users who were considered alive at the point of the historical snapshot
 WHERE DATE_DIFF(snapshot_date, last_order_before_snapshot, DAY) < 180;
