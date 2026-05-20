@@ -83,7 +83,7 @@ user_order_history AS (
   JOIN aggregated_order_items ai ON o.order_id = ai.order_id
 ),
 
--- CTE 4: FIXED - Pull first order timestamp directly from stg_orders using a window function
+-- CTE 4:Pull first order timestamp directly from stg_orders using a window function
 user_base_profiles AS (
   SELECT 
     u.user_id, 
@@ -94,7 +94,7 @@ user_base_profiles AS (
   LEFT JOIN `apex-activewear.silver_layer.stg_orders` o ON u.user_id = o.user_id
 ),
 
--- CTE 5: Consolidate features and targets using our corrected profile base
+-- CTE 5: Consolidate features and targets using profile base
 user_lifecycle_stats AS (
   SELECT
     u.user_id,
