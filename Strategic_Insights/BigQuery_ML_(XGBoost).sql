@@ -48,7 +48,7 @@ DECLARE snapshot_date TIMESTAMP DEFAULT TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTER
 CREATE OR REPLACE TABLE `apex-activewear.silver_layer.user_churn_data` 
 CLUSTER BY has_churned, total_order_count AS
 
--- CTE 1: Isolate high-risk product keys to avoid joining the full product catalog later
+-- CTE 1: Isolate high-risk product category (highest return rates) to avoid joining the full product catalog later ans see in a user bought from it
 WITH high_risk_products AS (
   SELECT product_id 
   FROM `apex-activewear.silver_layer.stg_products` 
