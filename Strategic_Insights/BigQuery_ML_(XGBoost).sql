@@ -45,17 +45,18 @@ FROM `apex-activewear.silver_layer.user_churn_data`; -- Replace with _v3 if you 
 
 DECLARE snapshot_date TIMESTAMP DEFAULT TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 30 DAY);
 
-CREATE OR REPLACE TABLE `apex-activewear.silver_layer.user_churn_data` 
+
+CREATE OR REPLACE TABLE `apex-activewear.silver_layer.user_churn_data`
 CLUSTER BY has_churned, total_order_count AS
 
--- CTE 1: Isolate high-risk product category (highest return rates) to avoid joining the full product catalog later ans see in a user bought from it
+-- CTE 1: Isolate high-risk product keys
 WITH high_risk_products AS (
   SELECT product_id 
   FROM `apex-activewear.silver_layer.stg_products` 
   WHERE category = 'Mens Alpine Outerwear'
 ),
 
--- CTE 2: Pre-aggregate item-level rows to the order level
+-- CTE 2: Pre-aggregate item-level rows to the order level (Stops Fan-Out)
 aggregated_order_items AS (
   SELECT 
     oi.order_id,
@@ -82,20 +83,23 @@ user_order_history AS (
   JOIN aggregated_order_items ai ON o.order_id = ai.order_id
 ),
 
--- CTE 4: Isolate user account foundation metadata along with their first purchase timestamp
+-- CTE 4: FIXED - Pull first order timestamp directly from stg_orders using a window function
 user_base_profiles AS (
   SELECT 
-    user_id, 
-    created_at AS account_created_at, 
-    MIN(created_at) OVER(PARTITION BY user_id) AS first_order_timestamp_marker 
-  FROM `apex-activewear.silver_layer.stg_users`
+    u.user_id, 
+    u.created_at AS account_created_at, 
+    -- Looks at the orders history to find the true first transaction date per user
+    MIN(o.created_at) OVER(PARTITION BY u.user_id) AS first_order_timestamp_marker 
+  FROM `apex-activewear.silver_layer.stg_users` u
+  LEFT JOIN `apex-activewear.silver_layer.stg_orders` o ON u.user_id = o.user_id
 ),
 
--- CTE 5: Consolidate historical features and target markers in a single execution pass
+-- CTE 5: Consolidate features and targets using our corrected profile base
 user_lifecycle_stats AS (
   SELECT
     u.user_id,
     u.account_created_at,
+    u.first_order_timestamp_marker,
     
     -- Boundary Markers
     MAX(oh.order_created_at) AS absolute_last_order,
@@ -109,7 +113,7 @@ user_lifecycle_stats AS (
     SUM(CASE WHEN oh.order_created_at <= snapshot_date THEN oh.cancelled_orders END) AS total_cancelled,
     ROUND(AVG(CASE WHEN oh.order_created_at <= snapshot_date THEN oh.delivery_hours END), 2) AS avg_delivery_hours,
     
-    -- Target Metric evaluated against the initial timestamp marker
+    -- Target Metric works perfectly now because the timestamps align
     MAX(CASE WHEN oh.order_created_at = u.first_order_timestamp_marker THEN oh.order_total ELSE 0 END) AS first_order_value
 
   FROM user_base_profiles u
@@ -117,7 +121,7 @@ user_lifecycle_stats AS (
   GROUP BY u.user_id, u.account_created_at, u.first_order_timestamp_marker
 )
 
--- Final Assembly Layer: Calculate data labels and filter data bounds
+-- Final Assembly Layer
 SELECT
   user_id,
   ROUND(DATE_DIFF(first_order_date, account_created_at, HOUR)/24, 2) AS days_to_value,
