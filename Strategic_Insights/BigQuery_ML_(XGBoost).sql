@@ -1,4 +1,3 @@
-
 -- Predictive Churn Modeling: Model Training & Hyperparameter Tuning
 -- Trains an XGBoost classifier in BigQuery ML to predict user churn.
 -- Utilizes automated tuning to optimize for ROC AUC, balances class weights, 
@@ -31,9 +30,6 @@ SELECT
   -- Target Label (BigQuery uses the underlying clustering grid to process this stream efficiently)
   has_churned
 FROM `apex-activewear.silver_layer.user_churn_data`; -- Replace with _v3 if you chose the blue-green deployment name
-
-
-
 
 
 
