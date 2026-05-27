@@ -1,6 +1,5 @@
 # APEX-Activewear-Strategic-Revenue-Operations-Audit
 
-**NOTE:** This is a comprehensive portfolio project utilizing a simulated enterprise dataset. The metrics, company names, and financial figures were constructed to demonstrate production-grade Analytics Engineering, Medallion Architecture, and business-focused data modeling.
 
 ## ⚡ Project Snapshot
 * **Role:** Analytics Engineer
