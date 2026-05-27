@@ -1,13 +1,16 @@
+# APEX-Activewear-Strategic-Revenue-Operations-Audit
 
- # APEX-Activewear-Strategic-Revenue-Operations-Audit 
+**NOTE:** This is a comprehensive portfolio project utilizing a simulated enterprise dataset. The metrics, company names, and financial figures were constructed to demonstrate production-grade Analytics Engineering, Medallion Architecture, and business-focused data modeling.
 
+## ⚡ Project Snapshot
+* **Role:** Analytics Engineer
+* **Core Stack:** GCP (BigQuery, Cloud Functions), Cloud Dataform (SQLX), BigQuery ML, Python (Google GenAI SDK)
+* **Architecture:** Medallion (Bronze / Silver / Gold), Event-Driven Ingestion
 
-**NOTE:** This is a comprehensive portfolio project utilizing a simulated enterprise dataset. The metrics, company names, and financial figures were constructed to demonstrate production-grade Analytics Engineering, Medallion Architecture, and business-focused data modeling. 
+---
 
- 
 ## Table of Contents
 * [Executive Summary & Business Impact](#executive-summary)
-* [Data Architecture & Scope](#data-architecture)
 * [Key Findings: The "Profit Paradox"](#key-findings)
 * [I. Structural Fractures (Revenue Leakage)](#structural-fractures)
   * [1. Critical Attribution Leakage (The "Dark Traffic" Crisis)](#attribution-leakage)
@@ -16,372 +19,129 @@
   * [1. The "First Order" Multiplier (LTV Optimization)](#first-order-multiplier)
   * [2. RFM Strategic Insight: Reclaiming & Scaling](#rfm-insight)
   * [3. Predictive AI: The "Sleeping Giant" Intercept](#predictive-ai)
-* [III. Democratizing Data: AI-Powered BI Governance](#ai-governance)
-* [🛠️ Analytics Engineering & Data Quality](#analytics-engineering)
-  * [Technical Implementation: Production-Grade Data Pipeline](#tech-implementation)
- 
+* [Bonus: AI-Powered BI Governance](#ai-governance)
+* [🛠️ Analytics Engineering & Data Architecture](#analytics-engineering)
+  * [Data Scope & ERD](#data-scope)
+  * [Medallion Pipeline & Guardrails](#tech-implementation)
 
- 
-# <a id="executive-summary"></a>Executive Summary & Business Impact 
+---
 
-  
+# <a id="executive-summary"></a>Executive Summary & Business Impact
 
-**APEX Activewear** has reached a pivotal operational crossroads. As a premier retailer specializing in high-performance alpine outerwear, technical footwear, and adventure-ready gear, we have successfully scaled to **$48.85M in realized lifetime revenue** (net of returns and cancellations) between January 2023 and early 2026. With over **436K+** orders processed, we have proven our market fit across the United States, Mexico, and Canada, establishing solid unit economics that include a **$148 AOV** and a **53.9% Gross Margin** on retained sales. 
+**APEX Activewear** is a simulated e-commerce dataset scaled to **$48.85M in realized lifetime revenue** (net of returns and cancellations) across North America, built on over **436K+** processed orders, a **$148 AOV**, and a **53.9% Gross Margin**.
 
-  
+**The Business Problem:** Top-line growth decelerated from 344% YoY to just 9.8%, exposing structural revenue leakage. A diagnostic audit of the revenue engine revealed four systemic risks obscuring profitability. **[Access SQL Queries](Strategic_Insights/Executive_Summary.sql)**
 
-**Business Problem:** Despite strong foundational metrics, growth has stalled from 344% YoY to just 9.8%. A diagnostic audit of the revenue engine revealed four structural risks obscuring profitability. **[Access SQL Queries](Strategic_Insights/Executive_Summary.sql)** 
+**Key Deliverables & Identified ROI:**
+* **$34.3M Attribution Recovery:** Diagnosed mid-funnel session breaks misattributing 68% of revenue to "Direct" traffic.
+* **$33.3M Retention Target:** Deployed RFM segmentation to isolate dormant "Sleeping Giant" users globally.
+* **Predictive Churn Automation:** Built an early-warning ML model identifying users 30 days before they churn.
+* **21% Fulfillment Speed Gain:** Proposed a 'Clean Flow' protocol to cut delivery lag from 5.1 to 4.1 days.
 
-  
+---
 
-**Key Deliverables & Identified ROI:** 
+# <a id="key-findings"></a>Key Findings: The "Profit Paradox"
 
-* **$34.3M Attribution Recovery:** Diagnosed mid-funnel session breaks causing 68% of revenue to be misattributed to "Direct" traffic. 
+* **Growth Deceleration:** Momentum dropped from a peak of **344%** (Q2 2023) to **9.8%** (Q4 2025). Future revenue gains must come from maximizing Lifetime Value (LTV) rather than net-new acquisition. 🔗 **[Access SQL Queries](Strategic_Insights/Key_Findings__Growth_Deceleration.sql)**
+  <img src="./Visuals/APEX Growth.png" alt="APEX Growth" width="600">
 
-* **$33.3M Retention Target:** Deployed RFM segmentation to isolate dormant "Sleeping Giant" users globally. 
+* **Critical Attribution Leakage:** We are "flying blind" on **68.3%** of total revenue. Untraceable mid-funnel breaks are starving ad algorithms and inflating Customer Acquisition Cost (CAC). 🔗 **[Access SQL Queries](Strategic_Insights/Key_findings__Critical_Attribution_Leakage.sql)**
+  <img src="./Visuals/Revenue_by_traffic_source.png" alt="Revenue by traffic source" width="600">
 
-* **Predictive Churn Automation:** Built an early-warning model that identifies users 30 days before they go dormant and churn, enabling marketing to directly intercept and protect at-risk revenue. 
+* **Category-Specific Profit Drag:** Men's Alpine Outerwear incurs **$3.2M** in return losses. A **~24% total loss rate** across top categories means one-quarter of operational effort generates zero realized revenue. 🔗 **[Access SQL Queries](Strategic_Insights/Key_findings__Category-Specific_Profit_Drag.sql)**
+  <img src="./Visuals/APEX_product_leakage.png" alt="Product leakage" width="600">
 
-* **21% Fulfillment Speed Gain:** Proposed a 'Clean Flow' protocol to cut delivery lag from 5.1 to 4.1 days. 
+* **Systemic Retention Risk:** RFM segmentation reveals **$33.3M** in lifetime revenue is trapped globally in the dormant "At Risk / Can't Lose" segment. 🔗 **[Access SQL Queries](Strategic_Insights/Key_findings__Geographic_Saturation.sql)**
 
-  
+**The Strategic Pivot:** The data confirms APEX must transition to a value-driven model by fixing **Structural Fractures** (Logistics & Attribution) and unlocking **Dormant Opportunities** (LTV & Predictive Churn).
 
-*** 
+---
 
-  
+# <a id="structural-fractures"></a>I. Structural Fractures (Revenue Leakage)
 
-# <a id="data-architecture"></a>Data Architecture & Scope  
+### <a id="attribution-leakage"></a>1. Critical Attribution Leakage (The "Dark Traffic" Crisis)
+**Stakeholder:** CMO & Data Engineering Lead | **Priority:** 🔴 CRITICAL
 
-  
+* **Insight:** Genuine users don't "teleport" to checkout. The complete absence of funnel history for 225k+ orders proves mid-session tracking breaks are creating "dark traffic," starving paid ad algorithms of conversion data and artificially inflating our CAC. 🔗 **[Access SQL Queries](Strategic_Insights/Structural_Fractures_(Revenue_Leakage).sql)**
+* **Action:** Execute an immediate Tech Audit on the "Session-Break Triad" (whitelist payment gateways, verify cross-domain cookies, audit 301 redirect UTMs).
+* **Impact:** Re-attribute **~$34.3M** to its true source, allowing marketing to scale budgets based on True ROAS.
 
-To perform this audit, a relational data model was built to connect the entire customer lifecycle—from the initial website visit to the final delivery and potential return. By linking marketing events, transactions, and logistics, I created a **"source of truth"** to identify specific friction points where revenue was leaking and margins were being eroded. (Note: the tables in the ERD are the **Staging Layer** (the stg_ nodes), see the **Directed Acyclic Graph (DAG)** and full **Medallion Transformation** flow in the [Analytics Engineering section](#analytics-engineering).)  
+<img src="Visuals/Impossible_funnel.png" alt="Impossible funnel" width="600">
 
-  
+### <a id="fulfillment-optimization"></a>2. Network-Wide Fulfillment Optimization
+**Stakeholder:** COO & Supply Chain Lead | **Priority:** 🟠 HIGH
 
-**APEX Activewear Entity Relationship Diagram:** 
+* **Insight:** Inbound returns are actively cannibalizing outbound sales capacity. Distribution centers are prioritizing inventory restocking over revenue capture, creating a universal 2.1-day fulfillment lag. 🔗 **[Access SQL Queries](Strategic_Insights/Structural_Fracture_2.Network_Wide_Fulfillment_Optimization.sql)**
+* **Action:** Implement a **'Clean Flow' SOP**, a strict operational decoupling mandating all outbound orders clear in <24 hours before labor shifts to returns. Launch a 4-week pilot in Reno, NV.
+* **Impact:** Compresses total fulfillment cycle time from 5.1 to 4.1 days (a **21%** speed gain) without requiring carrier shipping upgrades.
 
-  
+<img src="Visuals/APEX_fulfillment.png" alt="Fulfillment delays" width="600">
 
-<img src="./Visuals/apex_activewear_erd.png" alt="Apex Activewear ERD" width="800"> 
+---
 
-  
+# <a id="dormant-opportunities"></a>II. Dormant Opportunities (Value Unlocks)
 
-**Audit Scale & Data Volume:** 
+### <a id="first-order-multiplier"></a>1. The "First Order" Multiplier (LTV Optimization)
+**Stakeholder:** Head of Growth | **Priority:** 🟠 HIGH
 
-* _stg_online_events_ (fact table): **1.33M** online events and user touchpoints captured. 
+* **Insight:** Customer retention degrades structurally over time, but **First Order Value is a massive predictor of lifetime worth**. Customers starting with a basket >$90 generate a **56% lift in LTV**, yet share the exact same churn curve as low-value buyers. 🔗 **[Access SQL Queries](Strategic_Insights/The_First_Order_Multiplier.sql)**
+* **Action:** Transition from flat discounts to **Tiered Thresholds** (e.g., "Save $20 on Orders >$100") to force users to self-select into the High-Value tier on Day 1.
+* **Impact:** Unlocks **$185 incremental LTV** per user. Nudging just 1,000 baseline users across this threshold generates $185,000 in risk-free revenue.
 
-* _stg_orders_: **436K+** orders analyzed split across **122K+** unique users in the _stg_users_ table. 
+<img src="Visuals/LTVs.png" alt="LTV curves" width="600">
 
-* _stg_order_items_ (fact table): **544K+** order records processed across the US, Canada, and Mexico. 
+### <a id="rfm-insight"></a>2. RFM Strategic Insight: Reclaiming & Scaling
+**Stakeholder:** Head of Retention | **Global Revenue Impact:** ~$39M
 
-* _stg_products_: performance and return-rate data for over **2000** unique SKUs. 
+Dividing our 122k+ user base into actionable RFM (Recency, Frequency, Monetary) cohorts isolates three segments requiring distinct interventions. 🔗 **[Access SQL Queries](Strategic_Insights/rfm_strategic_insights.sql)**
 
-* _stg_distribution_centers_: integration with data from **11** distribution centers to reconcile realized revenue against operational costs. 
+<img src="Visuals/APEX_RFM.png" alt="RFM Segments" width="600">
 
-  
+* **A. The "Sleeping Giant" (Reactivation):** $33.3M is dormant. Deploy an SMS-first "Pending Credit" sequence utilizing loss aversion to reclaim ~$3.33M at a conservative 10% win-back rate.
+* **B. The "Tipping Point" (Upsell):** 10,996 active users haven't reached the "Loyal" tier. Deploy targeted bundle offers to inflate AOV, migrating 20% of this group to generate ~$1.1M in incremental LTV.
+* **C. Cloning the Champions (Acquisition):** Merge 122 international "Champions" with "Loyal Customers" to build a statistically stable seed audience, providing ad pixels the critical mass needed to clone high-value users.
 
-*** 
+### <a id="predictive-ai"></a> 🧠 3. Predictive AI: The "Sleeping Giant" Intercept
+**Stakeholder:** Head of Retention | **Technology:** BigQuery ML (XGBoost)
 
-  
+* **Insight:** RFM is inherently reactive. To pivot to preemptive intervention, I engineered a `BOOSTED_TREE_CLASSIFIER` directly in the Silver layer using BigQuery ML to identify high-risk users *before* they churn. 🔗 **[Access SQL Queries](Strategic_Insights/BigQuery_ML_(XGBoost).sql)**
+* **Action:** Constructed a 30-day SQL snapshot window for feature engineering (Frequency, Return Rates, Delivery Latency) to prevent data leakage and isolate predictive behavioral signals (e.g., fast Time-to-Value correlations with high returns).
+* **Impact:** Dynamically generates a **"Live Risk List,"** allowing marketing to trigger $50 SMS win-back credits precisely during the critical 30-day pre-churn window.
 
-# <a id="key-findings"></a>Key Findings: The "Profit Paradox" 
+---
 
-  
+# <a id="ai-governance"></a>Bonus: AI-Powered BI Governance
 
-* **Growth Deceleration:** Momentum dropped from a peak of **344%** (Q2 2023) to just **9.8%** (Q4 2025). Future revenue gains must now come from maximizing customer Lifetime Value (LTV) rather than relying on new order volume. 🔗 **[Access SQL Queries](Strategic_Insights/Key_Findings__Growth_Deceleration.sql)** 
-
-   
-
-  <img src="./Visuals/APEX Growth.png" alt="APEX Growth" width="600"> 
-
-  
-
-* **Critical Attribution Leakage:** We are "flying blind" on **68.3%** of total revenue. Mid-funnel tracking breaks mean we cannot trace the ROI on **~$34.3M** of revenue, leading to massive inefficiencies in paid ad spend. 🔗 **[Access SQL Queries](Strategic_Insights/Key_findings__Critical_Attribution_Leakage.sql)** 
-
-   
-
-  <img src="./Visuals/Revenue_by_traffic_source.png" alt="Revenue by traffic source" width="600"> 
-
-  
-
-* **Category-Specific Profit Drag:** Men's Alpine Outerwear is our top revenue driver, but incurs **$3.2M** in return losses. Across top categories, a **~24% total loss rate** (returns + cancellations) means one-quarter of operational effort generates zero realized revenue. 🔗 **[Access SQL Queries](Strategic_Insights/Key_findings__Category-Specific_Profit_Drag.sql)** 
-
-   
-
-  <img src="./Visuals/APEX_product_leakage.png" alt="Product leakage" width="600"> 
-
-  
-
-* **Systemic Retention Risk:** The US market is saturated (76.3% of revenue). Furthermore, our RFM segmentation reveals **$33.3M** in lifetime revenue is trapped globally in the dormant "At Risk / Can't Lose" segment, proving retention mechanics are failing across all borders. 🔗 **[Access SQL Queries](Strategic_Insights/Key_findings__Geographic_Saturation.sql)** 
-
-  
-
-**The Strategic Pivot:** The data confirms APEX must transition to a value-driven model. The rest of this audit targets two specific areas to execute this pivot: 
-
-1. **Structural Fractures:** Identifying silent operational errors (Attribution & Logistics) leaking revenue. 
-
-2. **Dormant Opportunities:** Exploiting RFM segments and AI models to reclaim LTV and scale profitably. 
-
-  
-
-*** 
-
-  
-
-# <a id="structural-fractures"></a>I. Structural Fractures (Revenue Leakage) 
-
-  
-
-### <a id="attribution-leakage"></a>1. Critical Attribution Leakage (The "Dark Traffic" Crisis) 
-
-**Stakeholder:** CMO & Data Engineering Lead | **Priority:** 🔴 CRITICAL 
-
-  
-
-**📊 Key Metrics:** 
-
-* **Impacted Revenue:** ~$34.3M (68.4% of total revenue is currently untraceable) 
-
-* **Traffic Split:** 53.5% "Direct" | 14.9% "Unattributed" 
-
-* **Signal Loss:** 100% of "Direct" buyers showed 0 Product Views prior to checkout. 
-
-  
-
-**The Insight:** **Genuine users do not "teleport" to checkout**; they browse. The complete absence of funnel history for 225k+ orders proves the **digital thread is severing mid-session**. This is not just a reporting issue; it means we are **starving our paid ad algorithms** (Meta/Google) of conversion data, **artificially inflating our Customer Acquisition Cost (CAC)**. 🔗 **[Access SQL Queries](Strategic_Insights/Structural_Fractures_(Revenue_Leakage).sql)** 
-
-  
-
-<img src="Visuals/Impossible_funnel.png" alt="Impossible funnel" width="600"> 
-
-  
-
-**Strategic Action:** Execute an immediate Tech Audit on the "Session-Break Triad": 
-
-1. Whitelist payment gateways (PayPal, Stripe) to prevent referral overwriting. 
-
-2. Verify cross-domain cookie persistence between the main shop and checkout subdomain. 
-
-3. Ensure 301 redirects are not stripping UTM parameters. 
-
-  
-
-**Business Impact:** Re-attributing ~$34.3M to its true source, allowing marketing to scale budgets based on **True ROAS** rather than blended averages. 
-
-  
-
-### <a id="fulfillment-optimization"></a>2. Network-Wide Fulfillment Optimization 
-
-**Stakeholder:** COO & Supply Chain Lead | **Priority:** 🟠 HIGH 
-
-  
-
-**📊 Key Metrics:** 
-
-* **Avg Shipping Time:** 2.1 Days (Target: <1 Day) 
-
-* **Return Rate:** 21.62%  
-
-* **Effective Capacity Loss:** ~22% of warehouse labor is tied up in reverse logistics. 
-
-  
-
-**The Insight:** Our supply chain is fighting a civil war. Decomposing the delivery timeline reveals that **inbound returns are actively cannibalizing outbound sales capacity**. Our distribution centers are **prioritizing inventory restocking over revenue capture**, creating a **universal 2.1-day fulfillment lag**. 🔗 **[Access SQL Queries](Strategic_Insights/Structural_Fracture_2.Network_Wide_Fulfillment_Optimization.sql)** 
-
-  
-
-<img src="Visuals/APEX_fulfillment.png" alt="Fulfillment delays" width="600"> 
-
-  
-
-**Strategic Action:** Implement a **'Clean Flow' SOP**: a strict operational decoupling that mandates all outbound orders clear in <24 hours before labor shifts to returns processing. Launch a 4-week pilot in Reno, NV to stress-test this protocol. 
-
-  
-
-**Business Impact:** Compresses total fulfillment cycle time from 5.1 to 4.1 days (a **21%** speed gain) without requiring costly carrier shipping upgrades. 
-
-  
-
-*** 
-
-  
-
-# <a id="dormant-opportunities"></a>II. Dormant Opportunities (Value Unlocks) 
-
-  
-
-### <a id="first-order-multiplier"></a>1. The "First Order" Multiplier (LTV Optimization) 
-
-**Stakeholder:** Head of Growth | **Priority:** 🟠 HIGH 
-
-  
-
-**📊 Key Metrics:** 
-
-* **High-Value LTV:** $516 (Triggered when Initial Order >$90)  
-
-* **Low-Value LTV:** $330 (Triggered when Initial Order <$90) 
-
-* **Retention Reality:** Drops to 4.29% by Month 4 across *all* segments. 
-
-  
-
-**The Insight:** Customer retention degrades structurally regardless of how much they spend; the **"leaky bucket" is a reality of our model**. However, **First Order Value is a massive predictor of lifetime worth**. Customers starting with a basket >$90 generate a **56% lift in LTV**, yet share the exact same churn curve as low-value buyers. **Loyalty is static, but entry point is dynamic.** 🔗 **[Access SQL Queries](Strategic_Insights/The_First_Order_Multiplier.sql)** 
-
-  
-
-<img src="Visuals/LTVs.png" alt="LTV curves" width="600"> 
-
-  
-
-**Strategic Action:** Transition from Generic Conversion to **Threshold Engineering**. Replace flat acquisition discounts with Tiered Thresholds (e.g., "Save $20 on Orders >$100") to force users to self-select into the High-Value tier on Day 1. 
-
-  
-
-**Business Impact:** Unlocks $185 incremental LTV per user. Nudging just 1,000 baseline users across this threshold generates $185,000 in risk-free revenue without acquiring a single extra customer. 
-
-  
-
-### <a id="rfm-insight"></a>2. RFM Strategic Insight: Reclaiming & Scaling 
-
-**Stakeholder:** Head of Retention | **Global Revenue Impact:** ~$39M 
-
-  
-
-By dividing our 122k+ user base into **actionable RFM (Recency, Frequency, Monetary) cohorts**, we isolated **three segments requiring distinct, data-driven interventions**. 🔗 **[Access SQL Queries](Strategic_Insights/rfm_strategic_insights.sql)** 
-
-  
-
-<img src="Visuals/APEX_RFM.png" alt="RFM Segments" width="600"> 
-
-  
-
-**A. The "Sleeping Giant" (Reactivation)** | **Priority:** 🔴 CRITICAL 
-
-* **The Problem:** **$33.3M in dormant revenue** is tied to 53k users in the "At Risk / Can't Lose" segment. 
-
-* **The Action:** Deploy an **SMS-first "Pending Credit" sequence** utilizing loss aversion (e.g., *"Your $50 store credit expires tomorrow"*). Dynamically localize language for MX and CA segments. 
-
-* **The Impact:** Even a conservative 10% win-back rate **reclaims ~$3.33M in lost revenue**. 
-
-  
-
-**B. The "Tipping Point" (Upsell)** | **Priority:** 🟠 HIGH 
-
-* **The Problem:** A **"Missing Middle" of 10,996 active users** ($380 Avg LTV) who haven't reached the "Loyal" tier ($890 Avg LTV).  
-
-* **The Action:** Deploy highly targeted "Complete the Set" or bundle offers to **artificially inflate AOV** and push them across the monetary loyalty threshold. 
-
-* **The Impact:** Migrating just 20% of this group to the Loyal tier **generates ~$1.1M in incremental LTV**. 
-
-  
-
-**C. Cloning the Champions (Acquisition)** | **Priority:** 🟡 MEDIUM 
-
-* **The Problem:** We **only have 122 "Champion" users** in Canada and Mexico—far too few to achieve statistical significance for ad pixel training.  
-
-* **The Action:** **Merge "Champions" ($1,402 LTV) with "Loyal Customers" ($890 LTV)** to build a statistically stable global seed audience of 6,663 users.  
-
-* **The Impact:** Provides ad algorithms with the critical mass of data needed to **reliably clone high-value users** in international markets. 
-
-  
-
-### <a id="predictive-ai"></a> 🧠 3. Predictive AI: The "Sleeping Giant" Intercept 
-
-**Stakeholder:** Head of Retention | **Technology:** BigQuery ML (XGBoost) 
-
-  
-
-**The Insight:** RFM segmentation is **inherently reactive**—by the time a user is labeled a "Sleeping Giant," they have already been dormant for 6 months. To pivot to **preemptive intervention**, I engineered an in-warehouse classifier to identify high-risk users *before* they churn, leveraging newly uncovered behavioral signals. 🔗 **[Access SQL Queries](Strategic_Insights/BigQuery_ML_(XGBoost).sql)** 
-
-  
-
-**Business Impact:** The pipeline is fully operational. Utilizing **automated hyperparameter tuning**, it dynamically generates a **"Live Risk List."** This empowers marketing to trigger highly targeted $50 SMS win-back credits precisely during the critical **30-day pre-churn window**, successfully shifting the retention strategy from **reactive recovery to proactive preservation**. 
-
-  
-
-**Strategic Action & Technical Implementation:** 
-
-* **Point-in-Time Feature Engineering:** Constructed a **30-day SQL snapshot window** to prevent data leakage. This forced the AI to learn from historical signals (**Frequency, Return Rates, Delivery Latency**) exactly as they appeared prior to the churn event. 
-
-* **In-Warehouse ML:** Leveraged **BigQuery ML** to train an optimized **XGBoost classifier** (`BOOSTED_TREE_CLASSIFIER`) directly on the Silver layer, eliminating the overhead of brittle external Python data pipelines. 
-
-* **Behavioral Signal Discovery:** By engineering a highly granular **"Time-to-Value"** feature, the model identified that users purchasing high-risk technical gear convert **~20 hours faster** than standard buyers, yet exhibit vastly higher return-driven churn profiles.  
-
-  
-
-# <a id="ai-governance"></a>III. Democratizing Data: AI-Powered BI Governance
-
-### 🤖 Custom Text-to-SQL RAG Layer
 **Target:** Stakeholder Self-Service & Metric Standardization | **Technology:** Python, Google GenAI SDK (`gemini-2.5-flash`), JSON Semantic Layer
 
-**The Problem:** Out-of-the-box LLMs and generalized BI copilots frequently hallucinate business metrics. If a marketing manager asks a standard AI, *"What is our revenue?"*, the AI will blindly sum raw transaction tables, entirely missing APEX's nuanced logic for "Ghost Revenue," timeline anomalies, and our 24% return rate.
+* **The Problem:** Out-of-the-box LLMs hallucinate business logic, blindly summing raw tables and missing crucial logic for "Ghost Revenue" or 24% return rates.
+* **The Solution:** Engineered a custom **Retrieval-Augmented Generation (RAG) Governance CLI** that intercepts stakeholder natural-language questions and forces the AI to adhere to strict Dataform pipeline logic.
+* **Technical Execution:** Built a Python engine that parses raw schemas and `Dataform Assertions` into a structured JSON dictionary. The LLM is prompt-restricted to the `gold_layer`, outputting clean, stripped BigQuery Standard SQL.
+* **Impact:** **"Zero-Hallucination" self-serve analytics.** Stakeholders can query the warehouse in plain English with mathematical certainty that the generated SQL matches the CFO's definition of realized revenue.
 
-**The Solution:** Engineered a custom **Retrieval-Augmented Generation (RAG) Governance application in Python** that intercepts stakeholder natural-language questions and forces the AI to adhere to strict Dataform pipeline logic before writing SQL.
+<img src="./Visuals/rag_cli_demo.gif" alt="RAG CLI Demo" width="600"> 
 
-**Technical Implementation:**
-* **Automated Semantic Compilation:** Built a Python engine that dynamically parses raw table schemas and `Dataform Assertions` (like the `is_realized_revenue` lock) into a structured JSON Context Dictionary. 
-* **Prompt Augmentation:** The application wraps user questions in a heavily governed system prompt. The LLM is restricted to querying only the `gold_layer` and must structurally obey all Medallion architecture business rules.
-* **Defensive Output:** The RAG layer utilizes defensive string parsing to strip away markdown and conversational AI text, returning 100% clean, executable BigQuery Standard SQL.
+---
 
-**Business Impact:** Achieved **"Zero-Hallucination" self-serve analytics**. Stakeholders can now query the data warehouse using plain English through a Command Line Interface (CLI), with absolute mathematical certainty that the AI's generated SQL matches the CFO's definition of realized revenue.
+# <a id="analytics-engineering"></a>🛠️ Analytics Engineering & Data Architecture
 
-<img src="./Visuals/rag_cli_demo.gif" alt="RAG CLI Demo" width="600">  
+To perform this audit, I architected a scalable Medallion pipeline to act as a "source of truth," connecting the entire customer lifecycle—from the initial website visit to the final delivery and potential return.
 
-*** 
+### <a id="data-scope"></a>Data Scope & ERD
+* **Volume:** **1.33M** online events, **436K+** orders, **122K+** unique users, and integration across **11** distribution centers.
+* **Staging Schema:** The ERD below represents the foundational `stg_` nodes.
 
-  
+<img src="./Visuals/apex_activewear_erd.png" alt="Apex Activewear ERD" width="800">
 
-# <a id="analytics-engineering"></a>🛠️ Analytics Engineering & Data Quality 
+### <a id="tech-implementation"></a>Medallion Pipeline & Guardrails
+Enforced a strict `stg_` ➔ `int_` ➔ `mart_` DAG progression using **Cloud Dataform**, centralizing business logic in the Silver layer to eliminate downstream metric drift.
 
-  
+<img src="Visuals/APEX_Activewear Data_Lineage.png" alt="DAG" width="600">
 
-### <a id="tech-implementation"></a>Technical Implementation: Production-Grade Data Pipeline 
-
-Architected a scalable Medallion pipeline (**Google Cloud Dataform, BigQuery**) delivering reliable C-Suite metrics (LTV, Fulfillment Latency, RFM). Enforced a strict `stg_` ➔ `int_` ➔ `mart_` DAG progression, centralizing business logic in the Silver layer to eliminate downstream metric drift.  
-
-  
-
-<img src="Visuals/APEX_Activewear Data_Lineage.png" alt="DAG" width="600">  
-
-  
-
-### <a id="core-stack"></a>Core Technology Stack 
-
-**Google Cloud Platform (GCP), BigQuery ML, Cloud Dataform (SQLX/Medallion), Advanced SQL, Python, Gemini 3.1** 
-
-  
-
-### <a id="infrastructure"></a>Infrastructure & Cost Optimization 
-
-Engineered for "Day 1 Scalability" to support petabyte-scale expansion from a 300MB baseline without structural redesign. 
-
-* **Partitioning & Clustering:** Partitioned tables by time columns to optimize query scans, applied `TIMESTAMP_TRUNC` to manage high-cardinality data and avoid the 4,000-partition limit. Clustered on low-cardinality IDs to prevent block fragmentation. 
-
-* **Dimension Strategy:** Configured low-cardinality reference tables (`stg_distribution_centers`, `stg_products`) as unpartitioned views to eliminate metadata overhead and small-file fragmentation. 
-
-* **Event-Driven Ingestion (Bronze):** Deployed GCS-triggered Cloud Functions for landing files. Centralized source declarations via Dataform JS configs (`bronze_sources.js`) to insulate against upstream schema breaks. 
-
-  
-
-### <a id="guardrails"></a>Defensive Data Modeling & Guardrails 
-
-Deployed automated **Dataform Assertions** and defensive SQL to guarantee 100% schema integrity before data reaches the Gold (Mart) layer: 
-
-* **Circuit Breakers & Integrity:** Built a "Dark Traffic" alert that halts updates if `traffic_source = 'Direct'` exceeds 20% of revenue. Enforced strict null checks on primary keys to prevent "Ghost Revenue." 
-
-* **Temporal Logic Locks:** Validated chronological integrity (`created_at` ➔ `shipped_at` ➔ `delivered_at`). Applied `COALESCE` and `GREATEST` to handle null timestamps and protect financial averages. 
-
-* **Financial Guardrails:** Locked `is_realized_revenue` to valid business statuses and implemented defensive casting (`returned_at` to `TIMESTAMP`) for bulletproof downstream joins. 
-
-* **Attribution QA:** Monitored the 5-minute session-stitching window using safe joins to flag unmapped purchase events and prevent attribution leakage. 
-
-  
-
-### <a id="edge-case"></a>Challenges and Roadblocks 
-
-* **The Edge Case:** Logistical assertions flagged 509 order items (out of ~545k) where `returned_at` preceded `delivered_at` (e.g., carrier "Return to Sender" events). 
-
-* **The Solution & Impact:** Instead of silently filtering anomalies in Staging—which skews source-to-warehouse record counts—I engineered a `has_timeline_anomaly` boolean flag in the Silver layer. This preserved raw data for logistics QA while allowing Gold layer LTV models to cleanly bypass bad records via `WHERE has_timeline_anomaly = FALSE`. 
-
- 
+* **Scalable Architecture:** Designed to scale from 300MB to petabyte volume without structural redesign. Partitioned tables by `TIMESTAMP_TRUNC` to manage high-cardinality data and clustered on low-cardinality IDs to prevent block fragmentation.
+* **Event-Driven Ingestion:** Deployed GCS-triggered Cloud Functions for landing files, with centralized source declarations via Dataform JS configs (`bronze_sources.js`) to insulate against upstream schema breaks.
+* **Defensive Modeling:**
+  * **Circuit Breakers:** Built a "Dark Traffic" alert halting updates if `Direct` traffic exceeds 20% of revenue. Enforced null checks on primary keys.
+  * **Temporal Locks:** Validated chronological integrity (`created_at` ➔ `shipped_at` ➔ `delivered_at`) using `COALESCE` and `GREATEST` to handle nulls and protect financial averages.
+  * **Financial Integrity:** Locked `is_realized_revenue` to valid business statuses and implemented defensive casting for bulletproof downstream joins.
+* **Anomaly Handling:** Instead of filtering edge cases in Staging (e.g., carrier "Return to Sender" events), I engineered a `has_timeline_anomaly` boolean flag in the Silver layer. This preserves raw data for logistics QA while allowing Gold layer LTV models to cleanly bypass bad records.
