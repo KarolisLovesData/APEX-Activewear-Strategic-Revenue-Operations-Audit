@@ -120,6 +120,10 @@ Dividing our 122k+ user base into actionable RFM (Recency, Frequency, Monetary) 
 
 <img src="./Visuals/rag_cli_demo.gif" alt="RAG CLI Demo" width="800">
 
+#### *Ground Truth Verification: Executing the Governed Query in BigQuery*
+
+
+
 ---
 
 # <a id="analytics-engineering"></a>🛠️ Analytics Engineering & Data Architecture
