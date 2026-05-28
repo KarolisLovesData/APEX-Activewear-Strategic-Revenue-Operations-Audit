@@ -118,7 +118,7 @@ Dividing our 122k+ user base into actionable RFM (Recency, Frequency, Monetary) 
 * **Technical Execution:** Built a Python engine to dynamically parse BigQuery schemas and `Dataform Assertions` into a structured JSON dictionary. The LLM is prompt-restricted exclusively to the `gold_layer`, ensuring it outputs clean, compliant BigQuery Standard SQL.
 * **Business Impact:** **"Zero-Hallucination" self-serve analytics.** Stakeholders can now query the warehouse in plain English with mathematical certainty that the generated SQL perfectly matches the CFO's definition of realized revenue.
 
-<img src="./Visuals/Visuals/rag_cli_demo.gif.gif" alt="RAG CLI Demo" width="600">
+<img src="./Visuals/rag_cli_demo.gif.gif" alt="RAG CLI Demo" width="600">
 
 ---
 
