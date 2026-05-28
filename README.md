@@ -122,7 +122,7 @@ Dividing our 122k+ user base into actionable RFM (Recency, Frequency, Monetary) 
 
 #### *Ground Truth Verification: Executing the Governed Query in BigQuery*
 
-<img src="./Visualsbigquery_governance_validation.png" alt="BigQuery Execution Verification" width="800">
+<img src="Visuals/bigquery_governance_validation.png" alt="BigQuery Execution Verification" width="800">
 
 ---
 
