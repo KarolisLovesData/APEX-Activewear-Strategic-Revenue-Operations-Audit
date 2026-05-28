@@ -109,16 +109,16 @@ Dividing our 122k+ user base into actionable RFM (Recency, Frequency, Monetary) 
 
 ---
 
-# <a id="ai-governance"></a>Bonus: AI-Powered BI Governance
+### III. AI-Powered Semantic Layer & BI Governance
 
 **Target:** Stakeholder Self-Service & Metric Standardization | **Technology:** Python, Google GenAI SDK (`gemini-2.5-flash`), JSON Semantic Layer
 
-* **The Problem:** Out-of-the-box LLMs hallucinate business logic, blindly summing raw tables and missing crucial logic for "Ghost Revenue" or 24% return rates.
-* **The Solution:** Engineered a custom **Retrieval-Augmented Generation (RAG) Governance CLI** that intercepts stakeholder natural-language questions and forces the AI to adhere to strict Dataform pipeline logic.
-* **Technical Execution:** Built a Python engine that parses raw schemas and `Dataform Assertions` into a structured JSON dictionary. The LLM is prompt-restricted to the `gold_layer`, outputting clean, stripped BigQuery Standard SQL.
-* **Impact:** **"Zero-Hallucination" self-serve analytics.** Stakeholders can query the warehouse in plain English with mathematical certainty that the generated SQL matches the CFO's definition of realized revenue.
+* **The Bottleneck:** Out-of-the-box LLMs inherently hallucinate business logic. Without guardrails, they blindly query raw tables, missing critical context like "Ghost Revenue" filters or our 24% return rate.
+* **The Architecture:** Engineered a custom **Retrieval-Augmented Generation (RAG) Governance CLI** that intercepts stakeholder natural-language questions and binds the AI strictly to our validated Dataform pipeline logic.
+* **Technical Execution:** Built a Python engine to dynamically parse BigQuery schemas and `Dataform Assertions` into a structured JSON dictionary. The LLM is prompt-restricted exclusively to the `gold_layer`, ensuring it outputs clean, compliant BigQuery Standard SQL.
+* **Business Impact:** **"Zero-Hallucination" self-serve analytics.** Stakeholders can now query the warehouse in plain English with mathematical certainty that the generated SQL perfectly matches the CFO's definition of realized revenue.
 
-<img src="./Visuals/rag_cli_demo.gif" alt="RAG CLI Demo" width="600"> 
+<img src="./Visuals/rag_cli_demo.gif" alt="RAG CLI Demo" width="600">
 
 ---
 
