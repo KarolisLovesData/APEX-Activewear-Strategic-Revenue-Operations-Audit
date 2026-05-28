@@ -18,7 +18,7 @@
   * [1. The "First Order" Multiplier (LTV Optimization)](#first-order-multiplier)
   * [2. RFM Strategic Insight: Reclaiming & Scaling](#rfm-insight)
   * [3. Predictive AI: The "Sleeping Giant" Intercept](#predictive-ai)
-* [Bonus: AI-Powered BI Governance](#ai-governance)
+* [III. AI-Powered Semantic Layer & BI Governance](#ai-governance)
 * [🛠️ Analytics Engineering & Data Architecture](#analytics-engineering)
   * [Data Scope & ERD](#data-scope)
   * [Medallion Pipeline & Guardrails](#tech-implementation)
