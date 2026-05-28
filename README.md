@@ -109,7 +109,7 @@ Dividing our 122k+ user base into actionable RFM (Recency, Frequency, Monetary) 
 
 ---
 
-### III. AI-Powered Semantic Layer & BI Governance
+### <a id="ai-governance"></a>III. AI-Powered Semantic Layer & BI Governance
 
 **Target:** Stakeholder Self-Service & Metric Standardization | **Technology:** Python, Google GenAI SDK (`gemini-2.5-flash`), JSON Semantic Layer
 
