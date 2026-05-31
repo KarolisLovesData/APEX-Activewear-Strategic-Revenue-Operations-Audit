@@ -111,7 +111,7 @@ Dividing our 122k+ user base into actionable RFM (Recency, Frequency, Monetary) 
 
 ### <a id="ai-governance"></a>III. AI-Powered Semantic Layer & BI Governance
 
-**Target:** Stakeholder Self-Service & Metric Standardization | **Technology:** Python, Google GenAI SDK (`gemini-2.5-flash`), JSON Semantic Layer
+**Target:** Stakeholder Self-Service & Metric Standardization | **Technology:** Python, Google GenAI SDK (`gemini-3.5-flash`), JSON Semantic Layer
 
 * **The Bottleneck:** Out-of-the-box LLMs inherently hallucinate business logic. Without guardrails, they blindly query raw tables, missing critical context like "Ghost Revenue" filters or our 24% return rate.
 * **The Architecture:** Engineered a custom **Retrieval-Augmented Generation (RAG) Governance CLI** that intercepts stakeholder natural-language questions and binds the AI strictly to our validated Dataform pipeline logic.
