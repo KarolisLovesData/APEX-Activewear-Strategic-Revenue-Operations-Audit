@@ -1,8 +1,6 @@
 # APEX-Activewear-Strategic-Revenue-Operations-Audit
 
 
-
-
 * **Core Stack:** GCP (BigQuery, Cloud Functions), Cloud Dataform (SQLX), BigQuery ML, Python (Google GenAI SDK)
 * **Architecture:** Medallion (Bronze / Silver / Gold), Event-Driven Ingestion
 
