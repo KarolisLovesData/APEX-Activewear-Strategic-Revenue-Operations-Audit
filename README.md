@@ -1,7 +1,7 @@
 # APEX-Activewear-Strategic-Revenue-Operations-Audit
 
 
-* **Core Stack:** GCP (BigQuery, Cloud Functions), Cloud Dataform (SQLX), BigQuery ML, Python (Google GenAI SDK)
+* **Core Stack:** GCP (BigQuery, Cloud Functions), Cloud Dataform (SQLX), BigQuery ML, Python (Google GenAI SDK), JSON Semantic Layer
 * **Architecture:** Medallion (Bronze / Silver / Gold), Event-Driven Ingestion
 
 ---
@@ -99,7 +99,7 @@ Dividing our 122k+ user base into actionable RFM (Recency, Frequency, Monetary) 
 * **C. Cloning the Champions (Acquisition):** Merge 122 international "Champions" with "Loyal Customers" to build a statistically stable seed audience, providing ad pixels the critical mass needed to clone high-value users.
 
 ### <a id="predictive-ai"></a> 🧠 3. Predictive AI: The "Sleeping Giant" Intercept
-**Stakeholder:** Head of Retention | **Technology:** BigQuery ML (XGBoost)
+**Stakeholder:** Head of Retention 
 
 * **Insight:** RFM is inherently reactive. To pivot to preemptive intervention, I engineered a `BOOSTED_TREE_CLASSIFIER` directly in the Silver layer using BigQuery ML to identify high-risk users *before* they churn. 🔗 **[Access SQL Queries](Strategic_Insights/BigQuery_ML_(XGBoost).sql)**
 * **Action:** Constructed a 30-day SQL snapshot window for feature engineering (Frequency, Return Rates, Delivery Latency) to prevent data leakage and isolate predictive behavioral signals (e.g., fast Time-to-Value correlations with high returns).
@@ -109,7 +109,7 @@ Dividing our 122k+ user base into actionable RFM (Recency, Frequency, Monetary) 
 
 ### <a id="ai-governance"></a>III. AI-Powered Semantic Layer & BI Governance
 
-**Target:** Stakeholder Self-Service & Metric Standardization | **Technology:** Python, Google GenAI SDK (`gemini-3.5-flash`), JSON Semantic Layer
+**Target:** Stakeholder Self-Service & Metric Standardization 
 
 * **The Bottleneck:** Out-of-the-box LLMs inherently hallucinate business logic. Without guardrails, they blindly query raw tables, missing critical context like "Ghost Revenue" filters or our 24% return rate.
 * **The Architecture:** Engineered a custom **Retrieval-Augmented Generation (RAG) Governance CLI** that intercepts stakeholder natural-language questions and binds the AI strictly to our validated Dataform pipeline logic.
