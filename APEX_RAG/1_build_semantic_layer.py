@@ -4,7 +4,7 @@ import json
 
 def build_context():
     # 1. Load the metadata files
-    gov_df = pd.read_csv('Apex Governance LAyer.csv')
+    gov_df = pd.read_csv('Apex Governance Layer.csv')
     schema_df = pd.read_csv('Apex Table Schemas.csv')
 
     # 2. Extract Dataform Assertions for Global LLM Rules
