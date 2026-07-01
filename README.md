@@ -2,7 +2,7 @@
 
 
 
-* **Role:** Analytics Engineer
+
 * **Core Stack:** GCP (BigQuery, Cloud Functions), Cloud Dataform (SQLX), BigQuery ML, Python (Google GenAI SDK)
 * **Architecture:** Medallion (Bronze / Silver / Gold), Event-Driven Ingestion
 
