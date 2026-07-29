@@ -102,8 +102,8 @@ Dividing our 122k+ user base into actionable RFM (Recency, Frequency, Monetary) 
 **Stakeholder:** Head of Retention 
 
 * **Insight:** RFM is inherently reactive. To pivot to preemptive intervention, I engineered a `BOOSTED_TREE_CLASSIFIER` directly in the Silver layer using BigQuery ML to identify high-risk users *before* they churn. 🔗 **[Access SQL Queries](Strategic_Insights/BigQuery_ML_(XGBoost).sql)**
-* **Action:** Constructed a 30-day SQL snapshot window for feature engineering (Frequency, Return Rates, Delivery Latency) to prevent data leakage and isolate predictive behavioral signals (e.g., fast Time-to-Value correlations with high returns).
-* **Impact:** Dynamically generates a **"Live Risk List,"** allowing marketing to trigger $50 SMS win-back credits precisely during the critical 30-day pre-churn window.
+* **Action:** Constructed a 180-day historical SQL snapshot for feature engineering (Frequency, Return Rates, Delivery Latency) to prevent data leakage and isolate predictive behavioral signals (e.g., fast Time-to-Value correlations with high returns). Automated hyperparameter tuning optimized the model for ROC AUC while automatically balancing class weights.
+* **Impact:** Achieved a **[XX.X] ROC AUC score**, proving strong predictive validity. This pipeline dynamically generates a **"Live Risk List,"** allowing marketing to trigger targeted SMS win-back credits precisely during the critical pre-churn window.
 
 ---
 
