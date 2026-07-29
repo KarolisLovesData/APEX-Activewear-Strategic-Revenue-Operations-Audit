@@ -57,6 +57,7 @@ user_lifecycle_stats AS (
     -- Absolute State Operational Anchors
     MAX(oh.order_created_at) AS absolute_last_order,
     MIN(oh.order_created_at) AS first_order_date,
+    MIN(CASE WHEN oh.order_created_at > snapshot_date THEN oh.order_created_at END) AS first_order_after_snapshot,
 
     -- Windowed Training Features (Strictly bound to historical snapshot)
     MAX(CASE WHEN oh.order_created_at <= snapshot_date THEN oh.order_created_at END) AS last_order_before_snapshot,
@@ -90,11 +91,16 @@ SELECT
   ROUND(SAFE_DIVIDE(total_historical_spend, total_order_count), 2) AS historical_aov,
   
   -- Target Churn Label Output
-  CASE 
-    WHEN DATE_DIFF(snapshot_date, last_order_before_snapshot, DAY) < 180 
-     AND DATE_DIFF(max_dataset_date, absolute_last_order, DAY) >= 180 
-    THEN TRUE 
-    ELSE FALSE 
-  END AS has_churned
+ -- Target Churn Label Output
+CASE 
+  -- Condition 1: They made NO purchases in the subsequent 180-day window. 
+  -- Because they were active before the snapshot, extending 180 days past it guarantees >180 days of dormancy.
+  WHEN first_order_after_snapshot IS NULL THEN TRUE 
+  
+  -- Condition 2: They did return, but the gap between their pre-snapshot order and their return order was 180+ days.
+  WHEN DATE_DIFF(first_order_after_snapshot, last_order_before_snapshot, DAY) >= 180 THEN TRUE 
+  
+  ELSE FALSE 
+END AS has_churned
 FROM user_lifecycle_stats
 WHERE DATE_DIFF(snapshot_date, last_order_before_snapshot, DAY) < 180;
