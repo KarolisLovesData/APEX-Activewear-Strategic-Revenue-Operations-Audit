@@ -1,31 +1,27 @@
 /*
   Description: Constructs the feature engineering dataset for predictive churn modeling.
   Architecture: Silver Layer / Feature Store
-  Logic: Uses a 30-day historical snapshot to prevent data leakage. Features are aggregated 
+  Logic: Uses a 180-day historical snapshot to prevent data leakage. Features are aggregated 
   prior to the snapshot; the target label evaluates if the user crossed a 180-day dormancy 
-  threshold during the subsequent 30-day window.
+  threshold during the subsequent 180-day window.
 */
 
-DECLARE snapshot_date TIMESTAMP DEFAULT TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 30 DAY);
+-- Dynamically set the anchors based on actual data bounds
+DECLARE max_dataset_date TIMESTAMP DEFAULT (
+  SELECT MAX(created_at) FROM `apex-activewear.silver_layer.stg_orders`
+);
+DECLARE snapshot_date TIMESTAMP DEFAULT TIMESTAMP_SUB(max_dataset_date, INTERVAL 180 DAY);
 
 CREATE OR REPLACE TABLE `apex-activewear.silver_layer.user_churn_data`
 CLUSTER BY has_churned, total_order_count AS
 
-WITH high_risk_products AS (
-  SELECT product_id 
-  FROM `apex-activewear.silver_layer.stg_products` 
-  WHERE LOWER(category) LIKE '%men%s%alpine%outerwear%'
-),
-
-aggregated_order_items AS (
+WITH aggregated_order_items AS (
   SELECT 
-    oi.order_id,
-    COALESCE(SUM(oi.sale_price), 0) AS order_total,
-    COUNT(oi.returned_at) AS order_returns,
-    COUNTIF(oi.is_cancelled = true) AS cancelled_orders,
-    MAX(CASE WHEN hr.product_id IS NOT NULL THEN 1 ELSE 0 END) AS is_high_risk_category
-  FROM `apex-activewear.silver_layer.stg_order_items` oi
-  LEFT JOIN high_risk_products hr ON oi.product_id = hr.product_id
+    order_id,
+    COALESCE(SUM(sale_price), 0) AS order_total,
+    COUNT(returned_at) AS order_returns,
+    COUNTIF(is_cancelled = true) AS cancelled_orders
+  FROM `apex-activewear.silver_layer.stg_order_items` 
   GROUP BY 1
 ),
 
@@ -35,7 +31,6 @@ user_order_history AS (
     o.created_at AS order_created_at,
     DATE_DIFF(o.delivered_at, o.shipped_at, HOUR) AS delivery_hours,
     ai.order_total,
-    ai.is_high_risk_category,
     ai.order_returns,
     ai.cancelled_orders
   FROM `apex-activewear.silver_layer.stg_orders` o
@@ -63,7 +58,6 @@ user_lifecycle_stats AS (
     -- Windowed Training Features (Strictly bound to historical snapshot)
     MAX(CASE WHEN oh.order_created_at <= snapshot_date THEN oh.order_created_at END) AS last_order_before_snapshot,
     COUNT(DISTINCT CASE WHEN oh.order_created_at <= snapshot_date THEN oh.order_created_at END) AS total_order_count,
-    MAX(CASE WHEN oh.order_created_at <= snapshot_date THEN oh.is_high_risk_category ELSE 0 END) AS bought_high_risk_gear,
     SUM(CASE WHEN oh.order_created_at <= snapshot_date THEN oh.order_returns ELSE 0 END) AS total_returns,
     SUM(CASE WHEN oh.order_created_at <= snapshot_date THEN oh.cancelled_orders ELSE 0 END) AS total_cancelled,
     ROUND(AVG(CASE WHEN oh.order_created_at <= snapshot_date THEN oh.delivery_hours END), 2) AS avg_delivery_hours,
@@ -81,7 +75,6 @@ SELECT
   user_id,
   ROUND(DATE_DIFF(first_order_date, account_created_at, HOUR)/24, 2) AS days_to_value,
   COALESCE(total_order_count, 0) AS total_order_count,
-  COALESCE(bought_high_risk_gear, 0) AS bought_high_risk_gear,
   COALESCE(first_order_value, 0) AS first_order_value,
   COALESCE(avg_delivery_hours, 0) AS avg_delivery_hours,
   COALESCE(total_returns, 0) AS total_returns,
@@ -96,51 +89,9 @@ SELECT
   -- Target Churn Label Output
   CASE 
     WHEN DATE_DIFF(snapshot_date, last_order_before_snapshot, DAY) < 180 
-    AND DATE_DIFF(CURRENT_TIMESTAMP(), absolute_last_order, DAY) >= 180 
+     AND DATE_DIFF(max_dataset_date, absolute_last_order, DAY) >= 180 
     THEN TRUE 
     ELSE FALSE 
   END AS has_churned
 FROM user_lifecycle_stats
 WHERE DATE_DIFF(snapshot_date, last_order_before_snapshot, DAY) < 180;
-
-
-
-
-
-/*
-  Description: Trains an XGBoost classifier in BigQuery ML to predict user churn.
-  Optimization: Utilizes automated tuning for ROC AUC, balances class weights, 
-  and enables global explanations for feature importance.
-*/
-
-CREATE OR REPLACE MODEL `apex-activewear.silver_layer.xgboost_churn_model`
-OPTIONS(
-  model_type='BOOSTED_TREE_CLASSIFIER',
-  input_label_cols=['has_churned'],
-  auto_class_weights=TRUE,
-  
-  -- Hyperparameter Tuning Configuration
-  num_trials=20,
-  max_parallel_trials=2,
-  hparam_tuning_objectives=['roc_auc'],
-  
-  -- Model Interpretability
-  enable_global_explain=TRUE
-) AS
-SELECT
-  -- All engineered features included for training
-  days_to_value,
-  total_order_count,
-  bought_high_risk_gear,
-  first_order_value,
-  avg_delivery_hours,
-  total_returns,
-  total_cancelled,
-  total_historical_spend,
-  recency_days,
-  return_rate_pct,
-  historical_aov,
-  
-  -- Target Label
-  has_churned
-FROM `apex-activewear.silver_layer.user_churn_data`;
