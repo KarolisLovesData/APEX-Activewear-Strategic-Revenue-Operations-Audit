@@ -23,7 +23,8 @@ WITH aggregated_order_items AS (
     -- FIX: Prevent data leakage by only counting returns that physically happened BEFORE the snapshot date
     COUNT(CASE WHEN returned_at <= snapshot_date THEN returned_at END) AS order_returns,
     
-    COUNTIF(is_cancelled = true) AS cancelled_orders
+   -- Upstream in aggregated_order_items
+COUNTIF(is_cancelled = true AND created_at <= snapshot_date) AS cancelled_orders
   FROM `apex-activewear.silver_layer.stg_order_items` 
   GROUP BY 1
 ),
