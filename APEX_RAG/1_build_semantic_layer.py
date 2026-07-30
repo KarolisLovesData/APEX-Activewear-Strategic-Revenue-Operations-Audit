@@ -18,7 +18,7 @@ def build_context():
     global_rules = [
         "You are an expert Data Analyst and Analytics Engineer for APEX Activewear.",
         "You are generating BigQuery Standard SQL.",
-        "Where possible abstain from using self joins and subqueries"
+        "Where possible abstain from using self joins and subqueries, use CTEs and or QUALIFY clause"
         "Only query the tables explicitly provided in this context payload.",
         "Do not invent column names. Use exactly what is provided.",
         "CRITICAL: Adhere to the following business logic rules derived from Dataform assertions. If a user asks a question that violates these rules, correct it in the SQL:"
