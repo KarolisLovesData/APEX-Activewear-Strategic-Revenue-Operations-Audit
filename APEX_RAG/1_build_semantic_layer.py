@@ -1,46 +1,55 @@
-import pandas as pd
+"""
+APEX Activewear - RAG Context Builder Engine
+
+This script parses upstream data governance metadata and BigQuery schema definitions,
+extracts active Dataform assertions and architectural guardrails, and exports a 
+structured JSON context dictionary used by the Gemini RAG SQL generation engine.
+"""
+
 import json
+import pandas as pd
 
 
 def build_context():
-    """Builds and exports the RAG context dictionary from governance and schema CSVs."""
-    # 1. Load the metadata files
+    """
+    Reads governance and schema CSVs, compiles system rules and Dataform 
+    assertions, and exports a standardized JSON payload for downstream LLM prompts.
+    """
+    # 1. Load data governance rules and table schemas from CSV sources
     gov_df = pd.read_csv('Apex Governance Layer.csv')
     schema_df = pd.read_csv('Apex Table Schemas.csv')
 
-    # 2. Extract Dataform Assertions for Global LLM Rules
+    # 2. Extract active Dataform assertions to serve as global LLM business logic rules
     assertions = gov_df[gov_df['asset_type'] == 'Assertion Logic']['governance_logic'].tolist()
 
-    # Clean up the assertions to ensure they are all strings
+    # Clean up assertions to ensure every entry is formatted as a valid string
     clean_assertions = [str(assertion) for assertion in assertions]
 
-    # Define baseline guardrails and formatting rules for the LLM prompt context
+    # Define foundational BigQuery generation guardrails and LLM prompt instructions
     global_rules = [
         "You are an expert Data Analyst and Analytics Engineer for APEX Activewear.",
         "You are generating BigQuery Standard SQL.",
-        "Where possible abstain from using self joins and subqueries, use CTEs and or QUALIFY clause"
+        "Where possible abstain from using self joins and subqueries, use CTEs and or QUALIFY clause.",
         "Only query the tables explicitly provided in this context payload.",
         "Do not invent column names. Use exactly what is provided.",
         "CRITICAL: Adhere to the following business logic rules derived from Dataform assertions. If a user asks a question that violates these rules, correct it in the SQL:"
     ]
 
-    # 3. Build Table Dictionary by mapping schemas to governance descriptions
+    # 3. Build structured table dictionary mapping schemas to governance descriptions
     tables = []
     grouped = schema_df.groupby(['dataset_name', 'table_name'])
 
     for (dataset, table_name), group in grouped:
-        # Match the table description from the governance CSV
+        # Match table-level description from governance metadata
         desc_row = gov_df[(gov_df['asset_name'] == table_name) & (gov_df['asset_type'] == 'Table Description')]
 
-        # --- THE FIX IS HERE ---
-        # We check if a description exists. If it does, we extract the first item (.iloc)
-        # and explicitly convert it to a plain Python string using str()
+        # Extract table description if present; fallback gracefully if missing
         if not desc_row.empty:
-            description = str(desc_row['governance_logic'].iloc)
+            description = str(desc_row['governance_logic'].iloc[0])
         else:
             description = "No description provided."
 
-        # Iterate through column rows to build the schema definition list for this table
+        # Iterate through column rows to construct field schema definitions
         columns = []
         for _, row in group.iterrows():
             columns.append({
@@ -48,21 +57,21 @@ def build_context():
                 "type": str(row['data_type'])
             })
 
-        # Append the structured table metadata object
+        # Append fully structured dataset and table metadata object
         tables.append({
             "table_name": f"{dataset}.{table_name}",
-            "description": description.strip('"'),  # Now .strip() will work perfectly
+            "description": description.strip('"'),
             "columns": columns
         })
 
-    # 4. Assemble final payload dictionary combining rules, assertions, and schemas
+    # 4. Assemble final payload dictionary combining system rules, assertions, and schemas
     context_dict = {
         "global_rules": global_rules,
         "dataform_assertions_reference": clean_assertions,
         "tables": tables
     }
 
-    # 5. Export as a structured JSON file for the RAG engine consumption
+    # 5. Export structured payload as a JSON artifact for the interactive RAG engine
     with open('context_dictionary.json', 'w') as f:
         json.dump(context_dict, f, indent=2)
 
