@@ -1,8 +1,10 @@
 # APEX-Activewear-Strategic-Revenue-Operations-Audit
 
-* **The Data Journey:** `Batch Ingestion (CSV)` ➔ `Medallion Transformation` ➔ `Predictive Modeling` ➔ `Governed AI Serving`
-* **Core Stack Execution:** `Google Cloud Shell CLI` ➔ `BigQuery & Cloud Dataform (SQLX)` ➔ `BigQuery ML` ➔ `Python (Google GenAI SDK) & JSON Semantic Layer`
-* **Architecture:** Batch Ingestion, Medallion (Bronze / Silver / Gold), RAG Text-to-SQL
+* **The Data Pipeline:** `Batch Ingestion (GCP Cloud Shell)` ➔ `Data Warehouse (BigQuery)` ➔ `Medallion Architecture (Cloud Dataform SQLX)`
+* **The Pipeline Outputs (Driven by the Gold/Silver Layers):**
+  * 📊 **Strategic Business Insights** (Revenue diagnostics & RFM segmentation)
+  * 🧠 **Predictive Modeling** (`BigQuery ML` XGBoost churn intercept)
+  * 🤖 **Governed AI Serving** (RAG Text-to-SQL via `Python`, `Google GenAI SDK`, & `JSON Semantic Layer`)
 
 ## Table of Contents
 * [Executive Summary & Business Impact](#executive-summary)
