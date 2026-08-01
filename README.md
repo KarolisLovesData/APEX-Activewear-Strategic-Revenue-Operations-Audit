@@ -1,10 +1,8 @@
 # APEX-Activewear-Strategic-Revenue-Operations-Audit
 
-
-* **Core Stack:** GCP (BigQuery, Cloud Functions), Cloud Dataform (SQLX), BigQuery ML, Python (Google GenAI SDK), JSON Semantic Layer
-* **Architecture:** Medallion (Bronze / Silver / Gold), Event-Driven Ingestion
-
----
+* **The Data Journey:** `Batch Ingestion (CSV)` ➔ `Medallion Transformation` ➔ `Predictive Modeling` ➔ `Governed AI Serving`
+* **Core Stack Execution:** `Google Cloud Shell CLI` ➔ `BigQuery & Cloud Dataform (SQLX)` ➔ `BigQuery ML` ➔ `Python (Google GenAI SDK) & JSON Semantic Layer`
+* **Architecture:** Batch Ingestion, Medallion (Bronze / Silver / Gold), RAG Text-to-SQL
 
 ## Table of Contents
 * [Executive Summary & Business Impact](#executive-summary)
