@@ -99,12 +99,522 @@ Dividing our 122k+ user base into actionable RFM (Recency, Frequency, Monetary) 
 * **C. Cloning the Champions (Acquisition):** Merge 122 international "Champions" with "Loyal Customers" to build a statistically stable seed audience, providing ad pixels the critical mass needed to clone high-value users.
 
 ### <a id="predictive-ai"></a> 🧠 3. Predictive AI: The "Sleeping Giant" Intercept
+Conversation with Gemini
+how can I query tables in GCP bucket using SQL? via BigQuery federated query or external query ?
+
+Here is how BigQuery concepts map to querying Cloud Storage (GCS) files using SQL:
+
+To query tables or files directly in a GCP Cloud Storage bucket, you use an External Table (or BigLake Table), NOT a Federated Query/EXTERNAL_QUERY.  
+Google
+
+Why the distinction matters:
+External Tables / BigLake Tables (Use for GCS): Used to query object storage like Google Cloud Storage (GCS) containing CSV, Parquet, ORC, Avro, or JSON files directly where they lie. You query them like normal SQL tables (SELECT * FROM my_dataset.my_gcs_table).  
+Google
+
+Federated Queries / EXTERNAL_QUERY (Use for RDBMS): Used specifically to execute SQL directly on external operational databases like Cloud SQL (PostgreSQL, MySQL), Cloud Spanner, or AlloyDB using the EXTERNAL_QUERY() function.  
+OneUptime
+
+How to Query GCS Files via SQL in BigQuery
+You have three standard options depending on your setup:
+
+Option 1: Create a Permanent External Table (Best Practice)
+Create an external table pointing to your GCS file path(s). You can do this in SQL via BigQuery Studio:
+
+SQL
+CREATE OR REPLACE EXTERNAL TABLE `my_project.my_dataset.my_gcs_table`
+OPTIONS (
+  format = 'PARQUET', -- Can also be 'CSV', 'JSON', 'AVRO', 'ORC'
+  uris = ['gs://my-bucket/folder/*.parquet']
+);
+Once created, query it with standard BigQuery SQL:
+
+SQL
+SELECT * 
+FROM `my_project.my_dataset.my_gcs_table`
+WHERE created_date >= '2026-01-01';
+Option 2: Create a BigLake Table (Best for Security & Governance)
+If you need row/column-level access control or fine-grained IAM governance over GCS data, use BigLake tables. BigLake wraps around GCS external tables using a Cloud Resource connection:
+
+SQL
+CREATE OR REPLACE EXTERNAL TABLE `my_project.my_dataset.my_biglake_table`
+WITH CONNECTION `projects/my_project/locations/us/connections/gcs-connection`
+OPTIONS (
+  format = 'PARQUET',
+  uris = ['gs://my-bucket/data/*.parquet']
+);
+Option 3: Query directly via bq CLI (Quick Ad-hoc Queries)
+If you don't want to save a table schema in BigQuery and just need a quick ad-hoc SQL query from the command line:
+
+Bash
+bq query \
+  --use_legacy_sql=false \
+  'SELECT * FROM `my_project.my_dataset.my_temp_table` LIMIT 10'
+(Alternatively, you can define temporary tables inline using the BigQuery API or Python SDK).
+
+Important Things to Consider
+Format: Parquet and ORC perform significantly faster than CSV or JSON because they are columnar and support predicate pushdown.
+
+Costs & Performance: External queries on GCS don't cache results by default and are generally slower than native BigQuery storage tables. If you plan to query this dataset frequently, consider executing a CREATE TABLE ... AS SELECT to load it directly into BigQuery native storage.  
+Google Cloud Documentation
+
+Permissions: Ensure the BigQuery Service Account or user running the query has Storage Object Viewer (roles/storage.objectViewer) on the target GCS bucket.
+
+create or replace external table apex_activewear_portfolio.user_churn_data
+
+options(
+
+  format = "CSV",
+
+  uri = ["gs://apex_activewear_portfolio/user_churn_data.csv"]
+
+)
+
+
+
+gs://apex_activewear_portfolio/user_churn_data.csv = uri it is not connecting
+
+The issue is a syntax error in your DDL statement: BigQuery expects the option key to be uris (plural), not uri.
+
+Here is the corrected SQL statement:
+
+SQL
+CREATE OR REPLACE EXTERNAL TABLE apex_activewear_portfolio.user_churn_data
+OPTIONS (
+  format = 'CSV',
+  uris = ['gs://apex_activewear_portfolio/user_churn_data.csv'],
+  skip_leading_rows = 1, -- Set to 1 if your CSV has a header row
+  autodetect = TRUE       -- Automatically infers the schema from the CSV
+);
+Common Checklist If You Still Experience Issues
+If updating to uris does not resolve the connectivity error, verify the following:
+
+Bucket Path & File Existence: Ensure the object path gs://apex_activewear_portfolio/user_churn_data.csv is exact (case-sensitive) and exists in Google Cloud Storage.
+
+IAM Permissions: The principal running the query needs the Storage Object Viewer (roles/storage.objectViewer) role on the apex_activewear_portfolio bucket (or at least on the specific CSV file).
+
+CSV Formatting Flags: If your CSV contains embedded line breaks or quotes, you may need to pass additional options:
+
+SQL
+allow_quoted_newlines = TRUE,
+ignore_unknown_values = TRUE
+Not found: Dataset cloud-etl-500119:apex_activewear_portfolio was not found in location US
+
+Not found: Dataset cloud-etl-500119:apex_activewear_portfolio was not found in location US
+
+That error occurs because BigQuery requires the destination dataset (apex_activewear_portfolio) to already exist in your GCP project before you can create tables inside it. It doesn't auto-create datasets when running a CREATE TABLE statement.
+
+Here are the two ways to fix this:
+
+Fix 1: Create the Dataset via SQL First
+Run a CREATE SCHEMA (or CREATE DATASET) DDL statement in BigQuery Studio to create the dataset in the US region, then run your table creation DDL:
+
+SQL
+-- 1. Create the dataset
+CREATE SCHEMA IF NOT EXISTS `cloud-etl-500119.apex_activewear_portfolio`
+OPTIONS (
+  location = 'US'
+);
+
+-- 2. Create the external table
+CREATE OR REPLACE EXTERNAL TABLE `cloud-etl-500119.apex_activewear_portfolio.user_churn_data`
+OPTIONS (
+  format = 'CSV',
+  uris = ['gs://apex_activewear_portfolio/user_churn_data.csv'],
+  skip_leading_rows = 1,
+  autodetect = TRUE
+);
+Fix 2: Create the Dataset via bq CLI
+If you prefer using the command line or terminal, create the dataset using the Google Cloud SDK:
+
+Bash
+bq --location=US mk --dataset cloud-etl-500119:apex_activewear_portfolio
+Key Things to Watch For
+Region Matching: Ensure your GCS bucket (gs://apex_activewear_portfolio) is also located in the US multi-region (or a US single region). BigQuery datasets and GCS buckets must be in compatible locations to perform external queries.
+
+Fully Qualified Names: It is good practice to include the project ID explicitly in DDL statements (cloud-etl-500119.apex_activewear_portfolio.user_churn_data) to prevent queries from defaulting to the wrong active project.
+
+/*
+
+  Description: Constructs the feature engineering dataset for predictive churn modeling.
+
+  Architecture: Silver Layer / Feature Store
+
+  Logic: Uses a 180-day historical snapshot to prevent data leakage. Features are aggregated
+
+  prior to the snapshot; the target label evaluates if the user crossed a 180-day dormancy
+
+  threshold during the subsequent 180-day window.
+
+*/
+
+
+
+-- Dynamically set the anchors based on actual data bounds
+
+DECLARE max_dataset_date TIMESTAMP DEFAULT (
+
+  SELECT MAX(created_at) FROM `apex-activewear.silver_layer.stg_orders`
+
+);
+
+DECLARE snapshot_date TIMESTAMP DEFAULT TIMESTAMP_SUB(max_dataset_date, INTERVAL 180 DAY);
+
+
+
+CREATE OR REPLACE TABLE `apex-activewear.silver_layer.user_churn_data`
+
+CLUSTER BY has_churned, total_order_count AS
+
+
+
+WITH aggregated_order_items AS (
+
+  SELECT
+
+    order_id,
+
+    COALESCE(SUM(sale_price), 0) AS order_total,
+
+   
+
+    -- FIX: Prevent data leakage by only counting returns that physically happened BEFORE the snapshot date
+
+    COUNT(CASE WHEN returned_at <= snapshot_date THEN returned_at END) AS order_returns,
+
+   
+
+    COUNTIF(is_cancelled = true) AS cancelled_orders
+
+  FROM `apex-activewear.silver_layer.stg_order_items`
+
+  GROUP BY 1
+
+),
+
+
+
+user_order_history AS (
+
+  SELECT
+
+    o.user_id,
+
+    o.created_at AS order_created_at,
+
+    DATE_DIFF(o.delivered_at, o.shipped_at, HOUR) AS delivery_hours,
+
+    ai.order_total,
+
+    ai.order_returns,
+
+    ai.cancelled_orders
+
+  FROM `apex-activewear.silver_layer.stg_orders` o
+
+  JOIN aggregated_order_items ai ON o.order_id = ai.order_id
+
+),
+
+
+
+user_first_orders AS (
+
+  SELECT
+
+    user_id,
+
+    MIN(order_created_at) AS first_order_timestamp_marker
+
+  FROM user_order_history
+
+  GROUP BY 1
+
+),
+
+
+
+user_lifecycle_stats AS (
+
+  SELECT
+
+    u.user_id,
+
+    u.created_at AS account_created_at,
+
+    fo.first_order_timestamp_marker,
+
+   
+
+    -- Absolute State Operational Anchors
+
+    MAX(oh.order_created_at) AS absolute_last_order,
+
+    MIN(oh.order_created_at) AS first_order_date,
+
+
+
+    -- Windowed Training Features (Strictly bound to historical snapshot)
+
+    MAX(CASE WHEN oh.order_created_at <= snapshot_date THEN oh.order_created_at END) AS last_order_before_snapshot,
+
+    COUNT(DISTINCT CASE WHEN oh.order_created_at <= snapshot_date THEN oh.order_created_at END) AS total_order_count,
+
+    SUM(CASE WHEN oh.order_created_at <= snapshot_date THEN oh.order_returns ELSE 0 END) AS total_returns,
+
+    SUM(CASE WHEN oh.order_created_at <= snapshot_date THEN oh.cancelled_orders ELSE 0 END) AS total_cancelled,
+
+    ROUND(AVG(CASE WHEN oh.order_created_at <= snapshot_date THEN oh.delivery_hours END), 2) AS avg_delivery_hours,
+
+    SUM(CASE WHEN oh.order_created_at <= snapshot_date THEN oh.order_total ELSE 0 END) AS total_historical_spend,
+
+   
+
+    -- Target Metric
+
+    MAX(CASE WHEN oh.order_created_at = fo.first_order_timestamp_marker THEN oh.order_total ELSE 0 END) AS first_order_value
+
+  FROM `apex-activewear.silver_layer.stg_users` u
+
+  LEFT JOIN user_first_orders fo ON u.user_id = fo.user_id
+
+  LEFT JOIN user_order_history oh ON u.user_id = oh.user_id
+
+  GROUP BY 1, 2, 3
+
+)
+
+
+
+SELECT
+
+  user_id,
+
+  ROUND(DATE_DIFF(first_order_date, account_created_at, HOUR)/24, 2) AS days_to_value,
+
+  COALESCE(total_order_count, 0) AS total_order_count,
+
+  COALESCE(first_order_value, 0) AS first_order_value,
+
+  COALESCE(avg_delivery_hours, 0) AS avg_delivery_hours,
+
+  COALESCE(total_returns, 0) AS total_returns,
+
+  COALESCE(total_cancelled, 0) AS total_cancelled,
+
+ 
+
+  -- Behavioral Signals
+
+  ROUND(COALESCE(total_historical_spend, 0), 2) AS total_historical_spend,
+
+  DATE_DIFF(snapshot_date, last_order_before_snapshot, DAY) AS recency_days,
+
+  ROUND(SAFE_DIVIDE(total_returns, total_order_count), 4) AS return_rate_pct,
+
+  ROUND(SAFE_DIVIDE(total_historical_spend, total_order_count), 2) AS historical_aov,
+
+ 
+
+  -- Target Churn Label Output
+
+  CASE
+
+    WHEN DATE_DIFF(snapshot_date, last_order_before_snapshot, DAY) < 180
+
+     AND DATE_DIFF(max_dataset_date, absolute_last_order, DAY) >= 180
+
+    THEN TRUE
+
+    ELSE FALSE
+
+  END AS has_churned
+
+FROM user_lifecycle_stats
+
+WHERE DATE_DIFF(snapshot_date, last_order_before_snapshot, DAY) < 180; find the logical error in the cxase when statement
+
+There are two distinct logical errors in your has_churned CASE WHEN statement: one is a structural redundancy, and the other is a critical business logic flaw that will corrupt your predictive target by creating false negatives.
+
+Here is the breakdown of the errors and how to fix them.
+
+1. The "Resurrection" Trap (Critical Business Logic Flaw)
+Your comment states that the label evaluates if a user crossed a 180-day dormancy threshold during the subsequent window. However, your logic evaluates the gap between their absolute final order and the end of the dataset:
+
+SQL
+AND DATE_DIFF(max_dataset_date, absolute_last_order, DAY) >= 180 
+Why this fails:
+This logic incorrectly assumes that a user's absolute_last_order is the only thing that dictates churn. It completely misses "resurrected" users—people who crossed the 180-day dormancy threshold but eventually made a purchase right before the end of the dataset.
+
+Example Scenario: A user's last_order_before_snapshot is 30 days before the snapshot. They go completely dormant. On day 160 of the future evaluation window, they finally make a purchase.
+
+The Reality: The gap between their orders is 190 days (30 pre-snapshot + 160 post-snapshot). They did cross the 180-day dormancy threshold. They churned and resurrected.
+
+Your Code's Output: Because they ordered on day 160 of the future window, their absolute_last_order updates to that date. The gap between day 160 and the end of the dataset (day 180) is 20 days. Since 20 >= 180 is FALSE, your code labels them as has_churned = FALSE.
+
+2. The Redundant Condition (Structural Flaw)
+The first half of your CASE WHEN statement is completely redundant:
+
+SQL
+WHEN DATE_DIFF(snapshot_date, last_order_before_snapshot, DAY) < 180 
+Because you have a WHERE clause at the very end of your query (WHERE DATE_DIFF(snapshot_date, last_order_before_snapshot, DAY) < 180;), your final SELECT statement is already strictly filtered down to active users. The CASE WHEN will never process a row where this condition is false, making the check obsolete.
+
+How to Fix the Logic
+To accurately determine if a user crossed a 180-day dormancy threshold during the evaluation window, you need to measure the gap between their last_order_before_snapshot and their first order AFTER the snapshot, not their absolute last order.
+
+Step 1: Add a new feature anchor in your user_lifecycle_stats CTE:
+Capture the timestamp of their very first order in the evaluation window.
+
+SQL
+-- Add this line to the user_lifecycle_stats CTE
+MIN(CASE WHEN oh.order_created_at > snapshot_date THEN oh.order_created_at END) AS first_order_after_snapshot,
+Step 2: Rewrite the CASE WHEN target label:
+Remove the redundant condition and evaluate the actual gap.
+
+SQL
+-- Target Churn Label Output
+CASE 
+  -- Condition 1: They made NO purchases in the subsequent 180-day window. 
+  -- Because they were active before the snapshot, extending 180 days past it guarantees >180 days of dormancy.
+  WHEN first_order_after_snapshot IS NULL THEN TRUE 
+  
+  -- Condition 2: They did return, but the gap between their pre-snapshot order and their return order was 180+ days.
+  WHEN DATE_DIFF(first_order_after_snapshot, last_order_before_snapshot, DAY) >= 180 THEN TRUE 
+  
+  ELSE FALSE 
+END AS has_churned
+SPX10K what is it ?
+
+Depending on the context, SPX10K typically refers to one of two completely different concepts:
+
+1. S&P 500 Index Milestone (Traditional Finance)
+In macroeconomics and equity markets, SPX 10K is a long-term psychological and numerical milestone representing the S&P 500 Index (SPX) reaching 10,000 points. Analysts, institutional strategists, and macro commentators use the term when modeling the structural earnings growth, secular bull market trajectory, or inflationary timeline required for the benchmark index to cross from current valuations up to the 10,000 threshold.
+
+2. Cryptocurrency Tokens (Web3 & DeFi)
+In the digital asset space, SPX10K refers to speculative cryptocurrency tokens or community-driven projects (frequently traded on decentralized exchanges such as Aerodrome on the Base network). These assets typically circulate during high-beta altcoin or narrative-driven market cycles, often playing on traditional stock market terminology or derivative meme culture.
+
+Are you tracking SPX10K as a long-term macro target for the S&P 500, or are you looking at a specific crypto asset?
+
+/*
+
+  Description: Evaluates the performance of the XGBoost churn prediction model.
+
+  Architecture: Gold Layer / Analytics
+
+  Output: Returns core classification metrics and assigns a business-friendly
+
+  performance grade based on the ROC AUC score.
+
+*/
+
+
+
+WITH eval_metrics AS (
+
+  SELECT
+
+    ROUND(roc_auc, 4) AS roc_auc,
+
+    ROUND(accuracy, 4) AS accuracy,
+
+    ROUND(precision, 4) AS precision,
+
+    ROUND(recall, 4) AS recall,
+
+    ROUND(f1_score, 4) AS f1_score,
+
+    ROUND(log_loss, 4) AS log_loss
+
+  FROM ML.EVALUATE(
+
+    MODEL `apex-activewear.silver_layer.xgboost_churn_model`
+
+  )
+
+)
+
+
+
+SELECT
+
+  *,
+
+  -- Translate statistical performance into a business-readable grade
+
+  CASE
+
+    WHEN roc_auc >= 0.90 THEN 'Excellent (Highly Predictive)'
+
+    WHEN roc_auc >= 0.80 THEN 'Good (Reliable for Production)'
+
+    WHEN roc_auc >= 0.70 THEN 'Fair (Needs Feature Tuning)'
+
+    ELSE 'Poor (Barely Better Than Random)'
+
+  END AS model_performance_grade
+
+FROM eval_metrics; Row roc_auc accuracy precision recall f1_score log_loss model_performance_grade
+
+1 0.8868 0.781 0.945 0.7583 0.8414 0.4329 Good (Reliable for Production) these are the results we need to go back to editing the github part do you still have it ?
+
+Those are fantastic results. An ROC AUC of 0.8868 is a very strong signal, but that 0.945 precision is the real highlight here. In a business context, that means when your model flags a user as a churn risk, it is correct 94.5% of the time. If APEX Activewear is handing out retention discounts, this model ensures you aren't wasting money on users who were going to stay anyway.
+
+Since this is a fresh session window, I don't have the exact text of your previous README draft loaded in my immediate memory, but I have all the context for the APEX Activewear Medallion architecture.
+
+Here is the formatted Markdown block for these specific results, ready to be dropped straight into your GitHub repository:
+
+Markdown
+### 📊 Model Performance & Evaluation
+
+The XGBoost churn prediction model was evaluated using a 180-day historical holdout dataset to prevent data leakage. The model achieved a **Good (Reliable for Production)** grade, heavily indexing on precision to ensure targeted retention campaigns are highly efficient.
+
+| Metric | Score | Business Interpretation |
+| :--- | :--- | :--- |
+| **ROC AUC** | `0.8868` | Strong capability to distinguish between churning and retained users. |
+| **Precision** | `0.9450` | Highly efficient; when churn is predicted, it is correct 94.5% of the time. |
+| **Recall** | `0.7583` | Successfully identifies ~76% of all actual churned users. |
+| **F1 Score** | `0.8414` | Solid balance between precision and recall. |
+| **Accuracy** | `0.7810` | Overall predictive correctness across the dataset. |
+| **Log Loss** | `0.4329` | Indicates confident probability predictions. |
+Do you want to paste the current draft of your README in here so we can weave this in naturally, or are there other sections we need to build out first?
+
+### <a id="predictive-ai"></a> 🧠 3. Predictive AI: The "Sleeping Giant" Intercept
+
 **Stakeholder:** Head of Retention 
 
-* **Insight:** RFM is inherently reactive. To pivot to preemptive intervention, I engineered a `BOOSTED_TREE_CLASSIFIER` directly in the Silver layer using BigQuery ML to identify high-risk users *before* they churn. 🔗 **[Access SQL Queries](Strategic_Insights/BigQuery_ML_(XGBoost).sql)**
-* **Action:** Constructed a 180-day historical SQL snapshot for feature engineering (Frequency, Return Rates, Delivery Latency) to prevent data leakage and isolate predictive behavioral signals (e.g., fast Time-to-Value correlations with high returns). Automated hyperparameter tuning optimized the model for ROC AUC while automatically balancing class weights.
-* **Impact:** Achieved a **[XX.X] ROC AUC score**, proving strong predictive validity. This pipeline dynamically generates a **"Live Risk List,"** allowing marketing to trigger targeted SMS win-back credits precisely during the critical pre-churn window.
 
+
+* **Insight:** RFM is inherently reactive. To pivot to preemptive intervention, I engineered a `BOOSTED_TREE_CLASSIFIER` directly in the Silver layer using BigQuery ML to identify high-risk users *before* they churn. 🔗 **[Access SQL Queries](Strategic_Insights/BigQuery_ML_(XGBoost).sql)**
+
+* **Action:** Constructed a 180-day historical SQL snapshot for feature engineering (Frequency, Return Rates, Delivery Latency) to prevent data leakage and isolate predictive behavioral signals (e.g., fast Time-to-Value correlations with high returns). Automated hyperparameter tuning optimized the model for ROC AUC while automatically balancing class weights.
+
+* **Impact:** Achieved a **[XX.X] ROC AUC score**, proving strong predictive validity. This pipeline dynamically generates a **"Live Risk List,"** allowing marketing to trigger targeted SMS win-back credits precisely during the critical pre-churn window. this is how it currently looks like, the repo is targeted a data analyst or analytics engineering position so we should not be too scientific about this, and it should be really business outcome focused . return .md markdown format text
+
+Your Markdown file is ready
+
+MD icon
+apex_predictive_ai_section
+ MD 
+Open
+Here is the revised text designed for your README. It explicitly connects the technical output (precision) to the business value (protecting profit margins), removing academic language in favor of a clear, impact-driven narrative.
+
+
+### <a id="predictive-ai"></a> 🧠 3. Predictive AI: The "Sleeping Giant" Intercept
+**Stakeholder:** Head of Retention 
+
+* **Insight:** RFM segmentation is inherently reactive. To pivot to preemptive intervention, I engineered a `BOOSTED_TREE_CLASSIFIER` directly in the Silver layer using BigQuery ML to identify high-risk users *before* they churn. 🔗 **[Access SQL Queries](Strategic_Insights/BigQuery_ML_(XGBoost).sql)**
+* **Action:** Constructed a 180-day historical SQL snapshot for feature engineering (Frequency, Return Rates, Delivery Latency) to prevent data leakage and isolate predictive behavioral signals. Automated hyperparameter tuning optimized the model for ROC AUC while automatically balancing class weights.
+* **Impact:** Delivered an **0.88 ROC AUC** with a standout **94.5% Precision rate**. Through compelling data storytelling, I demonstrated that this high precision ensures promotional efficiency—flagged users are genuine flight risks 94.5% of the time. The pipeline dynamically generates a **"Live Risk List,"** allowing marketing to trigger targeted SMS win-back credits without wasting margin on users who were naturally going to stay.
+
+
+
+Gemini is AI and can make mistakes.
+
+### <a id="predictive-ai"></a> 🧠 3. Predictive AI: The "Sleeping Giant" Intercept
+**Stakeholder:** Head of Retention 
+
+* **Insight:** RFM segmentation is inherently reactive. To pivot to preemptive intervention, I engineered a `BOOSTED_TREE_CLASSIFIER` directly in the Silver layer using BigQuery ML to identify high-risk users *before* they churn. 🔗 **[Access SQL Queries](Strategic_Insights/BigQuery_ML_(XGBoost).sql)**
+* **Action:** Constructed a 180-day historical SQL snapshot for feature engineering (Frequency, Return Rates, Delivery Latency) to prevent data leakage and isolate predictive behavioral signals. Automated hyperparameter tuning optimized the model for ROC AUC while automatically balancing class weights.
+* **Impact:** Delivered an **0.88 ROC AUC** with a standout **94.5% Precision rate**. Through compelling data storytelling, I demonstrated that this high precision ensures promotional efficiency—flagged users are genuine flight risks 94.5% of the time. The pipeline dynamically generates a **"Live Risk List,"** allowing marketing to trigger targeted SMS win-back credits without wasting margin on users who were naturally going to stay.
 ---
 
 ### <a id="ai-governance"></a>III. AI-Powered Semantic Layer & BI Governance
