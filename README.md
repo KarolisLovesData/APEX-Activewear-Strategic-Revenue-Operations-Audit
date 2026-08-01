@@ -98,18 +98,12 @@ Dividing our 122k+ user base into actionable RFM (Recency, Frequency, Monetary) 
 * **B. The "Tipping Point" (Upsell):** 10,996 active users haven't reached the "Loyal" tier. Deploy targeted bundle offers to inflate AOV, migrating 20% of this group to generate ~$1.1M in incremental LTV.
 * **C. Cloning the Champions (Acquisition):** Merge 122 international "Champions" with "Loyal Customers" to build a statistically stable seed audience, providing ad pixels the critical mass needed to clone high-value users.
 
-
 ### <a id="predictive-ai"></a> 🧠 3. Predictive AI: The "Sleeping Giant" Intercept
 **Stakeholder:** Head of Retention 
 
 * **Insight:** Standard RFM segmentation is reactive—it only identifies churn *after* the revenue is lost. To intervene preemptively, I trained an in-warehouse XGBoost model using BigQuery ML to catch flight risks before they leave. 🔗 **[Access SQL Queries](Strategic_Insights/BigQuery_ML_(XGBoost).sql)**
 * **Action:** Engineered a rolling 180-day behavioral snapshot directly from the Silver layer, feeding the model real-time signals like return frequency and delivery lag to calculate daily churn probability.
-* **Impact:** The model achieved production-grade reliability with a standout **94.5% Precision rate**. In business terms, this means 94.5% of the users flagged by the model are genuine flight risks. This powers a daily **"Live Risk List,"** allowing marketing to trigger automated SMS win-back credits without wasting margin on users who were going to stay anyway.### <a id="predictive-ai"></a> 🧠 3. Predictive AI: The "Sleeping Giant" Intercept
-**Stakeholder:** Head of Retention 
-
-* **Insight:** RFM segmentation is inherently reactive. To pivot to preemptive intervention, I engineered a `BOOSTED_TREE_CLASSIFIER` directly in the Silver layer using BigQuery ML to identify high-risk users *before* they churn. 🔗 **[Access SQL Queries](Strategic_Insights/BigQuery_ML_(XGBoost).sql)**
-* **Action:** Constructed a 180-day historical SQL snapshot for feature engineering (Frequency, Return Rates, Delivery Latency) to prevent data leakage and isolate predictive behavioral signals. Automated hyperparameter tuning optimized the model for ROC AUC while automatically balancing class weights.
-* **Impact:** Delivered an **0.88 ROC AUC** with a standout **94.5% Precision rate**. Through compelling data storytelling, I demonstrated that this high precision ensures promotional efficiency—flagged users are genuine flight risks 94.5% of the time. The pipeline dynamically generates a **"Live Risk List,"** allowing marketing to trigger targeted SMS win-back credits without wasting margin on users who were naturally going to stay.
+* **Impact:** The model achieved production-grade reliability with a standout **94.5% Precision rate**. In business terms, this means 94.5% of the users flagged by the model are genuine flight risks. This powers a daily **"Live Risk List,"** allowing marketing to trigger automated SMS win-back credits without wasting margin on users who were going to stay anyway.
 ---
 
 ### <a id="ai-governance"></a>III. AI-Powered Semantic Layer & BI Governance
