@@ -4,7 +4,7 @@
 * **The Pipeline Outputs (Driven by the Gold/Silver Layers):**
   * 📊 **Strategic Business Insights** (Revenue diagnostics & RFM segmentation)
   * 🧠 **Predictive Modeling** (`BigQuery ML` XGBoost churn intercept)
-  * 🤖 **Governed AI Serving** (RAG Text-to-SQL via `Python`, `Google GenAI SDK`, & `JSON Semantic Layer`)
+
 
 ## Table of Contents
 * [Executive Summary & Business Impact](#executive-summary)
@@ -106,23 +106,6 @@ Dividing our 122k+ user base into actionable RFM (Recency, Frequency, Monetary) 
 * **Impact:** The model achieved production-grade reliability with a standout **94.5% Precision rate**. In business terms, this means 94.5% of the users flagged by the model are genuine flight risks. This powers a daily **"Live Risk List,"** allowing marketing to trigger automated SMS win-back credits without wasting margin on users who were going to stay anyway.
 ---
 
-### <a id="ai-governance"></a>III. AI-Powered Semantic Layer & BI Governance
-
-**Target:** Stakeholder Self-Service & Metric Standardization 
-
-* **The Bottleneck:** Out-of-the-box LLMs inherently hallucinate business logic. Without guardrails, they blindly query raw tables, missing critical context like "Ghost Revenue" filters or our 24% return rate.
-* **The Architecture:** Engineered a custom **Retrieval-Augmented Generation (RAG) Governance CLI** that intercepts stakeholder natural-language questions and binds the AI strictly to our validated Dataform pipeline logic.
-* **Technical Execution:** Built a Python engine to dynamically parse BigQuery schemas and `Dataform Assertions` into a structured JSON dictionary. The LLM is prompt-restricted exclusively to the `gold_layer`, ensuring it outputs clean, compliant BigQuery Standard SQL.
-* **Business Impact:** **"Zero-Hallucination" self-serve analytics.** Stakeholders can now query the warehouse in plain English with mathematical certainty that the generated SQL perfectly matches the CFO's definition of realized revenue.
-#### *A sample governed query:*
-
-<img src="./Visuals/rag_cli_demo.gif" alt="RAG CLI Demo" width="800">
-
-#### *Ground Truth Verification: Executing the Governed Query in BigQuery*
-
-<img src="Visuals/bigquery_governance_validation.png" alt="BigQuery Execution Verification" width="800">
-
----
 
 # <a id="analytics-engineering"></a>🛠️ Analytics Engineering & Data Architecture
 
